@@ -541,3 +541,10 @@ optgroup {
   transform: scale(1.1);
   filter: saturate(1.2) contrast(1.1);
 }
+
+#chart-bar-container {
+  overflow-x: auto;
+}
+#chart-bar {
+  min-width: 1100px; /* ou 1400px selon besoin */
+}

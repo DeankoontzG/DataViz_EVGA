@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy mix by country</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="home-button">
+            <span class="home-icon"></span>
+            <span class="home-text">Home</span>
+        </a>
+
+        <header>
+            <div class="header-bar">
+                <div class="header-title">
+                    <h1>Energy mix by country</h1>
+                    <p class="subtitle">
+                        Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <div id="controls">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="yearSelectBar">Year</label>
+                    <select id="yearSelectBar"></select>
+                </div>
+
+                <div class="control-group">
+                    <label for="regionSelectBar">Climate region</label>
+                    <select id="regionSelectBar">
+                        <option value="all">All regions</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="displayMode">Display</label>
+                    <select id="displayMode">
+                        <option value="all">All countries</option>
+                        <option value="top5">Top 5 (by selected metric)</option>
+                        <option value="top10" selected>Top 10 (by selected metric)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="sortMetric">Sort by</label>
+                    <select id="sortMetric">
+                        <option value="total">Total energy (TWh)</option>
+                        <option value="coal">Coal share (%)</option>
+                        <option value="oil">Oil share (%)</option>
+                        <option value="gas">Gas share (%)</option>
+                        <option value="lowCarbon">Low‑carbon share (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="stats"></div>
+
+        <div id="chart-container">
+            <div id="chart-bar-scroll">
+                <div id="chart-bar"></div>
+            </div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Tip:</strong>
+            All bars have the same height (100% of the energy mix).
+            Use <strong>Climate region</strong> to filter the countries,
+            <strong>Sort by</strong> to order by a specific share, and
+            <strong>Display</strong> to focus on Top 5 or Top 10.
+            Hover a bar to see both percentages and absolute TWh.
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="stacked_bar.js"></script>
+</body>
+</html>
