@@ -1,31 +1,44 @@
 /********************************************
  * CONFIGURATION GLOBALE
  ********************************************/
-var width = 960;
-var height = 700;
+const width = 960;
+const height = 700;
 
-var jsonData;
-var cleanData;
+let jsonData;
+let cleanData;
 
 // Dimensions numériques + catégorielle
 const dimensions = [
+    // --- 1. Métriques Climatiques ---
     "temperature",
     "humidity",
     "precipitation",
     "wind_speed",
     "wetbulb_temperature",
+
+    //  --- 2. Métriques d'Efficacité/Fuites ---
     "WUE_FixedApproachDirect(L/KWh)",
     "WUE_FixedColdWaterDirect(L/KWh)",
     "WUE_Indirect(L/KWh)",
     "Leakages (%)",
+
+    //  --- 3. Consommation Totale (TWh) ---
     "Total energy - TWh",
-    "Total renewables - TWh",
-    "Total fossil fuels - TWh",
-    "Coal consumption - TWh",
-    "Gas consumption - TWh",
-    "Oil consumption - TWh",
-    "Low carbon - TWh",
-    "Other - TWh",
+
+    //  --- 4. Mix Énergétique (Pourcentages) ---
+    "Pct renewables",                     
+    "Pct fossil fuels",                   
+    "Pct Coal consumption",               
+    "Pct Gas consumption",                
+    "Pct Oil consumption",                
+    "Pct Nuclear consumption",            
+    "Pct Solar consumption",              
+    "Pct Hydro consumption",              
+    "Pct Wind consumption",               
+    "Pct Biofuels consumption",           
+    "Pct Low carbon",                     
+    "Pct Other renewables",               
+    "Pct Other",
     "climate_region"
 ];
 
@@ -49,33 +62,33 @@ let currentDimension = dimensions[0]; // dimension initiale
 /********************************************
  * TOOLTIP & SVG
  ********************************************/
-var tooltip = d3.select("body")
+const tooltip = d3.select("body")
     .append("div")
     .attr("class", "hidden tooltip");
 
-var svg = d3.select("body")
+const svg = d3.select("body")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
 
-var g = svg.append("g");
+const g = svg.append("g");
 
 /********************************************
  * PROJECTION & COLOR SCALES
  ********************************************/
-var projection = d3.geoMercator()
+const projection = d3.geoMercator()
     .center([20, 5])
     .scale(550)
     .translate([width / 2, height / 2]);
 
-var path = d3.geoPath().projection(projection);
+const path = d3.geoPath().projection(projection);
 
 // Couleurs numériques
-var colorNumeric = d3.scaleLinear()
+const colorNumeric = d3.scaleLinear()
     .range(["#deebf7", "#08306b"]);
 
 // Couleurs catégorielles
-var colorCategorical = d3.scaleOrdinal()
+const colorCategorical = d3.scaleOrdinal()
     .range(d3.schemeSet2);
 
 /********************************************
@@ -88,9 +101,11 @@ function getValue(d, dim = currentDimension) {
         return val ? val : null;
     }
 
-    if (val == null) return null;
+    // Gère null, undefined, ou chaînes vides
+    if (val == null || val === "") return null;
 
     let num = parseFloat(val.toString().replace(",", "."));
+    // Retourne null si la valeur n'est pas un nombre fini (inclut NaN, Infinity)
     return isFinite(num) ? num : null;
 }
 
@@ -101,11 +116,27 @@ function updateColorDomain() {
 
     if (currentDimension === "climate_region") return;
 
+    // --- CORRECTION CLÉ: DOMAINE FIXE POUR LES POURCENTAGES ---
+    // Si la dimension est un pourcentage (Pct...) ou Fuites (%), le domaine est fixe [0, 100]
+    if (currentDimension.startsWith("Pct") || currentDimension.includes("Leakages")) {
+         colorNumeric.domain([0, 100]);
+         return;
+    }
+
     const values = cleanData
         .map(d => getValue(d))
         .filter(v => v != null);
 
-    colorNumeric.domain([d3.min(values), d3.max(values)]);
+    const min = d3.min(values);
+    const max = d3.max(values);
+    
+    // Fallback si aucune donnée n'est valide ou si min == max
+    if (min == null || max == null || min === max) {
+         colorNumeric.domain([0, 1]); // Fallback
+         // console.warn(`⚠️ Domaine couleur invalide pour ${currentDimension}.`);
+    } else {
+         colorNumeric.domain([min, max]);
+    }
 }
 
 /********************************************
@@ -131,20 +162,25 @@ d3.csv("../data/exported/country_month_cleaned.csv").then(function (data) {
             }));
         }
 
+        // --- CORRECTION CLÉ: APPEL DES BONNES FONCTIONS ---
         setupDimensionSlider();
         setupTimeSlider();
+        
+        // La dimension actuelle est maintenant initialisée dans setupDimensionSlider
         updateColorDomain();
         drawMap(currentYearMonth);
     });
 });
 
 /********************************************
- * SLIDER DE DIMENSIONS
+ * SLIDER DE DIMENSIONS (CORRECTION ID)
  ********************************************/
 function setupDimensionSlider() {
+    // ID HTML: #dim-slider
     const slider = d3.select("#dim-slider");
     const disp = d3.select("#dimension-name");
 
+    // Configuration du slider range
     slider
         .attr("min", 0)
         .attr("max", dimensions.length - 1)
@@ -157,16 +193,22 @@ function setupDimensionSlider() {
             drawMap(currentYearMonth);
         });
 
+    // Initialisation
+    currentDimension = dimensions[+slider.property("value")];
     disp.html(`<strong>${currentDimension}</strong>`);
 }
 
 /********************************************
- * SLIDER TEMPOREL (25 mois)
+ * SLIDER TEMPOREL (CORRECTION ID)
  ********************************************/
 function setupTimeSlider() {
 
+    // ID HTML: #time-slider
     const slider = d3.select("#time-slider");
+    // ID HTML: #time-label
     const label = d3.select("#time-label");
+    // ID HTML: #year (Div pour l'affichage principal)
+    const yearDisplay = d3.select("#year"); 
 
     slider
         .attr("min", 0)
@@ -176,11 +218,15 @@ function setupTimeSlider() {
             currentTimeIndex = +this.value;
             currentYearMonth = timeline[currentTimeIndex];
 
-            label.html(`<strong>${currentYearMonth}</strong>`);
+            // Mise à jour de tous les éléments
+            label.html(`Période : <strong>${currentYearMonth}</strong>`);
+            yearDisplay.html(`Période : <strong>${currentYearMonth}</strong>`);
             drawMap(currentYearMonth);
         });
 
-    label.html(`<strong>${currentYearMonth}</strong>`);
+    // Initialisation de la période affichée
+    label.html(`Période : <strong>${currentYearMonth}</strong>`);
+    yearDisplay.html(`Période : <strong>${currentYearMonth}</strong>`);
 }
 
 /********************************************
@@ -188,8 +234,8 @@ function setupTimeSlider() {
  ********************************************/
 function drawMap(time) {
 
-    d3.select("#year")
-        .html(`Période : <strong>${time}</strong>`);
+    // L'affichage de la période est géré par setupTimeSlider
+    // d3.select("#year").html(`Période : <strong>${time}</strong>`); est maintenant dans setupTimeSlider
 
     let countries = svg.selectAll("path")
         .data(jsonData.features);
@@ -202,14 +248,28 @@ function drawMap(time) {
         .on("mousemove", function (e, d) {
 
             const row = d.properties.donneesMensuelles.find(r => r.time === time);
-            const val = row ? getValue(row.data) : null;
+            const rawVal = row ? getValue(row.data) : null;
+            
+            let valDisplay;
 
+            if (currentDimension === "climate_region") {
+                valDisplay = rawVal ?? "N/D";
+            } else if (rawVal != null) {
+                // Arrondi et ajout du symbole %
+                valDisplay = rawVal.toFixed(2);
+                if (currentDimension.startsWith("Pct") || currentDimension.includes("Leakages")) {
+                    valDisplay += " %";
+                }
+            } else {
+                valDisplay = "N/D";
+            }
+            
             tooltip.classed("hidden", false)
                 .style("left", (e.pageX + 15) + "px")
                 .style("top", (e.pageY - 35) + "px")
                 .html(`
                     <strong>${d.properties.name_long}</strong><br>
-                    ${currentDimension} : <strong>${val ?? "N/D"}</strong>
+                    ${currentDimension} : <strong>${valDisplay}</strong>
                 `);
         })
         .on("mouseout", () => tooltip.classed("hidden", true))

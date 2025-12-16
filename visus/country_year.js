@@ -5,23 +5,36 @@ var jsonData;
 var cleanData;
 
 const dimensions = [
-    "temperature", 
-    "humidity", 
-    "precipitation", 
+    // --- 1. Métriques Climatiques (Conservées) ---
+    "temperature",
+    "humidity",
+    "precipitation",
     "wind_speed",
     "wetbulb_temperature",
-    "WUE_FixedApproachDirect(L/KWh)", 
-    "WUE_FixedColdWaterDirect(L/KWh)", 
-    "WUE_Indirect(L/KWh)", 
+
+    //  --- 2. Métriques d'Efficacité/Fuites (Conservées) ---
+    "WUE_FixedApproachDirect(L/KWh)",
+    "WUE_FixedColdWaterDirect(L/KWh)",
+    "WUE_Indirect(L/KWh)",
     "Leakages (%)",
+
+    //  --- 3. Consommation Totale (TWh) (Conservée comme base) ---
     "Total energy - TWh",
-    "Total renewables - TWh",
-    "Total fossil fuels - TWh",
-    "Coal consumption - TWh",
-    "Gas consumption - TWh",
-    "Oil consumption - TWh",
-    "Low carbon - TWh",
-    "Other - TWh"
+
+    //  --- 4. Mix Énergétique (Remplacé par les Pourcentages) ---
+    "Pct renewables",                     
+    "Pct fossil fuels",                   
+    "Pct Coal consumption",               
+    "Pct Gas consumption",                
+    "Pct Oil consumption",                
+    "Pct Nuclear consumption",            
+    "Pct Solar consumption",              
+    "Pct Hydro consumption",              
+    "Pct Wind consumption",               
+    "Pct Biofuels consumption",           
+    "Pct Low carbon",                     
+    "Pct Other renewables",               
+    "Pct Other"                           
 ];
 
 var currentDimension = dimensions[0];
@@ -76,9 +89,12 @@ function updateColorDomain() {
     const min = d3.min(filtered);
     const max = d3.max(filtered);
 
-    if (min == null || max == null) {
-        color.domain([0,1]); // fallback safe
-        console.warn("⚠️ Domaine couleur invalide (NaN).");
+    if (currentDimension.startsWith("Pct")) {
+        color.domain([0, 100]);
+    }
+    else if (min == null || max == null) {
+        color.domain([0,1]); 
+        console.warn("Domaine couleur invalide (NaN).");
     } else {
         color.domain([min, max]);
     }
