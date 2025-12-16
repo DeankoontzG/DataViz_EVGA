@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mix Énergétique - Hydro-AI</title>
+    <title>Energy Mix - Hydro-AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -43,7 +43,7 @@
             opacity: 0.95;
         }
 
-        /* Style des contrôles */
+        /* Controls */
         #controls {
             background: white;
             padding: 20px 30px;
@@ -107,7 +107,7 @@
             padding-left: 10px;
         }
 
-        /* Statistiques */
+        /* Stats */
         #stats {
             background: #f8f9fa;
             padding: 12px 20px;
@@ -117,7 +117,7 @@
             border-left: 4px solid #667eea;
         }
 
-        /* Style du graphique */
+        /* Chart */
         #chart-container {
             background: white;
             padding: 30px;
@@ -126,7 +126,7 @@
             position: relative;
         }
 
-        /* Style de l'infobulle */
+        /* Tooltip */
         .tooltip {
             position: absolute;
             background: rgba(44, 62, 80, 0.95);
@@ -161,7 +161,7 @@
             cursor: pointer;
         }
 
-        /* Badge pour les types de vue */
+        /* View badges */
         .view-badge {
             display: inline-block;
             padding: 4px 10px;
@@ -229,7 +229,7 @@
             }
         }
 
-        /* Animation de chargement */
+        /* Loading animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -243,29 +243,29 @@
 <body>
     <div class="container">
         <header>
-            <h1>Évolution du Mix Énergétique</h1>
-            <p class="subtitle">Visualisation temporelle des sources fossiles vs renouvelables</p>
+            <h1>Energy Mix Evolution</h1>
+            <p class="subtitle">Time-based visualization of fossil vs renewable sources</p>
         </header>
 
         <div id="controls">
             <div class="control-row">
                 <div class="control-group">
-                    <label for="regionSelect">Région Climatique :</label>
+                    <label for="regionSelect">Climate Region:</label>
                     <select id="regionSelect">
-                        <option value="all">Toutes les régions</option>
+                        <option value="all">All regions</option>
                     </select>
                 </div>
                 
                 <div class="control-group">
-                    <label for="countrySelect">Pays :</label>
+                    <label for="countrySelect">Country:</label>
                     <select id="countrySelect"></select>
                 </div>
 
                 <div class="control-group">
-                    <label for="viewToggle">Vue :</label>
+                    <label for="viewToggle">View:</label>
                     <select id="viewToggle">
-                        <option value="monthly">Mensuelle (détaillée)</option>
-                        <option value="yearly">Annuelle (tendances)</option>
+                        <option value="monthly">Monthly (detailed)</option>
+                        <option value="yearly">Yearly (trends)</option>
                     </select>
                 </div>
             </div>
@@ -273,10 +273,10 @@
             <div id="stats"></div>
 
             <div class="info-box">
-                <strong>Astuce :</strong> Les pays sont organisés en deux catégories : 
-                <span style="color: #27ae60;">Multi-Sources</span> (mix énergétique diversifié, plus de 2 sources) et 
-                <span style="color: #e67e22;">Mono-Source</span> (dépendance à 1-2 sources principalement). 
-                Survolez les zones du graphique pour voir les détails de chaque source d'énergie.
+                <strong>Tip:</strong> Countries are organized into two categories:
+                <span style="color: #27ae60;">Multi-Source</span> (diversified energy mix with more than 2 sources) and
+                <span style="color: #e67e22;">Mono-Source</span> (dependence on mainly 1–2 sources).
+                Hover over the chart areas to see details for each energy source.
             </div>
         </div>
 

@@ -366,28 +366,36 @@ Promise.all([
                     .style("stroke-width", "2px");
             })
             .on("mousemove", function(event, d) {
-                const label = labels[d.key];
-                
-                // Find closest data point
-                const mouseX = d3.pointer(event, this)[0];
-                const xDate = x.invert(mouseX);
-                
-                // Get closest point
-                const bisect = d3.bisector(d => d.data.date).left;
-                const index = bisect(d, xDate);
-                const dataPoint = d[index];
-                
-                if (dataPoint) {
-                    const value = dataPoint[1] - dataPoint[0];
-                    
-                    tooltip.style("opacity", 1)
-                        .html(`
-                            <div style="font-weight: 600; margin-bottom: 4px;">${label}</div>
-                            <div style="font-size: 0.9em;">${formatNumber(value)} TWh</div>
-                        `)
-                        .style("left", (event.pageX + 15) + "px")
-                        .style("top", (event.pageY - 28) + "px");
-                }
+            const label = labels[d.key];
+
+            // Find closest data point
+            const mouseX = d3.pointer(event, this)[0];
+            const xDate = x.invert(mouseX);
+
+            const bisect = d3.bisector(d => d.data.date).left;
+            const index = bisect(d, xDate);
+            const dataPoint = d[index];
+
+            if (dataPoint) {
+                const value = dataPoint[1] - dataPoint[0];
+
+                // Récupérer la bounding box du conteneur du chart
+                const container = document.getElementById("chart-container");
+                const rect = container.getBoundingClientRect();
+
+                // Position du curseur relative au conteneur
+                const relX = event.clientX - rect.left;
+                const relY = event.clientY - rect.top;
+
+                tooltip
+                .style("opacity", 1)
+                .html(`
+                    <div style="font-weight: 600; margin-bottom: 4px;">${label}</div>
+                    <div style="font-size: 0.9em;">${formatNumber(value)} TWh</div>
+                `)
+                .style("left", (relX + 15) + "px")
+                .style("top", (relY - 28) + "px");
+            }
             })
             .on("mouseout", function() {
                 d3.select(this)
