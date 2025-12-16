@@ -369,6 +369,18 @@ function updateChart(country) {
     .style("font-size", "0.9rem")
     .text("Energy consumption (TWh)");
 
+
+  // Crosshair vertical line
+  const focusLine = svg
+    .append("line")
+    // .attr("class", "focus-line")
+    .attr("y1", 0)
+    .attr("y2", height)
+    .style("stroke", "white")
+    .style("stroke-width", 1)
+    .style("stroke-dasharray", "3,3")
+    .style("opacity", 0);
+
   // Grid lines
   const yGrid = d3
     .axisLeft(y)
@@ -393,8 +405,7 @@ function updateChart(country) {
     .attr("d", area)
     .on("mousemove", (event, layer) => {
       const [mx] = d3.pointer(event);
-      const dateOrYear =
-        d3.scaleLinear().range(x.range()).invert(mx);
+      const dateOrYear = x.invert(mx);
 
       const bisect =
         view === "monthly"
@@ -403,15 +414,15 @@ function updateChart(country) {
 
       const idx =
         view === "monthly"
-          ? bisect(layer, dateOrYear)
-          : bisect(
-              layer,
-              dateOrYear
-            );
+          ? bisect(data, dateOrYear)
+          : bisect(data, dateOrYear);
 
       const d = data[Math.min(idx, data.length - 1)];
 
       const total = keys.reduce((sum, k) => sum + (d[k] || 0), 0);
+
+      const xPos = view === "monthly" ? x(d.date) : x(d.year);
+      focusLine.attr("x1", xPos).attr("x2", xPos).style("opacity", 1);
 
       tooltip
         .style("opacity", 1)
@@ -443,6 +454,7 @@ function updateChart(country) {
     })
     .on("mouseout", () => {
       tooltip.style("opacity", 0);
+      focusLine.style("opacity", 0);
     });
 
   // Legend to the right, not overlapping axes text
