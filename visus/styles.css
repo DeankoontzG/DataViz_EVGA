@@ -88,10 +88,15 @@ body {
     LAYOUT
     ============================================ */
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--space-24);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-24);
+
+  min-height: 100vh;              /* occupe toute la hauteur */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;        /* centre verticalement header + main */
 }
 
 main {
@@ -104,6 +109,7 @@ main {
 .home-button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-8);
     padding: var(--space-16) var(--space-16);
     background: var(--color-bg-secondary);
@@ -116,6 +122,11 @@ main {
     box-shadow: var(--shadow-sm);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: var(--space-24);
+
+    /* display: flex;                         */
+    /* width: 200px;                          */
+    /* margin-left: auto; */
+    /* margin-right: auto;  */
 }
 
 .home-button:hover {
@@ -455,3 +466,79 @@ optgroup {
         font-size: var(--font-size-xl);
     }
 }
+
+/* Home dashboard grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-24);
+  margin-top: var(--space-16);
+}
+
+/* Card style similar to #controls / #stats */
+.dashboard-card {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(247, 111, 83, 0.12);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transform: translateY(-3px);
+  cursor: pointer;
+}
+
+.dashboard-card h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.dashboard-card p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.primary-link {
+  margin-top: var(--space-12);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.primary-link::after {
+  font-size: 0.9em;
+}
+
+.dashboard-card-image {
+  width: 100%;
+  border-radius: calc(var(--radius-lg) - 4px);
+  overflow: hidden;
+  border: 1px solid rgba(247, 111, 83, 0.12);
+}
+
+.dashboard-card-image img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.dashboard-card:hover .dashboard-card-image img {
+  transform: scale(1.1);
+  filter: saturate(1.2) contrast(1.1);
+}
+
