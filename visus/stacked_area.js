@@ -1,13 +1,26 @@
+const rootStyles = getComputedStyle(document.documentElement);
+
+const themeColors = {
+  primary: rootStyles.getPropertyValue('--color-text-primary').trim(),
+  secondary: rootStyles.getPropertyValue('--color-text-secondary').trim(),
+  muted: rootStyles.getPropertyValue('--color-text-muted').trim(),
+  accent: rootStyles.getPropertyValue('--color-accent').trim(),
+  coal: rootStyles.getPropertyValue('--color-coal').trim(),
+  oil: rootStyles.getPropertyValue('--color-oil').trim(),
+  gas: rootStyles.getPropertyValue('--color-gas').trim(),
+  lowCarbon: rootStyles.getPropertyValue('--color-low-carbon').trim()
+};
+
 const config = {
-  margin: { top: 70, right: 230, bottom: 80, left: 90 },
+  margin: { top: 70, right: 200, bottom: 70, left: 150 },
   width: 1100,
   height: 550,
   transitionDuration: 750,
   colors: {
-    coal: "#34495e",
-    oil: "#e74c3c",
-    gas: "#95a5a6",
-    lowCarbon: "#27ae60"
+    coal: themeColors.coal,
+    oil: themeColors.oil,
+    gas: themeColors.gas,
+    lowCarbon: themeColors.lowCarbon
   }
 };
 
@@ -321,24 +334,38 @@ function updateChart(country) {
     .call(xAxis)
     .selectAll("text")
     .style("text-anchor", "end")
+    .style("fill", themeColors.muted)
     .attr("dx", "-0.6em")
     .attr("dy", "0.15em")
     .attr("transform", "rotate(-35)");
 
+  svg
+    .selectAll(".x-axis path, .x-axis line")
+    .style("stroke", themeColors.muted);
+
   // Y Axis
   const yAxis = d3.axisLeft(y).ticks(6);
 
-  svg.append("g").attr("class", "axis y-axis").call(yAxis);
+  svg
+    .append("g")
+    .attr("class", "axis y-axis")
+    .call(yAxis)
+    .selectAll("text")
+    .style("fill", themeColors.muted);
+
+  svg
+    .selectAll(".y-axis path, .y-axis line")
+    .style("stroke", themeColors.muted);
 
   // Y axis label
   svg
     .append("text")
     .attr("class", "axis-label")
     .attr("x", -height / 2)
-    .attr("y", -60)
+    .attr("y", -110)
     .attr("transform", "rotate(-90)")
     .attr("text-anchor", "middle")
-    .style("fill", "#374151")
+    .style("fill", themeColors.primary)
     .style("font-size", "0.9rem")
     .text("Energy consumption (TWh)");
 
@@ -445,18 +472,18 @@ function updateChart(country) {
     .append("text")
     .attr("x", 22)
     .attr("y", 11)
-    .attr("fill", "#374151")
+    .attr("fill", themeColors.primary)
     .style("font-size", "0.82rem")
     .text(d => labels[d]);
 
   // Chart title above plot area (optional, if different from page title)
   svg
     .append("text")
+    .attr("class", "chart-title")
     .attr("x", width / 2)
     .attr("y", -30)
     .attr("text-anchor", "middle")
-    .style("fill", "#111827")
-    .style("font-weight", "600")
-    .style("font-size", "1rem")
+    .style("fill", themeColors.primary)
+    .style("font-weight", "700")
     .text(country + " energy mix");
 }
