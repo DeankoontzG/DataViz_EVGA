@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Climate & Energy Dashboards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- même font que ta page stacked_area -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="visus/styles.css" />
+
+</head>
+<body>
+  <div class="page-container">
+    <header class="header-simple">
+      <h1>African data centers water efficiency</h1>
+      <p class="subtitle">Interactive visualizations built from notebooks and aggregated datasets.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2 class="section-title">Explorations</h2>
+        <div class="grid">
+          <!-- Country / Year -->
+          <article class="card" data-target="visus/country_year.html">
+            <div class="card-image-wrapper">
+              <img
+                src="visus/images/placeholder.png"
+                alt="Preview of country-level yearly climate and energy dashboard"
+                class="card-image"
+              />
+            </div>
+            <h2>Country / Year overview</h2>
+            <p>
+              Aggregated metrics per country and year, combining climate, water efficiency and energy
+              indicators.
+            </p>
+            <span class="card-link">Open dashboard →</span>
+          </article>
+
+          <!-- Country / Month -->
+          <article class="card" data-target="visus/country_month.html">
+            <div class="card-image-wrapper">
+              <img
+                src="visus/images/placeholder.png"
+                alt="Preview of monthly time-series dashboard per country"
+                class="card-image"
+              />
+            </div>
+            <h2>Country / Month time series</h2>
+            <p>
+              Monthly time series per country, tracking seasonal dynamics in weather and energy usage.
+            </p>
+            <span class="card-link">Open dashboard →</span>
+          </article>
+
+          <!-- Stacked Area -->
+          <article class="card" data-target="visus/stacked_area.html">
+            <div class="card-image-wrapper">
+              <img
+                src="visus/images/placeholder.png"
+                alt="Preview of stacked area chart for energy mix"
+                class="card-image"
+              />
+            </div>
+            <h2>Energy mix stacked area</h2>
+            <p>
+              Stacked area charts to explore the evolution of the energy mix over time and across
+              regions.
+            </p>
+            <span class="card-link">Open dashboard →</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2025 – DataViz project</span>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const cards = document.querySelectorAll(".card[data-target]");
+
+      cards.forEach((card) => {
+        card.addEventListener("click", (event) => {
+          const target = card.getAttribute("data-target");
+          if (target) {
+            window.location.href = target;
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
