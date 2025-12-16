@@ -110,6 +110,15 @@ function updatePanel(feature) {
 
   panelGroup.selectAll("*").remove();
 
+  panelGroup.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", sidePanelWidth - 40)
+    .attr("height", 320)
+    .attr("rx", 6)
+    .attr("fill", "#fafafa")
+    .attr("stroke", "#ccc");
+
   const d = feature.properties.data;
   if (!d) return;
 
