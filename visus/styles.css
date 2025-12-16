@@ -332,6 +332,7 @@ optgroup option {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 18px;
+  margin-bottom: 16px;
 }
 
 #stats .stat-item {
@@ -443,7 +444,6 @@ optgroup option {
 }
 
 /* ---------- Responsive ---------- */
-
 @media (max-width: 768px) {
   body {
     padding: 14px;
@@ -465,19 +465,18 @@ optgroup option {
   }
 
   /* force centering for all main page titles */
-header h1 {
-  text-align: center;
-  width: 100%;
-}
+  header h1 {
+    text-align: center;
+    width: 100%;
+  }
 
-.header-title h1 {
-  text-align: center;
-}
+  .header-title h1 {
+    text-align: center;
+  }
 
-.header-simple h1 {
-  text-align: center;
-}
-
+  .header-simple h1 {
+    text-align: center;
+  }
 
   .header-simple {
     text-align: center;

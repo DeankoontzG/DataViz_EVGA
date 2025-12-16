@@ -1,64 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Mix - Hydro-AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Mix - Hydro-AI</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="container">
     <a href="../index.html" class="home-button">
-    <span class="home-icon"></span>
-    <span class="home-text">Home</span>
-  </a>
-    <div class="container">
-        <header class="header-simple">
-            <h1>Energy Mix Evolution</h1>
-            <p class="subtitle">Time-based visualization of fossil vs renewable sources</p>
-        </header>
+      <span class="home-icon"></span>
+      <span class="home-text">Home</span>
+    </a>
 
-        <div id="controls">
-            <div class="control-row">
-                <div class="control-group">
-                    <label for="regionSelect">Climate Region:</label>
-                    <select id="regionSelect">
-                        <option value="all">All regions</option>
-                    </select>
-                </div>
-                
-                <div class="control-group">
-                    <label for="countrySelect">Country:</label>
-                    <select id="countrySelect"></select>
-                </div>
+    <header>
+      <div class="header-bar">
+        <div class="header-title">
+          <h1>Energy Mix Evolution</h1>
+          <p class="subtitle">
+            Time-based visualization of fossil vs renewable sources
+          </p>
+        </div>
+      </div>
+    </header>
 
-                <div class="control-group">
-                    <label for="viewToggle">View:</label>
-                    <select id="viewToggle">
-                        <option value="monthly">Monthly (detailed)</option>
-                        <option value="yearly">Yearly (trends)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="stats"></div>
-
-            <div class="info-box">
-                <strong>Tip:</strong> Countries are organized into two categories:
-                <span style="color: #27ae60;">Multi-Source</span> (diversified energy mix with more than 2 sources) and
-                <span style="color: #e67e22;">Mono-Source</span> (dependence on mainly 1–2 sources).
-                Hover over the chart areas to see details for each energy source.
-            </div>
+    <div id="controls">
+      <div class="control-row">
+        <div class="control-group">
+          <label for="regionSelect">Climate Region</label>
+          <select id="regionSelect">
+            <option value="all">All regions</option>
+          </select>
         </div>
 
-        <div id="chart-container">
-            <div id="chart"></div>
-            <div id="tooltip" class="tooltip"></div>
+        <div class="control-group">
+          <label for="countrySelect">Country</label>
+          <select id="countrySelect"></select>
         </div>
+
+        <div class="control-group">
+          <label for="viewToggle">View</label>
+          <select id="viewToggle">
+            <option value="monthly">Monthly detailed</option>
+            <option value="yearly">Yearly trends</option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="stacked_area.js"></script>
+    <div id="stats"></div>
+
+    <div id="chart-container">
+      <div id="chart"></div>
+      <div id="tooltip" class="tooltip"></div>
+    </div>
+
+    <div class="info-box">
+      <strong>Tip</strong> Countries are organized into two categories:
+      <span style="color: #27ae60;">Multi-Source</span> diversified energy mix with more than 2 sources, and
+      <span style="color: #e67e22;">Mono-Source</span> dependence on mainly 1–2 sources.
+      Hover over the chart to see details for each energy source.
+    </div>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="stacked_area.js"></script>
 </body>
 </html>
