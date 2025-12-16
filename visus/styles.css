@@ -93,11 +93,10 @@ body {
   margin: 0 auto;
   padding: var(--space-24);
 
-  min-height: 100vh;              /* occupe toute la hauteur */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;        /* centre verticalement header + main */
-}
+  justify-content: center;
 
 main {
     padding: 0;
@@ -540,4 +539,21 @@ optgroup {
 .dashboard-card:hover .dashboard-card-image img {
   transform: scale(1.1);
   filter: saturate(1.2) contrast(1.1);
+}
+
+#chart-bar-container {
+  overflow-x: auto;
+}
+#chart-bar {
+  min-width: 1100px; /* ou 1400px selon besoin */
+}
+
+.site-footer {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border, #222);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
 }
