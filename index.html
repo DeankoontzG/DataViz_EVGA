@@ -103,6 +103,17 @@
       gap: 0.25rem;
     }
 
+    .card-link {
+        color: #38bdf8;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
     .card a:hover {
       text-decoration: underline;
     }
@@ -126,11 +137,11 @@
       <h2 class="section-title">Explorations</h2>
       <div class="grid">
         <!-- Country / Year -->
-        <article class="card">
+        <article class="card" data-target="visus/country_year.html">
           <div class="card-image-wrapper">
             <!-- Put a real preview image in /visus/previews/ -->
             <img
-              src="visus/previews/country_year_preview.png"
+              src="visus/images/placeholder.png"
               alt="Preview of country-level yearly climate and energy dashboard"
               class="card-image"
             />
@@ -140,14 +151,14 @@
             Aggregated metrics per country and year, combining climate, water efficiency and energy
             indicators.
           </p>
-          <a href="visus/country_year.html">Open dashboard →</a>
+          <span class="card-link">Open dashboard →</span>
         </article>
 
         <!-- Country / Month -->
-        <article class="card">
+        <article class="card" data-target="visus/country_month.html">
           <div class="card-image-wrapper">
             <img
-              src="visus/previews/country_month_preview.png"
+              src="visus/images/placeholder.png"
               alt="Preview of monthly time-series dashboard per country"
               class="card-image"
             />
@@ -156,25 +167,26 @@
           <p>
             Monthly time series per country, tracking seasonal dynamics in weather and energy usage.
           </p>
-          <a href="visus/country_month.html">Open dashboard →</a>
+          <span class="card-link">Open dashboard →</span>
         </article>
 
         <!-- Stacked Area -->
-        <article class="card">
-          <div class="card-image-wrapper">
-            <img
-              src="visus/previews/stacked_area_preview.png"
-              alt="Preview of stacked area chart for energy mix"
-              class="card-image"
-            />
-          </div>
-          <h2>Energy mix stacked area</h2>
-          <p>
-            Stacked area charts to explore the evolution of the energy mix over time and across
-            regions.
-          </p>
-          <a href="visus/stacked_area.html">Open dashboard →</a>
+        <article class="card" data-target="visus/stacked_area.html">
+            <div class="card-image-wrapper">
+                <img
+                src="visus/images/placeholder.png"
+                alt="Preview of stacked area chart for energy mix"
+                class="card-image"
+                />
+            </div>
+            <h2>Energy mix stacked area</h2>
+            <p>
+                Stacked area charts to explore the evolution of the energy mix over time and across
+                regions.
+            </p>
+            <span class="card-link">Open dashboard →</span>
         </article>
+
       </div>
     </section>
   </main>
@@ -184,3 +196,18 @@
   </footer>
 </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".card[data-target]");
+
+    cards.forEach((card) => {
+      card.addEventListener("click", (event) => {
+        const target = card.getAttribute("data-target");
+        if (target) {
+          window.location.href = target;
+        }
+      });
+    });
+  });
+</script>
