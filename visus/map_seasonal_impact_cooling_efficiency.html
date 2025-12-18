@@ -1,27 +1,33 @@
-</html>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard WUE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard WUE - Seasonal Impact</title>
+    
     <link rel="stylesheet" href="map_seasonal_impact_cooling_efficiency.css">
+    
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 
     <div id="viz-container">
-        <h1>Water Usage Efficiency (WUE) par Pays</h1>
+        <header>
+            <h1>Water Usage Efficiency (WUE)</h1>
+            <p class="subtitle">Moyennes mensuelles historiques par pays</p>
+        </header>
         
         <div id="toolbar">
             <button id="play-button">Play</button>
             <div class="slider-wrapper">
-                <input type="range" id="time-slider" step="1">
-                <span id="time-label">2022/08</span>
+                <input type="range" id="time-slider" min="1" max="12" value="1" step="1">
+                <span id="time-label">Janvier</span>
             </div>
         </div>
 
         <div id="map-holder"></div>
+        
+        <div id="tooltip" class="hidden"></div>
     </div>
 
     <script src="map_seasonal_impact_cooling_efficiency.js"></script>

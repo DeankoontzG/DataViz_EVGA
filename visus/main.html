@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storytelling - Water Efficiency</title>
+    <link rel="stylesheet" href="main_style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>L'Impact Saisonnier sur l'Efficacité du Refroidissement</h1>
+        <p>Une analyse mondiale du WUE (Water Usage Efficiency) entre 2022 et 2024.</p>
+    </header>
+
+    <section class="chapter split-view">
+        
+        <div class="content-side">
+            <div class="sticky-text">
+                <h2>Comprendre la saisonnalité</h2>
+                <p>
+                    L'efficacité de l'utilisation de l'eau (WUE) n'est pas constante. 
+                    Elle varie selon les conditions climatiques locales. En observant 
+                    les moyennes mensuelles, on distingue des tendances claires :
+                </p>
+                <ul class="key-points">
+                    <li><strong>Pics d'été :</strong> Une hausse du WUE indique souvent un besoin accru en refroidissement.</li>
+                    <li><strong>Stabilité hivernale :</strong> Les périodes froides montrent une efficacité optimale (valeurs plus basses).</li>
+                </ul>
+                <p class="instruction">
+                    Utilisez le bouton <strong>Play</strong> pour observer la respiration thermique des infrastructures à travers le monde.
+                </p>
+            </div>
+        </div>
+
+        <div class="viz-side">
+            <div id="toolbar">
+                <button id="play-button">Play</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="time-slider" min="1" max="12" value="1" step="1">
+                    <span id="time-label">Janvier</span>
+                </div>
+            </div>
+            <div id="map-holder"></div>
+        </div>
+    </section>
+
+    <script src="map_seasonal_impact_cooling_efficiency.js"></script>
+</body>
+</html>
