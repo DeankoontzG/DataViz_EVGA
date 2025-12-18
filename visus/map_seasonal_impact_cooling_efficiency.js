@@ -1,85 +1,83 @@
 /********************************************
- * CONFIGURATION & TIMELINE
+ * CONFIGURATION & ÉCHELLE
  ********************************************/
 const width = 960;
-const height = 700;
+const height = 650;
 const currentDimension = "WUE_FixedColdWaterDirect(L/KWh)";
 
-// Génération de la timeline 2022/08 → 2024/08
-const timeline = [];
-for (let year = 2022; year <= 2024; year++) {
-    let start = (year === 2022) ? 8 : 1;
-    let end = (year === 2024) ? 8 : 12;
-    for (let month = start; month <= end; month++) {
-        timeline.push(`${year}/${String(month).padStart(2, "0")}`);
-    }
-}
+const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
+                "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 let currentTimeIndex = 0;
 let timer = null;
 let geoDataGlobal = null;
 
-const svg = d3.select("#map-holder").append("svg")
-    .attr("viewBox", `0 0 ${width} ${height}`);
+const svg = d3.select("#map-holder").append("svg").attr("viewBox", `0 0 ${width} ${height}`);
 const g = svg.append("g");
-
-const projection = d3.geoMercator()
-    .center([20, 5]).scale(550).translate([width / 2, height / 2]);
+const projection = d3.geoMercator().center([20, 10]).scale(500).translate([width / 2, height / 2]);
 const path = d3.geoPath().projection(projection);
 
-const colorScale = d3.scaleSequential(d3.interpolateBlues);
+// TON ÉCHELLE PRÉFÉRÉE (Linéaire Bleu clair -> Bleu foncé)
+const colorScale = d3.scaleLinear()
+    .range(["#deebf7", "#08306b"]);
+
 const tooltip = d3.select("body").append("div").attr("class", "hidden tooltip");
 
 /********************************************
- * CHARGEMENT DES DONNÉES
+ * CHARGEMENT ET CALCUL
  ********************************************/
 Promise.all([
     d3.csv("../data/exported/country_month_cleaned.csv"),
     d3.json("custom.geo.json")
 ]).then(([csvData, geoJson]) => {
-    
-    // 1. Calcul du domaine de couleur (fixe pour toute la période)
-    const allValues = csvData.map(d => parseFloat(d[currentDimension]?.toString().replace(",", ".")))
-                             .filter(v => isFinite(v));
-    colorScale.domain([0, d3.max(allValues)]);
 
-    // 2. Préparation des données Géo
+    csvData.forEach(d => {
+        d.val = parseFloat(d[currentDimension]?.toString().replace(",", "."));
+        d.monthNum = parseInt(d.month);
+    });
+
     const dataByCountry = d3.group(csvData, d => d.country);
+    
     geoJson.features.forEach(f => {
         const rows = dataByCountry.get(f.properties.name_long) || [];
-        f.properties.history = rows.reduce((acc, r) => {
-            acc[`${r.year}/${String(r.month).padStart(2, "0")}`] = r;
-            return acc;
-        }, {});
+        f.properties.averages = {}; 
+
+        const byMonth = d3.group(rows, r => r.monthNum);
+        byMonth.forEach((vals, m) => {
+            const validVals = vals.map(v => v.val).filter(v => isFinite(v));
+            f.properties.averages[m] = validVals.length > 0 ? d3.mean(validVals) : null;
+        });
     });
+
+    // On fixe le domaine sur le maximum de toutes les moyennes calculées
+    const allMeans = geoJson.features.flatMap(f => Object.values(f.properties.averages)).filter(v => v != null);
+    colorScale.domain([0, d3.max(allMeans)]);
 
     geoDataGlobal = geoJson;
     initControls();
-    updateMap(timeline[0]);
+    updateMap(1); 
 });
 
 /********************************************
- * LOGIQUE DES CONTRÔLES (PLAY & MANUEL)
+ * CONTRÔLES (PLAY / MANUEL)
  ********************************************/
 function initControls() {
     const slider = d3.select("#time-slider")
-        .attr("min", 0)
-        .attr("max", timeline.length - 1)
-        .attr("value", 0);
+        .attr("min", 1)
+        .attr("max", 12)
+        .attr("value", 1);
 
-    // Contrôle Manuel
     slider.on("input", function() {
         stopAnimation();
-        currentTimeIndex = +this.value;
-        updateMap(timeline[currentTimeIndex]);
+        currentTimeIndex = (+this.value) - 1;
+        updateMap(+this.value);
     });
 
-    // Contrôle Automatique (Play)
     d3.select("#play-button").on("click", function() {
         if (timer) {
             stopAnimation();
         } else {
-            if (currentTimeIndex >= timeline.length - 1) currentTimeIndex = 0;
+            if (currentTimeIndex >= 11) currentTimeIndex = -1;
             startAnimation();
             this.textContent = "Pause";
         }
@@ -89,13 +87,14 @@ function initControls() {
 function startAnimation() {
     timer = setInterval(() => {
         currentTimeIndex++;
-        if (currentTimeIndex < timeline.length) {
-            d3.select("#time-slider").property("value", currentTimeIndex);
-            updateMap(timeline[currentTimeIndex]);
+        if (currentTimeIndex < 12) {
+            const monthNum = currentTimeIndex + 1;
+            d3.select("#time-slider").property("value", monthNum);
+            updateMap(monthNum);
         } else {
             stopAnimation();
         }
-    }, 600);
+    }, 800);
 }
 
 function stopAnimation() {
@@ -105,35 +104,31 @@ function stopAnimation() {
 }
 
 /********************************************
- * MISE À JOUR DE LA CARTE
+ * RENDU DE LA CARTE
  ********************************************/
-function updateMap(time) {
-    d3.select("#time-label").text(time);
+function updateMap(monthNum) {
+    d3.select("#time-label").text(months[monthNum - 1]);
 
-    const countries = g.selectAll(".country")
-        .data(geoDataGlobal.features);
-
-    countries.join("path")
+    g.selectAll(".country")
+        .data(geoDataGlobal.features)
+        .join("path")
         .attr("class", "country")
         .attr("d", path)
         .style("stroke", "#fff")
-        .style("stroke-width", "0.5px")
+        .style("stroke-width", "0.3px")
         .on("mousemove", (e, d) => {
-            const row = d.properties.history[time];
-            const val = row ? parseFloat(row[currentDimension]?.toString().replace(",", ".")) : null;
-            
+            const val = d.properties.averages[monthNum];
             tooltip.classed("hidden", false)
                 .style("left", (e.pageX + 15) + "px")
                 .style("top", (e.pageY - 35) + "px")
-                .html(`<strong>${d.properties.name_long}</strong><br>WUE: ${val ? val.toFixed(2) : "N/D"}`);
+                .html(`<strong>${d.properties.name_long}</strong><br>Moyenne ${months[monthNum-1]}: ${val ? val.toFixed(2) : "N/D"}`);
         })
         .on("mouseout", () => tooltip.classed("hidden", true))
         .transition()
         .duration(400)
         .style("fill", d => {
-            const row = d.properties.history[time];
-            if (!row) return "#ccc";
-            const val = parseFloat(row[currentDimension]?.toString().replace(",", "."));
-            return isFinite(val) ? colorScale(val) : "#ccc";
+            const val = d.properties.averages[monthNum];
+            // Si pas de donnée, on met un gris très léger pour ne pas distraire du bleu
+            return (val != null) ? colorScale(val) : "#f0f0f0";
         });
 }
