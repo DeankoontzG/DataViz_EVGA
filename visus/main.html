@@ -10,39 +10,71 @@
 <body>
 
     <header class="main-header">
-        <h1>L'Impact Saisonnier sur l'Efficacité du Refroidissement</h1>
-        <p>Une analyse mondiale du WUE (Water Usage Efficiency) entre 2022 et 2024.</p>
+        <h1>L'impact environemental des Data Centers en Afrique</h1>
+        <p>Une étude d'Edgar DEMEUDE, Guilhem DUPUY, Vincent XXX, Anh Vu DUY.</p>
     </header>
 
-    <section class="chapter full-view" id="climate-context">
+<!-- ----------------------------- -->
+<!-- PREMIERE VUE : VUE CLIMATIQUE -->
+<!-- ----------------------------- -->
+
+    <section class="chapter climate" id="climate-context">
         <div class="full-content">
             <h2>Le Contexte Climatique</h2>
             <p>
-                Avant d'analyser l'efficacité hydrique, il est essentiel de comprendre 
-                les contraintes thermiques auxquelles les infrastructures sont soumises.
+                Avant d'analyser l'impact énergétique, il est essentiel de comprendre 
+                les contraintes climatiques  auxquelles les infrastructures sont soumises (température, humidité, rareté de l'eau).
                 L'Afrique présente une diversité climatique extrême, allant des zones 
                 arides du Sahara aux climats tropicaux humides du bassin du Congo.
             </p>
+            <div class="control-group">
+                <label for="climate-select">Visualiser la donnée : </label>
+                <select id="climate-select">
+                    <option value="temperature">Température (°C)</option>
+                    <option value="humidity">Humidité (%)</option>
+                    <option value="precipitation">Précipitations (mm)</option>
+                    <option value="wind_speed">Vitesse du vent (km/h)</option>
+                    <option value="wetbulb_temperature">Température humide (°C)</option>
+                </select>
+            </div>
         </div>
         <div class="full-viz">
             <div id="climate-map-holder"></div>
         </div>
     </section>
-    
-    <script src="map_energy_total.js"></script>
+
+    <script src="map_climate.js"></script>
+
+<!-- -------------------------------------------------- -->
+<!-- DEUXIEME VUE : CONSOMMATION EAU VS MOIS DE L'ANNEE -->
+<!-- -------------------------------------------------- -->
+
+    <section class="chapter climate" id="climate-context">
+        <div class="full-content">
+            <h2>La consommation en eau des Data Centers </h2>
+            <p>
+                L'utilisation de l'eau dans les Data Centers est multiple : pour le <strong>refroidissement </strong> des systèmes,
+                l'<strong>usage quotidien </strong> pour les sanitaires, les jardins, les employés, et surtout la 
+                <strong>production d'énergie</strong> necessaire à leur fonctionnement.</li>
+                    
+
+            </p>
+        </div>
+    </section>
 
     <section class="chapter split-view">
         
         <div class="content-side">
             <div class="sticky-text">
-                <h2>Comprendre la saisonnalité</h2>
+                <h2>Comprendre la saisonnalité : </h2>
+                <h3>c'est à dire l'impact du climat sur l'utilisation d'eau </h3>
                 <p>
-                    L'efficacité de l'utilisation de l'eau (WUE) n'est pas constante. 
-                    Elle varie selon les conditions climatiques locales. En observant 
+                    L'efficacité de l'utilisation de l'eau directement pour le refroidissement (WUE "Cold Water") 
+                    n'est pas constante. Elle varie selon les conditions climatiques locales. En observant 
                     les moyennes mensuelles, on distingue des tendances claires :
                 </p>
                 <ul class="key-points">
-                    <li><strong>Pics d'été :</strong> Une hausse du WUE indique souvent un besoin accru en refroidissement.</li>
+                    <li><strong>Pics d'été :</strong> Une hausse du WUE de refroissiement pendant les saisons chaudes et humides.</li>
                     <li><strong>Stabilité hivernale :</strong> Les périodes froides montrent une efficacité optimale (valeurs plus basses).</li>
                 </ul>
                 <p class="instruction">
@@ -64,5 +96,48 @@
     </section>
 
     <script src="map_seasonal_impact_cooling_efficiency.js"></script>
+
+<!-- -------------------------------------------------- -->
+<!-- Troisième VUE : CONSOMMATION EAU TOTALE----------- -->
+<!-- -------------------------------------------------- -->
+
+
+
+    <section class="chapter full-view" id="water-volume-chapter">
+        <div class="full-content">
+            <h2>Volume d'eau total consommé (Estimation)</h2>
+            <p>
+                En combinant l'efficacité (WUE) et la consommation énergétique totale, 
+                nous pouvons estimer le volume d'eau annuel utilisé. 
+                Voici les 10 pays consommant le plus d'énergie.
+            </p>
+        </div>
+        <div class="full-viz">
+            <div id="water-volume-bar-holder"></div>
+        </div>
+    </section>
+
+    <script src="chart_water_volume.js"></script>
+
+
+<!-- -------------------------------------------------- -->
+<!-- Quatrième VUE : CONSOMMATION ENERGIE PAR PAYS ---- -->
+<!-- -------------------------------------------------- -->
+
+     <section class="chapter full-view" id="energy-chapter">
+        <div class="full-content">
+            <h2>La consommation d'énergie par les Data Centers</h2>
+            <p>
+                Voici une carte de la consommation d'énergie par pays associée aux Data Centers (2023).
+            </p>
+        </div>
+        <div class="full-viz">
+            <div id="energy-map-holder"></div>
+        </div>
+    </section>
+
+    <script src="map_energy_total.js"></script>
+    
+    
 </body>
 </html>

@@ -7,7 +7,7 @@
     const mainDimension = "Total energy - TWh";
 
     // Sélection du conteneur HTML spécifique
-    const svg = d3.select("#climate-map-holder")
+    const svg = d3.select("#energy-map-holder")
       .append("svg")
       .attr("viewBox", `0 0 ${width + sidePanelWidth} ${height}`);
 
