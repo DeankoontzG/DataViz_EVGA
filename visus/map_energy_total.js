@@ -129,20 +129,36 @@ function updatePanel(feature) {
     .attr("font-weight", "bold");
 
   const keys = [
-    "Coal consumption - TWh",
-    "Gas consumption - TWh",
-    "Oil consumption - TWh",
-    "Nuclear consumption - TWh",
-    "Solar consumption - TWh",
-    "Hydro consumption - TWh",
-    "Wind consumption - TWh",
-    "Biofuels consumption - TWh",
-    "Other renewables (including geothermal and biomass) - TWh",
-    "Other - TWh"
+    "Pct Coal consumption",
+    "Pct Gas consumption",
+    "Pct Oil consumption",
+    "Pct Nuclear consumption",
+    "Pct Solar consumption",
+    "Pct Hydro consumption",
+    "Pct Wind consumption",
+    "Pct Biofuels consumption",
+    "Pct Other renewables",
+    "Pct Other"
   ];
+
+  const keyToAbsolute = {
+    "Pct Coal consumption": "Coal consumption - TWh",
+    "Pct Gas consumption": "Gas consumption - TWh",
+    "Pct Oil consumption": "Oil consumption - TWh",
+    "Pct Nuclear consumption": "Nuclear consumption - TWh",
+    "Pct Solar consumption": "Solar consumption - TWh",
+    "Pct Hydro consumption": "Hydro consumption - TWh",
+    "Pct Wind consumption": "Wind consumption - TWh",
+    "Pct Biofuels consumption": "Biofuels consumption - TWh",
+    "Pct Other renewables": "Other renewables (including geothermal and biomass) - TWh",
+    "Pct Other": "Other"
+  };
 
   const stackedRow = {};
   keys.forEach(k => stackedRow[k] = getVal(d, k) || 0);
+
+  const stackedRowHover = {};
+  keys.forEach(k => stackedRowHover[k] = getVal(d, k) || 0);
 
   const stack = d3.stack().keys(keys)([stackedRow]);
 
@@ -178,12 +194,16 @@ function updatePanel(feature) {
     .attr("y", d => y(d[1]))
     .attr("height", d => y(d[0]) - y(d[1]))
     .on("mousemove", (e) => {
-      const key = e.currentTarget.parentNode.__data__.key;
-      const val = stackedRow[key];
+      const pctKey = e.currentTarget.parentNode.__data__.key;
+      const absKey = keyToAbsolute[pctKey];
+  
+      const pctVal = getVal(d, pctKey);
+      const absVal = getVal(d, absKey);
+
       tooltip.classed("hidden", false)
         .style("left", e.pageX + 15 + "px")
         .style("top", e.pageY - 30 + "px")
-        .html(`<strong>${key}</strong><br>${Math.round(val)} TWh`);
+        .html(`<strong>${absKey}</strong><br>${pctVal.toFixed(2)}% (${Math.round(absVal)} GWh)`);
     })
     .on("mouseout", () => tooltip.classed("hidden", true));
 }
@@ -193,13 +213,12 @@ function updatePanel(feature) {
 // ===============================
 
 function drawEmptyPanel() {
-
   panelGroup.selectAll("*").remove();
 
   const panelHeight = 300;
   const panelWidth = sidePanelWidth - 40;
 
-  // Rectangle de fond
+  // 1. Rectangle de fond
   panelGroup.append("rect")
     .attr("x", 0)
     .attr("y", 0)
@@ -209,17 +228,15 @@ function drawEmptyPanel() {
     .attr("fill", "#f2f2f2")
     .attr("stroke", "#ccc");
 
-  // Texte d'instruction
+  // 2. Texte d'instruction
   panelGroup.append("text")
     .attr("x", panelWidth / 2)
     .attr("y", panelHeight / 2)
     .attr("text-anchor", "middle")
-    .attr("font-size", "13px")
+    .attr("font-size", "14px") // Un peu plus grand pour la lisibilité
     .attr("fill", "#555")
     .attr("font-style", "italic")
-    .call(wrap, panelWidth - 40)
-    .text(
-      "Cliquer sur un pays pour obtenir plus d'informations sur le mix énergétique utilisé"
-    );
+    // IMPORTANT : On définit le texte d'abord, puis on appelle wrap
+    .text("Cliquer sur un pays pour obtenir plus d'informations sur le mix énergétique utilisé")
+    .call(wrap, panelWidth - 60); 
 }
-
