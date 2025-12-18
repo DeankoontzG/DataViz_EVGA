@@ -29,6 +29,14 @@ body {
     justify-content: center;
 }
 
+.full-content {
+    max-width: 850px;      /* Largeur maximale idéale pour la lecture */
+    margin: 0 auto 40px;   /* Centre le bloc et ajoute de la marge en bas */
+    padding: 0 40px;       /* Marges internes à gauche et à droite */
+    text-align: center;
+    line-height: 1.8;      /* Un peu plus d'espace entre les lignes */
+}
+
 .sticky-text {
     position: sticky;
     top: 40px;
