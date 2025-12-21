@@ -35,8 +35,8 @@
      * CHARGEMENT ET CALCUL
      ********************************************/
     Promise.all([
-        d3.csv("../data/exported/country_month_cleaned.csv"),
-        d3.json("custom.geo.json")
+        d3.csv("../../data/exported/country_month_cleaned.csv"),
+        d3.json("../shared/custom.geo.json")
     ]).then(([csvData, geoJson]) => {
         csvData.forEach(d => {
             d.val = parseFloat(d[currentDimension]?.toString().replace(",", "."));

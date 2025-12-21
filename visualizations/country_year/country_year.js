@@ -104,8 +104,8 @@ function updateColorDomain() {
    CHARGEMENT DES DONNÉES
 ---------------------------------------------------- */
 Promise.all([
-    d3.csv("../data/exported/country_year_cleaned.csv"),
-    d3.json("custom.geo.json")
+    d3.csv("../../data/exported/country_year_cleaned.csv"),
+    d3.json("../shared/custom.geo.json")
 ]).then(function([csvData, geojson]) {
 
     cleanData = csvData;

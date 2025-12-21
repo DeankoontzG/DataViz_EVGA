@@ -104,9 +104,9 @@ function formatNumber(num) {
 
 // --- Data Loading ---
 Promise.all([
-  d3.csv("../data/exported/country_month_cleaned.csv"),
-  d3.csv("../data/exported/country_year_cleaned.csv"),
-  d3.csv("../data/exported/climate_summary.csv")
+  d3.csv("../../data/exported/country_month_cleaned.csv"),
+  d3.csv("../../data/exported/country_year_cleaned.csv"),
+  d3.csv("../../data/exported/climate_summary.csv")
 ]).then(([dataMonth, dataYear, dataClimate]) => {
   // Process monthly data
   dataMonth.forEach(d => {

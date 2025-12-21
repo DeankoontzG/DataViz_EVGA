@@ -142,13 +142,13 @@ function updateColorDomain() {
 /********************************************
  * LOAD DATA
  ********************************************/
-d3.csv("../data/exported/country_month_cleaned.csv").then(function (data) {
+d3.csv("../../data/exported/country_month_cleaned.csv").then(function (data) {
     cleanData = data;
 
     // Indexation rapide par pays
     const dataByCountry = d3.group(cleanData, d => d.country);
 
-    d3.json("custom.geo.json").then(function (json) {
+    d3.json("../shared/custom.geo.json").then(function (json) {
         jsonData = json;
 
         // Fusion GeoJSON + CSV

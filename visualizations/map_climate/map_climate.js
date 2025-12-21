@@ -42,8 +42,8 @@
     const tooltip = d3.select("body").append("div").attr("class", "tooltip hidden");
 
     Promise.all([
-        d3.csv("../data/exported/country_month_cleaned.csv"),
-        d3.json("custom.geo.json")
+        d3.csv("../../data/exported/country_month_cleaned.csv"),
+        d3.json("../shared/custom.geo.json")
     ]).then(([csv, geo]) => {
         csvData = csv.filter(d => {
             const dateStr = `${d.year}/${d.month.toString().padStart(2, '0')}`;

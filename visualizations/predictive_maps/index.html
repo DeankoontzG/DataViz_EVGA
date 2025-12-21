@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maps - African Data Centers</title>
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style/style.css" />
+    <link rel="stylesheet" href="style.css">
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="home-button">
+            <span class="home-icon"></span>
+            <span class="home-text">Home</span>
+        </a>
+
+        <header>
+            <div class="header-bar">
+                <div class="header-title">
+                    <h1>Water Efficiency Climate Projection</h1>
+                    <p class="subtitle">
+                        Side-by-side comparison of current (2024) vs. projected water usage effectiveness
+                        under temperature increase scenarios for African data centers
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Temperature Control Panel -->
+        <div class="controls-container">
+            <div class="control-panel">
+                <div class="control-header">
+                    <h3>Climate Projection Control</h3>
+                    <p class="control-description">
+                        Adjust temperature increase to see projected impact on water usage efficiency
+                    </p>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <label for="temp-slider">Temperature Increase</label>
+                        <span id="temp-value" class="temp-display">+0.0°C</span>
+                    </div>
+
+                    <input
+                        type="range"
+                        id="temp-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value="0"
+                        class="temperature-slider"
+                    >
+
+                    <div class="slider-markers">
+                        <span>0°C</span>
+                        <span>+1°C</span>
+                        <span>+2°C</span>
+                        <span>+3°C</span>
+                        <span>+4°C</span>
+                        <span>+5°C</span>
+                    </div>
+                </div>
+
+                <div class="impact-info">
+                    <span class="info-text">
+                        ℹ️ Model: Each +1°C increases WUE by 4% (linear projection)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div id="canvas"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

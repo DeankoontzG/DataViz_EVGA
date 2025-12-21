@@ -37,8 +37,8 @@
 
     // Chargement des données
     Promise.all([
-      d3.csv("../data/exported/country_year_cleaned.csv"),
-      d3.json("custom.geo.json")
+      d3.csv("../../data/exported/country_year_cleaned.csv"),
+      d3.json("../shared/custom.geo.json")
     ]).then(([csv, geo]) => {
       const data2023 = csv.filter(d => String(d.year) === currentYear);
       const dataByCountry = d3.group(data2023, d => d.country);
