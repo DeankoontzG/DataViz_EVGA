@@ -76,7 +76,7 @@
             .style("top", e.pageY - 30 + "px")
             .html(`<strong>${d.properties.name_long}</strong><br>${Number.isFinite(v) ? Math.round(v) + " TWh" : "N/D"}`);
         })
-        .on("mouseout", () => tooltip.classed("hidden", true))
+        .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
         .on("click", (_, d) => updatePanel(d));
     }
 
@@ -101,6 +101,8 @@
 
       panelGroup.append("text")
         .text(feature.properties.name_long)
+        .attr("x", (sidePanelWidth - 10) / 2)
+        .attr("text-anchor", "middle")
         .attr("y", -10)
         .attr("font-size", "16px")
         .attr("font-weight", "bold");
@@ -141,13 +143,13 @@
 
       const x = d3.scaleBand()
         .domain(["Energy mix"])
-        .range([0, sidePanelWidth - 60])
+        .range([30, sidePanelWidth - 50])
         .padding(0.4);
 
       const y = d3.scaleLinear()
-        .domain([0, d3.sum(keys, k => stackedRow[k])])
+        .domain([0, 100])
         .nice()
-        .range([260, 0]);
+        .range([270, 0]);
 
       const colorMix = d3.scaleOrdinal()
         .domain(keys)
@@ -156,7 +158,9 @@
       const g = panelGroup.append("g")
         .attr("transform", "translate(10,20)");
 
-      g.append("g").call(d3.axisLeft(y).ticks(5));
+      g.append("g")
+        .attr("transform", "translate(70, 0)")
+        .call(d3.axisLeft(y).ticks(10));
 
       const layer = g.selectAll(".layer")
         .data(stack)
@@ -182,7 +186,7 @@
             .style("top", e.pageY - 30 + "px")
             .html(`<strong>${absKey}</strong><br>${pctVal.toFixed(2)}% (${Math.round(absVal)} GWh)`);
         })
-        .on("mouseout", () => tooltip.classed("hidden", true));
+        .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"));
     }
 
     // ===============================
@@ -210,11 +214,17 @@
         .attr("x", panelWidth / 2)
         .attr("y", panelHeight / 2)
         .attr("text-anchor", "middle")
-        .attr("font-size", "14px") // Un peu plus grand pour la lisibilité
+        .attr("font-size", "14px")
         .attr("fill", "#555")
         .attr("font-style", "italic")
         // IMPORTANT : On définit le texte d'abord, puis on appelle wrap
-        .text("Cliquer sur un pays pour obtenir plus d'informations sur le mix énergétique utilisé")
+        .append("tspan")
+          .attr("x", panelWidth / 2) 
+          .text("Click on a country for more information")
+        .append("tspan")
+          .attr("x", panelWidth / 2)
+          .attr("dy", "1.2em") 
+          .text("about the energy mix used")
         .call(wrap, panelWidth - 60); 
     }
 })();

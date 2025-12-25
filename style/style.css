@@ -97,6 +97,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
 
 main {
     padding: 0;
@@ -163,6 +164,7 @@ main {
     HEADER (MINIMAL)
     ============================================ */
 header {
+    margin-top: var(--space-32);
     margin-bottom: var(--space-32);
 }
 
@@ -316,4 +318,4 @@ header {
   font-size: 0.85rem;
   text-align: center;
 }
-}
+

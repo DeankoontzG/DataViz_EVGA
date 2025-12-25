@@ -1,0 +1,86 @@
+/* --- LAYOUT STORYTELLING (Non prévu par le pote) --- */
+.chapter { padding: 60px 0; }
+
+.split-view { 
+    display: flex; 
+    align-items: flex-start; 
+}
+
+.content-side { 
+    flex: 1; 
+    padding: 40px; 
+    background: var(--color-bg-secondary); 
+}
+
+.viz-side { 
+    flex: 1.5; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.sticky-text { 
+    position: sticky; 
+    top: 60px; 
+}
+
+/* --- ADAPTATION DES COMPOSANTS GLOBAUX --- */
+
+/* Centrage du header (Il l'avait mis à gauche) */
+.header-bar { justify-content: center; }
+.header-title { text-align: center; }
+
+/* Ta box de contrôle à 25% (Il l'avait mise en plein écran ou grid) */
+.control-group.dashboard-card {
+    width: 25%;
+    min-width: 280px;
+    margin: 30px auto;
+}
+
+/* --- FIXES TECHNIQUES VISU --- */
+#map-holder, #climate-map-holder, #energy-map-holder {
+    width: 100%;
+    min-height: 500px;
+    position: relative; /* Pour tes tooltips */
+}
+
+/* Ton style de tooltip (S'il n'en a pas fait de global) */
+.tooltip {
+    top: -100px;
+    left: -100px;
+    position: absolute;
+    z-index: 9999;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    padding: 10px;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    pointer-events: none;
+}
+
+/* Ajoute de l'air aux textes pour qu'ils ne collent pas aux bords */
+.full-content, .content-side {
+    padding-left: var(--space-48) !important;
+    padding-right: var(--space-48) !important;
+}
+
+/* Couleurs des textes dans les graphiques */
+svg text {
+    fill: var(--color-text-primary) !important; /* Pour les titres de pays et labels importants */
+    font-family: var(--font-family) !important;
+}
+
+/* Couleurs des axes et chiffres */
+.axis text, .tick text {
+    fill: var(--color-text-secondary) !important;
+}
+
+.axis line, .axis path, .domain {
+    stroke: var(--color-text-muted) !important; /* Rend les lignes d'axes grises et discrètes */
+}
+
+/* Légendes spécifiques */
+.legend text {
+    fill: var(--color-text-secondary) !important;
+}

@@ -88,7 +88,7 @@
                     .style("left", e.pageX + 15 + "px").style("top", e.pageY - 20 + "px")
                     .html(`<strong>${d.properties.name_long}</strong><br>${currentDim}: ${val ? val.toFixed(1) : "N/D"} ${units[currentDim]}`);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true))
+            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
             .on("click", (e, d) => {
                 selectedCountry = d.properties.name_long;
                 drawLineChart(selectedCountry);
@@ -178,7 +178,7 @@
                 d3.select(e.target).attr("r", 8);
             })
             .on("mouseout", (e) => {
-                tooltip.classed("hidden", true);
+                tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px");
                 d3.select(e.target).attr("r", 5);
             });
 

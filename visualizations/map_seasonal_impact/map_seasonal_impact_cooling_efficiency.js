@@ -114,7 +114,7 @@
                     .style("top", (e.pageY - 20) + "px")
                     .html(`<strong>${d.properties.name_long}</strong><br>Moyenne ${months[monthNum-1]}: <strong>${val ? val.toFixed(2) : "N/D"}</strong> L/kWh`);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true))
+            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
             .transition()
             .duration(500)
             .style("fill", d => {
