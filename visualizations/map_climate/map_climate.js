@@ -39,7 +39,7 @@
     const projection = d3.geoMercator().center([18, 5]).scale(400).translate([width / 2, height / 2]);
     const path = d3.geoPath().projection(projection);
 
-    const tooltip = d3.select("body").append("div").attr("class", "tooltip hidden");
+    const tooltip = d3.select("#tooltip");
 
     Promise.all([
         d3.csv("../../data/exported/country_month_cleaned.csv"),
@@ -84,11 +84,14 @@
             .attr("stroke", "#fff").attr("stroke-width", 0.5)
             .on("mousemove", (e, d) => {
                 const val = countryMeans.get(d.properties.name_long);
-                tooltip.classed("hidden", false)
-                    .style("left", e.pageX + 15 + "px").style("top", e.pageY - 20 + "px")
+                tooltip.style("opacity", 1) // On utilise l'opacité au lieu de la classe hidden
+                    .style("left", (e.pageX + 15) + "px")
+                    .style("top", (e.pageY - 20) + "px")
                     .html(`<strong>${d.properties.name_long}</strong><br>${currentDim}: ${val ? val.toFixed(1) : "N/D"} ${units[currentDim]}`);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
+            .on("mouseout", () => {
+                tooltip.style("opacity", 0); // On cache par l'opacité
+            })
             .on("click", (e, d) => {
                 selectedCountry = d.properties.name_long;
                 drawLineChart(selectedCountry);

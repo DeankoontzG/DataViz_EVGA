@@ -15,10 +15,7 @@
     const panelGroup = svg.append("g")
       .attr("transform", `translate(${width + 20}, 40)`);
 
-    // Création d'un tooltip unique pour cette carte
-    const tooltip = d3.select("body")
-      .append("div")
-      .attr("class", "tooltip-energy hidden tooltip"); // Classe unique
+    const tooltip = d3.select("#tooltip");
 
     const projection = d3.geoMercator()
       .center([20, 5])
@@ -71,12 +68,12 @@
         })
         .on("mousemove", (e, d) => {
           const v = getVal(d.properties.data, mainDimension);
-          tooltip.classed("hidden", false)
+          tooltip.style("opacity", 1) // On affiche
             .style("left", e.pageX + 15 + "px")
             .style("top", e.pageY - 30 + "px")
             .html(`<strong>${d.properties.name_long}</strong><br>${Number.isFinite(v) ? Math.round(v) + " TWh" : "N/D"}`);
         })
-        .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
+        .on("mouseout", () => tooltip.style("opacity", 0))
         .on("click", (_, d) => updatePanel(d));
     }
 

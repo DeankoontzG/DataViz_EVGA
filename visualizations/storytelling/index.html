@@ -7,13 +7,15 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style/style.css">
-    <link rel="stylesheet" href="storytelling_style.css">
     <link rel="stylesheet" href="../predictive_maps/style.css">
     <link rel="stylesheet" href="../energy_mix/style.css" />
+    <link rel="stylesheet" href="storytelling_style.css">
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+    <div id="tooltip" class="tooltip" style="opacity: 0; position: absolute; z-index: 9999;"></div>
+
     <header class="main-header">
         <div class="header-bar">
             <div class="header-title"> <h1>The environmental impact of African Data Centers</h1>
@@ -27,25 +29,27 @@
 <!-- ----------------------------- -->
 
     <section class="chapter climate" id="climate-context">
-        <div class="full-content">
-            <h2>Climate Context</h2>
-            <p>
-                Before analyzing the energy impact, it is essential to understand the climatic constraints 
-                to which infrastructures are subjected (temperature, humidity, water scarcity).
-            </p>
-            <div class="control-group dashboard-card"> 
-                <label for="climate-select">Visualize data: </label>
-                <select id="climate-select">
-                    <option value="temperature">Temperature (°C)</option>
-                    <option value="humidity">Humidity (%)</option>
-                    <option value="precipitation">Precipitation (mm)</option>
-                    <option value="wind_speed">Wind Speed (km/h)</option>
-                    <option value="wetbulb_temperature">Wet-bulb Temperature (°C)</option>
-                </select>
+        <div class="container"> 
+            <div class="full-content">
+                <h2>Climate Context</h2>
+                <p>
+                    Before analyzing the energy impact, it is essential to understand the climatic constraints 
+                    to which infrastructures are subjected (temperature, humidity, water scarcity).
+                </p>
+                <div class="control-group dashboard-card"> 
+                    <label for="climate-select">Visualize data: </label>
+                    <select id="climate-select">
+                        <option value="temperature">Temperature (°C)</option>
+                        <option value="humidity">Humidity (%)</option>
+                        <option value="precipitation">Precipitation (mm)</option>
+                        <option value="wind_speed">Wind Speed (km/h)</option>
+                        <option value="wetbulb_temperature">Wet-bulb Temperature (°C)</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="full-viz">
-            <div id="climate-map-holder"></div>
+            <div class="full-viz">
+                <div id="climate-map-holder"></div>
+            </div>
         </div>
     </section>
 
@@ -55,55 +59,59 @@
 <!-- DEUXIEME VUE : CONSOMMATION EAU VS MOIS DE L'ANNEE -->
 <!-- -------------------------------------------------- -->
 
-    <section class="chapter climate" id="climate-context">
+    <section class="chapter climate" id="water-consumption-intro">
+        <div class="container">
+            <header>
+                <div class="header-bar">
+                    <div class="header-title">
+                        <h1>Water Consumption of Data Centers</h1>
+                        <p>
+                            Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
+                            <strong>everyday usage</strong> for restrooms, landscaping, staff needs, and especially the
+                            <strong>energy production</strong> required for their operation.
+                        </p>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </section>
 
-        <header>
-            <div class="header-bar">
-                <div class="header-title">
-                    <h1>Water Consumption of Data Centers </h1>
+    <section class="chapter split-view" id="seasonality-chapter">
+        <div class="container"> 
+            <div class="content-side">
+                <div class="sticky-text">
+                    <h2>Understanding Seasonality</h2>
+                    <h3>How climate affects water usage</h3>
                     <p>
-                        Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
-                        <strong>everyday usage </strong> for restrooms, landscaping, staff needs, and especially the
-                        <strong>energy production</strong>  required for their operation.  
+                        The efficiency of water used directly for cooling (WUE "Cold Water") 
+                        is not constant. It varies according to local climatic conditions. 
+                        By observing monthly averages, clear trends emerge:
+                    </p>
+                    <ul class="key-points">
+                        <li><strong>Summer Peaks:</strong> An increase in cooling WUE during hot and humid seasons.</li>
+                        <li><strong>Winter Stability:</strong> Cold periods show optimal efficiency (lower values).</li>
+                    </ul>
+                    <p class="instruction">
+                        Use the <strong>Play</strong> button to observe the thermal "breath" of infrastructures across the world.
                     </p>
                 </div>
             </div>
-        </header>
-    </section>
 
-    <section class="chapter split-view">
-        <div class="content-side">
-            <div class="sticky-text">
-                <h2>Understanding Seasonality</h2>
-                <h3>How climate affects water usage</h3>
-                <p>
-                    The efficiency of water used directly for cooling (WUE "Cold Water") 
-                    is not constant. It varies according to local climatic conditions. 
-                    By observing monthly averages, clear trends emerge:
-                </p>
-                <ul class="key-points">
-                    <li><strong>Summer Peaks:</strong> An increase in cooling WUE during hot and humid seasons.</li>
-                    <li><strong>Winter Stability:</strong> Cold periods show optimal efficiency (lower values).</li>
-                </ul>
-                <p class="instruction">
-                    Use the <strong>Play</strong> button to observe the thermal "breath" of infrastructures across the world.
-                </p>
-            </div>
-        </div>
-
-        <div class="viz-side">
-            <div id="toolbar">
-                <button id="play-button">Play</button>
-                <div class="slider-wrapper">
-                    <input type="range" id="time-slider" min="1" max="12" value="1" step="1">
-                    <span id="time-label">January</span>
+            <div class="viz-side">
+                <div id="toolbar">
+                    <button id="play-button">Play</button>
+                    <div class="slider-wrapper">
+                        <input type="range" id="time-slider" min="1" max="12" value="1" step="1">
+                        <span id="time-label">January</span>
+                    </div>
                 </div>
+                <div id="map-holder"></div>
             </div>
-            <div id="map-holder"></div>
-        </div>
+        </div> 
     </section>
 
     <script src="../map_seasonal_impact/map_seasonal_impact_cooling_efficiency.js"></script>
+
 <!-- -------------------------------------------------- -->
 <!-- Troisième VUE : CONSOMMATION EAU TOTALE----------- -->
 <!-- -------------------------------------------------- -->
@@ -111,16 +119,18 @@
 
 
     <section class="chapter full-view" id="water-volume-chapter">
-        <div class="full-content">
-            <h2>Associated water consumption (estimated)</h2>
-            <p>
-                By aggregating efficiency (WUE) and total energy consumption,,
-                we are able to estimate the annual volume of water used.
-                Here are the 10 countries consuming the most water.
-            </p>
-        </div>
-        <div class="full-viz">
-            <div id="water-volume-bar-holder"></div>
+        <div class="container">
+            <div class="full-content">
+                <h2>Associated water consumption (estimated)</h2>
+                <p>
+                    By aggregating efficiency (WUE) and total energy consumption,,
+                    we are able to estimate the annual volume of water used.
+                    Here are the 10 countries consuming the most water.
+                </p>
+            </div>
+            <div class="full-viz">
+                <div id="water-volume-bar-holder"></div>
+            </div>
         </div>
     </section>
 
@@ -131,72 +141,74 @@
 <!-- Quatrième VUE : EVOLUTION CONSO EAU EN FCT HAUSSE T° ---- -->
 <!-- --------------------------------------------------------- -->
 
-    <div class="container">
-        <a href="../../index.html" class="home-button">
-            <span class="home-icon"></span>
-            <span class="home-text">Home</span>
-        </a>
+    <section class="chapter" id="water-projection-chapter">
+        <div class="container">
+            <a href="../../index.html" class="home-button">
+                <span class="home-icon"></span>
+                <span class="home-text">Home</span>
+            </a>
 
-        <div class="full-content">
-            <h1>Water Efficiency Climate Projection</h1>
-            <p class="subtitle">
-                As you may have noticed, there is a correlation between temperature 
-                and Water Usage Efficiencies (both direct and indirect).
-                According to environemental studies, global warming is expected to see average temperature 
-                rise between +3 and +6 °C until 2100.
-            </p>
-            <p class="subtitle">
-                The following map allows you to explore the impact of different temperature increase scenarii
-                on the Water-usage efficiencies associated with Data Centers.
-            </p>
-        </div>
+            <div class="full-content">
+                <h1>Water Efficiency Climate Projection</h1>
+                <p>
+                    As you may have noticed, there is a correlation between temperature 
+                    and Water Usage Efficiencies (both direct and indirect).
+                    According to environemental studies, global warming is expected to see average temperature 
+                    rise between +3 and +6 °C until 2100.
+                </p>
+                <p>
+                    The following map allows you to explore the impact of different temperature increase scenarii
+                    on the Water-usage efficiencies associated with Data Centers.
+                </p>
+            </div>
 
-        <!-- Temperature Control Panel -->
-        <div class="controls-container">
-            <div class="control-panel">
-                <div class="control-header">
-                    <h3>Climate Projection Control</h3>
-                    <p class="control-description">
-                        Adjust temperature increase to see projected impact on water usage efficiency
-                    </p>
-                </div>
-
-                <div class="slider-container">
-                    <div class="slider-header">
-                        <label for="temp-slider">Temperature Increase</label>
-                        <span id="temp-value" class="temp-display">+0.0°C</span>
+            <!-- Temperature Control Panel -->
+            <div class="controls-container">
+                <div class="control-panel">
+                    <div class="control-header">
+                        <h3>Climate Projection Control</h3>
+                        <p class="control-description">
+                            Adjust temperature increase to see projected impact on water usage efficiency
+                        </p>
                     </div>
 
-                    <input
-                        type="range"
-                        id="temp-slider"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        value="0"
-                        class="temperature-slider"
-                    >
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <label for="temp-slider">Temperature Increase</label>
+                            <span id="temp-value" class="temp-display">+0.0°C</span>
+                        </div>
 
-                    <div class="slider-markers">
-                        <span>0°C</span>
-                        <span>+1°C</span>
-                        <span>+2°C</span>
-                        <span>+3°C</span>
-                        <span>+4°C</span>
-                        <span>+5°C</span>
+                        <input
+                            type="range"
+                            id="temp-slider"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            value="0"
+                            class="temperature-slider"
+                        >
+
+                        <div class="slider-markers">
+                            <span>0°C</span>
+                            <span>+1°C</span>
+                            <span>+2°C</span>
+                            <span>+3°C</span>
+                            <span>+4°C</span>
+                            <span>+5°C</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="impact-info">
-                    <span class="info-text">
-                        ℹ️ Model: Each +1°C increases WUE by 4% (linear projection)
-                    </span>
+                    <div class="impact-info">
+                        <span class="info-text">
+                            ℹ️ Model: Each +1°C increases WUE by 4% (linear projection)
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="canvas"></div>
-    </div>
+            <div id="canvas"></div>
+        </div>
+    </section>
 
     <script src="../predictive_maps/main.js"></script>
     
@@ -204,25 +216,24 @@
 <!-- Cinquième VUE : CONSOMMATION ENERGIE PAR PAYS ---- -->
 <!-- -------------------------------------------------- -->
 
-    <section class="chapter climate" id="climate-context">
-        <header>
-            <div class="header-bar">
+    <section class="chapter full-view" id="energy-chapter">
+        <div class="container">
+            <header class="section-header">
                 <div class="header-title">
                     <h1>Energy consumption by Data Centers</h1>
                 </div>
-            </div>
-        </header>
-    </section>
+            </header>
 
-     <section class="chapter full-view" id="energy-chapter">
-        <div class="full-content">
-            <h2>Energy consumption by Data Centers</h2>
-            <p>
-                Here is a map of enegery consumption per country, associated to Data Centers (2023).
-            </p>
-        </div>
-        <div class="full-viz">
-            <div id="energy-map-holder"></div>
+            <div class="full-content">
+                <h1>Overall energy consumption by country</h1>
+                <p>
+                    Here is a map of energy consumption per country, associated to Data Centers (2023).
+                </p>
+            </div>
+
+            <div class="full-viz">
+                <div id="energy-map-holder"></div>
+            </div>
         </div>
     </section>
 
@@ -232,73 +243,74 @@
 <!-- Sixième VUE : ENERGY MIX PAR PAYS ---- -->
 <!-- -------------------------------------------------- -->
 
-    <div class="container">
-        <a href="../../index.html" class="home-button">
-            <span class="home-icon"></span>
-            <span class="home-text">Home</span>
-        </a>
+    <section class="chapter" id="energy-mix-chapter">
+        <div class="container">
+            <a href="../../index.html" class="home-button">
+                <span class="home-icon"></span>
+                <span class="home-text">Home</span>
+            </a>
 
-        <div class="full-content">
-            <h1>Energy mix by country</h1>
-            <p class="subtitle">
-                Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
-            </p>
-        </div>
+            <div class="full-content">
+                <h1>Energy mix by country</h1>
+                <p>
+                    Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
+                </p>
+            </div>
 
-        <div id="controls">
-            <div class="control-row">
-                <div class="control-group">
-                    <label for="yearSelectBar">Year</label>
-                    <select id="yearSelectBar"></select>
-                </div>
+            <div id="controls">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="yearSelectBar">Year</label>
+                        <select id="yearSelectBar"></select>
+                    </div>
 
-                <div class="control-group">
-                    <label for="regionSelectBar">Climate region</label>
-                    <select id="regionSelectBar">
-                        <option value="all">All regions</option>
-                    </select>
-                </div>
+                    <div class="control-group">
+                        <label for="regionSelectBar">Climate region</label>
+                        <select id="regionSelectBar">
+                            <option value="all">All regions</option>
+                        </select>
+                    </div>
 
-                <div class="control-group">
-                    <label for="sortMetric">Sort by</label>
-                    <select id="sortMetric">
-                        <option value="total">Total energy (TWh)</option>
-                        <option value="coal">Coal share (%)</option>
-                        <option value="oil">Oil share (%)</option>
-                        <option value="gas">Gas share (%)</option>
-                        <option value="lowCarbon">Low‑carbon share (%)</option>
-                    </select>
-                </div>
+                    <div class="control-group">
+                        <label for="sortMetric">Sort by</label>
+                        <select id="sortMetric">
+                            <option value="total">Total energy (TWh)</option>
+                            <option value="coal">Coal share (%)</option>
+                            <option value="oil">Oil share (%)</option>
+                            <option value="gas">Gas share (%)</option>
+                            <option value="lowCarbon">Low‑carbon share (%)</option>
+                        </select>
+                    </div>
 
-                <div class="control-group">
-                    <label for="displayMode">Display</label>
-                    <select id="displayMode">
-                        <option value="all">All countries</option>
-                        <option value="top5">Top 5 (by selected metric)</option>
-                        <option value="top10" selected>Top 10 (by selected metric)</option>
-                    </select>
+                    <div class="control-group">
+                        <label for="displayMode">Display</label>
+                        <select id="displayMode">
+                            <option value="all">All countries</option>
+                            <option value="top5">Top 5 (by selected metric)</option>
+                            <option value="top10" selected>Top 10 (by selected metric)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="stats"></div>
+            <div id="stats"></div>
 
-        <div id="chart-container">
-            <div id="chart-bar-scroll">
-                <div id="chart-bar"></div>
+            <div id="chart-container">
+                <div id="chart-bar-scroll">
+                    <div id="chart-bar"></div>
+                </div>
             </div>
-            <div id="tooltip" class="tooltip"></div>
-        </div>
 
-        <div class="info-box">
-            <strong>💡 Tip:</strong>
-            All bars have the same height (100% of the energy mix).
-            Use <strong>Climate region</strong> to filter the countries,
-            <strong>Sort by</strong> to order by a specific share, and
-            <strong>Display</strong> to focus on Top 5 or Top 10.
-            Hover a bar to see both percentages and absolute TWh.
+            <div class="info-box">
+                <strong>💡 Tip:</strong>
+                All bars have the same height (100% of the energy mix).
+                Use <strong>Climate region</strong> to filter the countries,
+                <strong>Sort by</strong> to order by a specific share, and
+                <strong>Display</strong> to focus on Top 5 or Top 10.
+                Hover a bar to see both percentages and absolute TWh.
+            </div>
         </div>
-    </div>
+    </section>
 
     <script src="../energy_mix/main.js"></script>
 

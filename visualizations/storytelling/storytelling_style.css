@@ -1,86 +1,96 @@
-/* --- LAYOUT STORYTELLING (Non prévu par le pote) --- */
-.chapter { padding: 60px 0; }
+/* ============================================================
+   STORYTELLING LAYOUT - COMPACT & ALIGNED
+   ============================================================ */
 
-.split-view { 
-    display: flex; 
-    align-items: flex-start; 
+/* 1. Reset des hauteurs et espaces inter-sections */
+.chapter { 
+    padding: 20px 0 !important; /* Réduit l'espace entre les blocs */
+    display: block;
+}
+
+.chapter .container {
+    max-width: 1200px !important; /* Verrouille l'alignement global */
+    width: 100% !important;
+    min-height: auto !important; /* Supprime le vide vertical (100vh) */
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0 auto !important;
+}
+
+/* 2. Fix spécifique Vue 2 (Split-View 45/55) sans débordement */
+.split-view .container {
+    display: flex !important;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-32);
+    box-sizing: border-box !important;
 }
 
 .content-side { 
-    flex: 1; 
-    padding: 40px; 
+    flex: 0 0 40% !important; 
+    padding: var(--space-24) !important; 
     background: var(--color-bg-secondary); 
+    border-radius: var(--radius-md);
+    box-sizing: border-box !important;
 }
 
 .viz-side { 
-    flex: 1.5; 
-    padding: 20px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+    flex: 0 0 60% !important;
+    min-width: 0; /* Empêche D3 de pousser les murs */
+    box-sizing: border-box !important;
 }
 
 .sticky-text { 
     position: sticky; 
-    top: 60px; 
+    top: 40px; 
 }
 
-/* --- ADAPTATION DES COMPOSANTS GLOBAUX --- */
+/* 3. Ajustement des textes et headers pour éviter les trous */
+header { margin: 0 0 var(--space-12) 0 !important; }
 
-/* Centrage du header (Il l'avait mis à gauche) */
 .header-bar { justify-content: center; }
-.header-title { text-align: center; }
+.header-title { text-align: center; margin: 0 !important; }
 
-/* Ta box de contrôle à 25% (Il l'avait mise en plein écran ou grid) */
+h1, h2, h3 { 
+    margin-top: 0 !important; 
+    margin-bottom: var(--space-8) !important;
+    line-height: 1.1 !important; 
+}
+
+/* 4. Fixes techniques Visualisation (D3.js) */
+#map-holder, #climate-map-holder, #energy-map-holder, #water-volume-bar-holder {
+    width: 100%;
+    min-height: 550px;
+    display: block;
+}
+
+svg { width: 100% !important; height: auto !important; }
+
+/* 5. Style Maître du Tooltip (Centralisé) */
+.tooltip {
+    position: absolute !important;
+    z-index: 100000 !important; 
+    opacity: 0; 
+    pointer-events: none !important;
+    background: var(--color-bg-tertiary) !important;
+    color: var(--color-text-primary) !important;
+    padding: var(--space-12) !important;
+    border: 1px solid var(--color-accent) !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: var(--shadow-lg) !important;
+    font-size: var(--font-size-sm) !important;
+    transition: opacity 0.1s ease-out !important;
+}
+
+/* 6. Harmonisation des couleurs graphiques */
+svg text { fill: var(--color-text-primary) !important; }
+.axis text, .tick text, .legend text { fill: var(--color-text-secondary) !important; }
+.axis line, .axis path, .domain { stroke: var(--color-text-muted) !important; }
+
+/* 7. Controls & Dashboards compacts */
 .control-group.dashboard-card {
     width: 25%;
     min-width: 280px;
-    margin: 30px auto;
-}
-
-/* --- FIXES TECHNIQUES VISU --- */
-#map-holder, #climate-map-holder, #energy-map-holder {
-    width: 100%;
-    min-height: 500px;
-    position: relative; /* Pour tes tooltips */
-}
-
-/* Ton style de tooltip (S'il n'en a pas fait de global) */
-.tooltip {
-    top: -100px;
-    left: -100px;
-    position: absolute;
-    z-index: 9999;
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
-    padding: 10px;
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius-sm);
-    pointer-events: none;
-}
-
-/* Ajoute de l'air aux textes pour qu'ils ne collent pas aux bords */
-.full-content, .content-side {
-    padding-left: var(--space-48) !important;
-    padding-right: var(--space-48) !important;
-}
-
-/* Couleurs des textes dans les graphiques */
-svg text {
-    fill: var(--color-text-primary) !important; /* Pour les titres de pays et labels importants */
-    font-family: var(--font-family) !important;
-}
-
-/* Couleurs des axes et chiffres */
-.axis text, .tick text {
-    fill: var(--color-text-secondary) !important;
-}
-
-.axis line, .axis path, .domain {
-    stroke: var(--color-text-muted) !important; /* Rend les lignes d'axes grises et discrètes */
-}
-
-/* Légendes spécifiques */
-.legend text {
-    fill: var(--color-text-secondary) !important;
+    margin: 10px auto !important;
 }

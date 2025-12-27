@@ -88,20 +88,50 @@ body {
 /* ============================================
     LAYOUT
     ============================================ */
+
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-24);
+  padding: var(--space-8);
 
-  min-height: 100vh;
+  /* Changement ici : On laisse le contenu dicter la hauteur */
+  min-height: auto; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  
+  /* On aligne en haut plutôt qu'au centre */
+  justify-content: flex-start; 
 }
 
 main {
     padding: 0;
+}
+
+/* ============================================
+    CHAPTER
+    ============================================ */
+
+.chapter {
+    /* On réduit drastiquement l'espace interne des sections */
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    /* On s'assure qu'il n'y a aucune marge externe qui pousse la section suivante */
+    margin: 0 !important; 
+}
+
+/* Le container à l'intérieur de la section */
+.chapter .container {
+    /* On réduit le padding du container pour coller au bord de la section */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    /* On s'assure que la hauteur n'est pas forcée */
+    min-height: auto !important;
+}
+
+/* On réduit l'espace au-dessus des titres de chaque chapitre */
+.chapter h1, .chapter h2 {
+    margin-top: 5px !important;
 }
 
 /* ============================================
@@ -164,6 +194,11 @@ main {
 /* ============================================
     HEADER (MINIMAL)
     ============================================ */
+.main-header {
+    padding-top: 80px;      /* Espace au-dessus du titre principal */
+    margin-bottom: 40px;    /* Espace entre le titre et la première carte */
+}
+
 header {
     margin-top: var(--space-32);
     margin-bottom: var(--space-32);

@@ -11,7 +11,7 @@
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const tooltip = d3.select("body").append("div").attr("class", "tooltip hidden");
+    const tooltip = d3.select("#tooltip");
 
     // Échelles
     const x = d3.scaleBand().range([0, width]).padding(0.3);
@@ -98,7 +98,8 @@
                 const layerKey = d3.select(this.parentNode).datum().key;
                 const valPools = d[1] - d[0];
                 
-                tooltip.classed("hidden", false)
+                // On utilise l'opacité et on retire .hidden
+                tooltip.style("opacity", 1)
                     .style("left", e.pageX + 15 + "px")
                     .style("top", e.pageY - 20 + "px")
                     .html(`
@@ -108,7 +109,10 @@
                         <small>(Total: ${Math.round(d.data.total).toLocaleString()} pools)</small>
                     `);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"));
+            .on("mouseout", () => {
+                // On repasse à 0
+                tooltip.style("opacity", 0);
+            });
 
         // 5. LÉGENDE
         const legend = svg.append("g")

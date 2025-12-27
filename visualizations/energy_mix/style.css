@@ -7,7 +7,7 @@
     border-radius: var(--radius-lg);
     border: 1px solid rgba(247, 111, 83, 0.1);
     box-shadow: var(--shadow-sm);
-    margin-bottom: var(--space-32);
+    margin-bottom: var(--space-12);
 }
 
 .control-row {
@@ -129,7 +129,7 @@ optgroup {
     border-radius: var(--radius-lg);
     border: 1px solid rgba(247, 111, 83, 0.1);
     box-shadow: var(--shadow-sm);
-    margin-bottom: var(--space-32);
+    margin-bottom: var(--space-12);
     overflow-x: auto;
 }
 
@@ -148,7 +148,7 @@ optgroup {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--space-16);
-    margin-bottom: var(--space-32);
+    margin-bottom: var(--space-12);
 }
 
 .stat-item {

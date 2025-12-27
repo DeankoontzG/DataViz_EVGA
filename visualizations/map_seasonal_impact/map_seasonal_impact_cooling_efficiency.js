@@ -6,8 +6,8 @@
     const height = 750;
     const currentDimension = "WUE_FixedColdWaterDirect(L/KWh)";
 
-    const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
-                    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    const months = ["January", "Februrary", "Mars", "April", "May", "June", 
+                    "July", "August", "September", "October", "November", "December"];
 
     let currentTimeIndex = 0;
     let timer = null;
@@ -26,10 +26,7 @@
     const colorScale = d3.scaleLinear().range(["#ebf3fb", "#08306b"]);
     const colorNoData = "#d1d1d1"; 
 
-    // Tooltip unique pour la carte 2
-    const tooltip = d3.select("body")
-        .append("div")
-        .attr("class", "hidden tooltip-wue tooltip"); 
+    const tooltip = d3.select("#tooltip");
 
     /********************************************
      * CHARGEMENT ET CALCUL
@@ -108,13 +105,19 @@
             .style("stroke", "#ffffff")
             .style("stroke-width", "0.4px")
             .on("mousemove", (e, d) => {
-                const val = d.properties.averages[monthNum];
-                tooltip.classed("hidden", false)
+                // On récupère la valeur pour le mois sélectionné
+                const v = d.properties.averages[monthNum]; 
+                
+                tooltip.style("opacity", 1)
                     .style("left", (e.pageX + 15) + "px")
-                    .style("top", (e.pageY - 20) + "px")
-                    .html(`<strong>${d.properties.name_long}</strong><br>Moyenne ${months[monthNum-1]}: <strong>${val ? val.toFixed(2) : "N/D"}</strong> L/kWh`);
+                    .style("top", (e.pageY - 30) + "px")
+                    .html(`
+                        <strong>${d.properties.name_long}</strong><br>
+                        Mois : ${months[monthNum - 1]}<br>
+                        WUE : ${v != null ? v.toFixed(2) : "N/D"} L/KWh
+                    `);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"))
+            .on("mouseout", () => tooltip.style("opacity", 0))
             .transition()
             .duration(500)
             .style("fill", d => {
