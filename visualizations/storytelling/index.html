@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Storytelling - Water Efficiency</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../style/style.css">
     <link rel="stylesheet" href="storytelling_style.css">
+    <link rel="stylesheet" href="../predictive_maps/style.css">
+    <link rel="stylesheet" href="../energy_mix/style.css" />
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
@@ -53,14 +56,19 @@
 <!-- -------------------------------------------------- -->
 
     <section class="chapter climate" id="climate-context">
-        <div class="full-content">
-            <h2>Water Consumption of Data Centers </h2>
-            <p>
-                Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
-                <strong>everyday usage </strong> for restrooms, landscaping, staff needs, and especially the
-                <strong>energy production</strong>  required for their operation.  
-            </p>
-        </div>
+
+        <header>
+            <div class="header-bar">
+                <div class="header-title">
+                    <h1>Water Consumption of Data Centers </h1>
+                    <p>
+                        Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
+                        <strong>everyday usage </strong> for restrooms, landscaping, staff needs, and especially the
+                        <strong>energy production</strong>  required for their operation.  
+                    </p>
+                </div>
+            </div>
+        </header>
     </section>
 
     <section class="chapter split-view">
@@ -116,12 +124,95 @@
         </div>
     </section>
 
-    <script src="../shared/chart_water_volume.js"></script>
+    <script src="../total_water_volume/chart_water_volume.js"></script>
 
 
+<!-- --------------------------------------------------------- -->
+<!-- Quatrième VUE : EVOLUTION CONSO EAU EN FCT HAUSSE T° ---- -->
+<!-- --------------------------------------------------------- -->
+
+    <div class="container">
+        <a href="../../index.html" class="home-button">
+            <span class="home-icon"></span>
+            <span class="home-text">Home</span>
+        </a>
+
+        <div class="full-content">
+            <h1>Water Efficiency Climate Projection</h1>
+            <p class="subtitle">
+                As you may have noticed, there is a correlation between temperature 
+                and Water Usage Efficiencies (both direct and indirect).
+                According to environemental studies, global warming is expected to see average temperature 
+                rise between +3 and +6 °C until 2100.
+            </p>
+            <p class="subtitle">
+                The following map allows you to explore the impact of different temperature increase scenarii
+                on the Water-usage efficiencies associated with Data Centers.
+            </p>
+        </div>
+
+        <!-- Temperature Control Panel -->
+        <div class="controls-container">
+            <div class="control-panel">
+                <div class="control-header">
+                    <h3>Climate Projection Control</h3>
+                    <p class="control-description">
+                        Adjust temperature increase to see projected impact on water usage efficiency
+                    </p>
+                </div>
+
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <label for="temp-slider">Temperature Increase</label>
+                        <span id="temp-value" class="temp-display">+0.0°C</span>
+                    </div>
+
+                    <input
+                        type="range"
+                        id="temp-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value="0"
+                        class="temperature-slider"
+                    >
+
+                    <div class="slider-markers">
+                        <span>0°C</span>
+                        <span>+1°C</span>
+                        <span>+2°C</span>
+                        <span>+3°C</span>
+                        <span>+4°C</span>
+                        <span>+5°C</span>
+                    </div>
+                </div>
+
+                <div class="impact-info">
+                    <span class="info-text">
+                        ℹ️ Model: Each +1°C increases WUE by 4% (linear projection)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div id="canvas"></div>
+    </div>
+
+    <script src="../predictive_maps/main.js"></script>
+    
 <!-- -------------------------------------------------- -->
-<!-- Quatrième VUE : CONSOMMATION ENERGIE PAR PAYS ---- -->
+<!-- Cinquième VUE : CONSOMMATION ENERGIE PAR PAYS ---- -->
 <!-- -------------------------------------------------- -->
+
+    <section class="chapter climate" id="climate-context">
+        <header>
+            <div class="header-bar">
+                <div class="header-title">
+                    <h1>Energy consumption by Data Centers</h1>
+                </div>
+            </div>
+        </header>
+    </section>
 
      <section class="chapter full-view" id="energy-chapter">
         <div class="full-content">
@@ -136,7 +227,81 @@
     </section>
 
     <script src="../map_energy_total/map_energy_total.js"></script>
-    
-    
+
+<!-- -------------------------------------------------- -->
+<!-- Sixième VUE : ENERGY MIX PAR PAYS ---- -->
+<!-- -------------------------------------------------- -->
+
+    <div class="container">
+        <a href="../../index.html" class="home-button">
+            <span class="home-icon"></span>
+            <span class="home-text">Home</span>
+        </a>
+
+        <div class="full-content">
+            <h1>Energy mix by country</h1>
+            <p class="subtitle">
+                Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
+            </p>
+        </div>
+
+        <div id="controls">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="yearSelectBar">Year</label>
+                    <select id="yearSelectBar"></select>
+                </div>
+
+                <div class="control-group">
+                    <label for="regionSelectBar">Climate region</label>
+                    <select id="regionSelectBar">
+                        <option value="all">All regions</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="sortMetric">Sort by</label>
+                    <select id="sortMetric">
+                        <option value="total">Total energy (TWh)</option>
+                        <option value="coal">Coal share (%)</option>
+                        <option value="oil">Oil share (%)</option>
+                        <option value="gas">Gas share (%)</option>
+                        <option value="lowCarbon">Low‑carbon share (%)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="displayMode">Display</label>
+                    <select id="displayMode">
+                        <option value="all">All countries</option>
+                        <option value="top5">Top 5 (by selected metric)</option>
+                        <option value="top10" selected>Top 10 (by selected metric)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="stats"></div>
+
+        <div id="chart-container">
+            <div id="chart-bar-scroll">
+                <div id="chart-bar"></div>
+            </div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Tip:</strong>
+            All bars have the same height (100% of the energy mix).
+            Use <strong>Climate region</strong> to filter the countries,
+            <strong>Sort by</strong> to order by a specific share, and
+            <strong>Display</strong> to focus on Top 5 or Top 10.
+            Hover a bar to see both percentages and absolute TWh.
+        </div>
+    </div>
+
+    <script src="../energy_mix/main.js"></script>
+
+
 </body>
 </html>

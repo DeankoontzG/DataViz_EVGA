@@ -1,7 +1,9 @@
 (function() {
-    const margin = {top: 50, right: 30, bottom: 100, left: 100},
+    const margin = {top: 50, right: 30, bottom: 120, left: 100}, // Augmentation du bottom pour la note
           width = 960 - margin.left - margin.right,
           height = 550 - margin.top - margin.bottom;
+
+    const PO_VOLUME = 2500000; // Constante pour une piscine olympique
 
     const svg = d3.select("#water-volume-bar-holder")
         .append("svg")
@@ -19,31 +21,30 @@
         .range(["#4e79a7", "#76b7b2", "#e15759"]);
 
     const labels = {
-        partIndirect: "WUE Indirect (Source)",
-        partCold: "WUE Direct (Cold Water)",
+        partIndirect: "Indirect WUE (Source)",
+        partCold: "Direct WUE (Cold Water)",
         partApproach: "Surplus Approach"
     };
 
     d3.csv("../../data/exported/country_year_cleaned.csv").then(data => {
         const rawData2023 = data.filter(d => d.year === "2023");
 
-        // 1. CALCUL DES VOLUMES EN LITRES
+        // 1. CALCUL DES VOLUMES EN PISCINES OLYMPIQUES
         const processedData = rawData2023.map(d => {
             const energyTWh = parseFloat(d["Total energy - TWh"]?.replace(",", ".")) || 0;
-            const energyKWh = energyTWh * 1e3; // Conversion TWh -> kWh
+            const energyKWh = energyTWh * 1e3; // expression en kWh
             
             const wueInd = parseFloat(d["WUE_Indirect(L/KWh)"]?.replace(",", ".")) || 0;
             const wueCold = parseFloat(d["WUE_FixedColdWaterDirect(L/KWh)"]?.replace(",", ".")) || 0;
             const wueAppr = parseFloat(d["WUE_FixedApproachDirect(L/KWh)"]?.replace(",", ".")) || 0;
 
+            // Volume total en Litres puis division par PO_VOLUME
             return {
                 country: d.country,
-                energyTWh: energyTWh,
-                // Volume en Litres
-                partIndirect: wueInd * energyKWh,
-                partCold: wueCold * energyKWh,
-                partApproach: (wueAppr - wueCold) * energyKWh,
-                total: (wueInd + wueAppr) * energyKWh
+                partIndirect: (wueInd * energyKWh) / PO_VOLUME,
+                partCold: (wueCold * energyKWh) / PO_VOLUME,
+                partApproach: ((wueAppr - wueCold) * energyKWh) / PO_VOLUME,
+                total: ((wueInd + wueAppr) * energyKWh) / PO_VOLUME
             };
         })
         .filter(d => d.total > 0)
@@ -55,26 +56,29 @@
         y.domain([0, d3.max(processedData, d => d.total)]).nice();
 
         // 3. AXES
-        svg.append("g")
+        const xAxis = svg.append("g")
             .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(x))
-            .selectAll("text")
+            .call(d3.axisBottom(x));
+            
+        xAxis.selectAll("text")
             .attr("transform", "rotate(-45)")
-            .style("text-anchor", "end");
+            .style("text-anchor", "end")
+            .style("fill", "var(--color-text-secondary)");
 
-        // Axe Y en Milliards de Litres (10^9)
+        // Axe Y en Nombre de Piscines
         svg.append("g")
-            .call(d3.axisLeft(y).tickFormat(d => (d / 1e9).toFixed(0) + " GL"))
+            .call(d3.axisLeft(y).tickFormat(d => d3.format(",")(d)))
+            .call(g => g.selectAll("text").style("fill", "var(--color-text-secondary)"))
             .append("text")
             .attr("x", -height/2)
             .attr("y", -70)
-            .attr("fill", "#000")
+            .attr("fill", "var(--color-text-primary)")
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text("Volume d'eau total (Milliards de Litres - GL)");
+            .text("Equivalent Olympic Swimming Pools");
 
-        // 4. DESSIN DES BARRES (STACKED)
+        // 4. DESSIN DES BARRES
         const stack = d3.stack().keys(["partIndirect", "partCold", "partApproach"])(processedData);
 
         const layers = svg.selectAll(".layer")
@@ -92,7 +96,7 @@
             .attr("width", x.bandwidth())
             .on("mousemove", function(e, d) {
                 const layerKey = d3.select(this.parentNode).datum().key;
-                const valLitres = d[1] - d[0];
+                const valPools = d[1] - d[0];
                 
                 tooltip.classed("hidden", false)
                     .style("left", e.pageX + 15 + "px")
@@ -100,11 +104,11 @@
                     .html(`
                         <strong>${d.data.country}</strong><br>
                         ${labels[layerKey]}<br>
-                        <strong>${(valLitres / 1e6).toLocaleString(undefined, {maximumFractionDigits: 0})} millions de Litres</strong><br>
-                        <small>(Total : ${(d.data.total / 1e9).toFixed(1)} GL)</small>
+                        <strong>${Math.round(valPools).toLocaleString()} pools</strong><br>
+                        <small>(Total: ${Math.round(d.data.total).toLocaleString()} pools)</small>
                     `);
             })
-            .on("mouseout", () => tooltip.classed("hidden", true));
+            .on("mouseout", () => tooltip.classed("hidden", true).style("left", "-500px").style("top", "-500px"));
 
         // 5. LÉGENDE
         const legend = svg.append("g")
@@ -113,7 +117,20 @@
         ["partIndirect", "partCold", "partApproach"].forEach((key, i) => {
             const lg = legend.append("g").attr("transform", `translate(0, ${i * 20})`);
             lg.append("rect").attr("width", 15).attr("height", 15).attr("fill", color(key));
-            lg.append("text").attr("x", 22).attr("y", 12).style("font-size", "12px").text(labels[key]);
+            lg.append("text").attr("x", 22).attr("y", 12)
+                .style("font-size", "12px")
+                .style("fill", "var(--color-text-secondary)")
+                .text(labels[key]);
         });
+
+        // 6. NOTE EXPLICATIVE EN BAS
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", height + 80) // Positionné sous l'axe X
+            .attr("text-anchor", "middle")
+            .style("font-size", "var(--font-size-sm)")
+            .style("fill", "var(--color-text-muted)")
+            .style("font-style", "italic")
+            .text("1 Olympic Swimming Pool ≈ 2,500,000 Liters (50m x 25m x 2m)");
     });
 })();
