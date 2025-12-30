@@ -116,8 +116,6 @@
 <!-- Troisième VUE : CONSOMMATION EAU TOTALE----------- -->
 <!-- -------------------------------------------------- -->
 
-
-
     <section class="chapter full-view" id="water-volume-chapter">
         <div class="container">
             <div class="full-content">
@@ -138,7 +136,7 @@
 
 
 <!-- --------------------------------------------------------- -->
-<!-- Quatrième VUE : EVOLUTION CONSO EAU EN FCT HAUSSE T° ---- -->
+<!-- Quatrième VUE : EVOLUTION CONSO EAU / HAUSSE T°      ---- -->
 <!-- --------------------------------------------------------- -->
 
     <section class="chapter" id="water-projection-chapter">
@@ -148,67 +146,135 @@
                 <span class="home-text">Home</span>
             </a>
 
-            <div class="full-content">
-                <h1>Water Efficiency Climate Projection</h1>
-                <p>
-                    As you may have noticed, there is a correlation between temperature 
-                    and Water Usage Efficiencies (both direct and indirect).
-                    According to environemental studies, global warming is expected to see average temperature 
-                    rise between +3 and +6 °C until 2100.
-                </p>
-                <p>
-                    The following map allows you to explore the impact of different temperature increase scenarii
-                    on the Water-usage efficiencies associated with Data Centers.
-                </p>
-            </div>
-
-            <!-- Temperature Control Panel -->
-            <div class="controls-container">
-                <div class="control-panel">
-                    <div class="control-header">
-                        <h3>Climate Projection Control</h3>
-                        <p class="control-description">
-                            Adjust temperature increase to see projected impact on water usage efficiency
+            <header>
+                <div class="header-bar">
+                    <div class="header-title">
+                        <h1>Climate / Water Efficiency Projection</h1>
+                        <p class="subtitle">
+                            Side-by-side comparison of current vs. projected water usage effectiveness
+                            under temperature increase scenarios for African data centers
                         </p>
                     </div>
+                </div>
+            </header>
 
-                    <div class="slider-container">
-                        <div class="slider-header">
-                            <label for="temp-slider">Temperature Increase</label>
-                            <span id="temp-value" class="temp-display">+0.0°C</span>
+            <div class="tabs-navigation">
+                <button class="tab-button active" data-tab="predictive">Climate Impact Projection</button>
+                <button class="tab-button" data-tab="waterfall">Water Savings Potential</button>
+            </div>
+
+            <div class="tab-content active" id="tab-predictive">
+                <div class="controls-container">
+                    <div class="control-panel">
+                        <div class="control-header">
+                            <h3>Climate Projection (Water Usage Efficiency increase)</h3>
+                            <p class="control-description">
+                                WUE measures liters of water consumed per kilowatt-hour of energy.
+                                <strong>Lower values indicate better water efficiency.</strong>
+                            </p>
                         </div>
 
-                        <input
-                            type="range"
-                            id="temp-slider"
-                            min="0"
-                            max="5"
-                            step="0.1"
-                            value="0"
-                            class="temperature-slider"
-                        >
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <div class="slider-displays">
+                                    <span id="total-wue-increase" class="wue-display">+0.0% (0.00 L/kWh)</span>
+                                    <span id="temp-value" class="temp-display">+0.0°C</span>
+                                </div>
+                            </div>
 
-                        <div class="slider-markers">
-                            <span>0°C</span>
-                            <span>+1°C</span>
-                            <span>+2°C</span>
-                            <span>+3°C</span>
-                            <span>+4°C</span>
-                            <span>+5°C</span>
+                            <input
+                                type="range"
+                                id="temp-slider"
+                                min="0"
+                                max="5"
+                                step="0.1"
+                                value="0"
+                                class="temperature-slider"
+                            >
+
+                            <div class="slider-markers">
+                                <span>0°C</span>
+                                <span>+1°C</span>
+                                <span>+2°C</span>
+                                <span>+3°C</span>
+                                <span>+4°C</span>
+                                <span>+5°C</span>
+                            </div>
+                        </div>
+                        <div class="legend-note">
+                            <span class="note-icon">ℹ️</span>
+                            <span>Model: Each +1°C increases WUE by 4% (compound growth)</span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="impact-info">
-                        <span class="info-text">
-                            ℹ️ Model: Each +1°C increases WUE by 4% (linear projection)
-                        </span>
+                <div id="canvas"></div>
+            </div>
+
+            <div class="tab-content" id="tab-waterfall">
+                <div class="controls-container">
+                    <div class="control-panel">
+                        <div class="control-header">
+                            <h3>Cumulative Water Savings Potential</h3>
+                            <p class="control-description">
+                                Shows potential water savings if countries achieved <strong>best-in-climate-region efficiency</strong>.
+                                Each country is compared only to the most efficient country in its own climate zone (Desert, Savanna, Mediterranean, Rainforest, or Steppe).
+                            </p>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <div class="slider-displays">
+                                    <span id="savings-total" class="wue-display">Total Savings: 0 L/kWh</span>
+                                </div>
+                            </div>
+
+                            <input
+                                type="range"
+                                id="efficiency-slider"
+                                min="0"
+                                max="100"
+                                step="1"
+                                value="100"
+                                class="temperature-slider"
+                            >
+
+                            <div class="slider-markers">
+                                <span>0%</span>
+                                <span>25%</span>
+                                <span>50%</span>
+                                <span>75%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div class="legend-note">
+                            <span class="note-icon">ℹ️</span>
+                            <span>Efficiency Target: Percentage of best-in-region efficiency achieved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="waterfall-canvas"></div>
+
+                <div class="waterfall-legend">
+                    <div class="waterfall-legend-item">
+                        <div class="waterfall-legend-color" style="background-color: #2ECC71;"></div>
+                        <span class="waterfall-legend-text">WUE Improvement Savings (Cooling Efficiency)</span>
+                    </div>
+                    <div class="waterfall-legend-item">
+                        <div class="waterfall-legend-color" style="background-color: #E67E22;"></div>
+                        <span class="waterfall-legend-text">Leakage Reduction Savings (Infrastructure)</span>
+                    </div>
+                    <div class="waterfall-legend-item">
+                        <div class="waterfall-legend-color" style="background-color: #3498DB;"></div>
+                        <span class="waterfall-legend-text">Total WUE</span>
                     </div>
                 </div>
             </div>
-
-            <div id="canvas"></div>
         </div>
-    </section>
+
+
+   </section>
 
     <script src="../predictive_maps/main.js"></script>
     

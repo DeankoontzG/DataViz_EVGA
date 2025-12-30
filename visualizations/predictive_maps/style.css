@@ -1,5 +1,58 @@
 /* Predictive Maps - Local Styles */
 
+/* Tabs */
+.tabs-navigation {
+    display: flex;
+    gap: var(--space-8);
+    margin: var(--space-24) 0 var(--space-16) 0;
+    border-bottom: 2px solid rgba(247, 111, 83, 0.2);
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-12) var(--space-24);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+    bottom: -2px;
+}
+
+.tab-button:hover {
+    color: var(--color-text-primary);
+    background-color: rgba(247, 111, 83, 0.05);
+}
+
+.tab-button.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    font-weight: var(--font-weight-semibold);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Control Panel */
 .controls-container {
     width: 100%;
@@ -39,12 +92,6 @@
 
 .slider-header {
     margin-bottom: var(--space-16);
-}
-
-.slider-header label {
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-size-base);
 }
 
 .slider-displays {
@@ -236,71 +283,89 @@
     margin: var(--space-4) 0;
 }
 
-/* Color Legend */
-.legend-container {
+.tooltip-climate {
+    font-size: 0.85em;
+    color: var(--color-text-muted);
+}
+
+.tooltip-wue {
+    color: #2ECC71;
+}
+
+.tooltip-leakage {
+    color: #E67E22;
+}
+
+.tooltip-total {
+    color: var(--color-accent);
+}
+
+.tooltip-detail {
+    font-size: 0.85em;
+}
+
+/* Waterfall Chart */
+#waterfall-canvas {
     width: 100%;
+    margin: var(--space-32) 0;
+    display: flex;
+    justify-content: center;
+}
+
+.waterfall-container {
     background-color: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
     padding: var(--space-24);
     box-shadow: var(--shadow-md);
-    border: 1px solid rgba(247, 111, 83, 0.15);
+    border: 1px solid rgba(247, 111, 83, 0.1);
 }
 
-.legend-description {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    line-height: 1.6;
-    margin: 0 0 var(--space-24) 0;
-    text-align: center;
+.waterfall-container .axis text {
+    fill: var(--color-text-secondary);
+    font-size: 10px;
 }
 
-.legend-description strong {
-    color: var(--color-accent);
+.waterfall-container .axis line,
+.waterfall-container .axis path {
+    stroke: var(--color-text-muted);
 }
 
-.legend-scale {
-    margin-bottom: var(--space-20);
+.waterfall-container .bar,
+.waterfall-container .bar-segment {
+    transition: opacity 0.2s ease;
 }
 
-.legend-gradient {
-    height: 40px;
-    background: linear-gradient(to right, #2ECC71 0%, #F39C12 50%, #E74C3C 100%);
-    border-radius: var(--radius-sm);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-bottom: var(--space-12);
+.waterfall-container .bar:hover,
+.waterfall-container .bar-segment:hover {
+    opacity: 0.8;
 }
 
-.legend-labels {
+.waterfall-legend {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    gap: var(--space-24);
+    justify-content: center;
+    margin-top: var(--space-16);
+    padding: var(--space-12);
+    background-color: rgba(247, 111, 83, 0.05);
+    border-radius: var(--radius-md);
 }
 
-.legend-label-left,
-.legend-label-center,
-.legend-label-right {
-    text-align: center;
-    flex: 1;
+.waterfall-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
 }
 
-.legend-label-left {
-    text-align: left;
+.waterfall-legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #fff;
 }
 
-.legend-label-right {
-    text-align: right;
-}
-
-.legend-labels strong {
-    color: var(--color-text-primary);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-}
-
-.legend-subtext {
-    color: var(--color-text-muted);
+.waterfall-legend-text {
+    color: var(--color-text-secondary);
     font-size: var(--font-size-xs);
-    font-style: italic;
 }
 
 /* Responsive Design */
@@ -320,6 +385,15 @@
 }
 
 @media (max-width: 768px) {
+    .tabs-navigation {
+        margin: var(--space-16) 0;
+    }
+
+    .tab-button {
+        font-size: var(--font-size-sm);
+        padding: var(--space-10) var(--space-16);
+    }
+
     .controls-container {
         margin: var(--space-20) 0;
     }
@@ -353,16 +427,13 @@
         font-size: var(--font-size-base);
     }
 
-    .legend-container {
+    .waterfall-container {
         padding: var(--space-16);
     }
 
-    .legend-description {
-        font-size: var(--font-size-xs);
-    }
-
-    .legend-gradient {
-        height: 30px;
+    .waterfall-legend {
+        flex-direction: column;
+        gap: var(--space-8);
     }
 }
 
