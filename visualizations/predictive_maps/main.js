@@ -1,12 +1,6 @@
-// Predictive Maps Visualization
-// Side-by-side comparison: Current WUE vs Projected WUE with Temperature Increase
-// Water Usage Effectiveness for African Data Centers
-
-// Wait for DOM and D3 to be ready
 function initVisualization() {
     'use strict';
 
-    // Check if D3 is loaded
     if (typeof d3 === 'undefined') {
         console.error('D3.js not loaded!');
         return;
@@ -14,9 +8,7 @@ function initVisualization() {
 
     console.log('Predictive Maps visualization initialized');
 
-    // ============================================
-    // CONFIGURATION
-    // ============================================
+    /* Configuration */
     const config = {
         width: 500,
         height: 500,
@@ -24,18 +16,16 @@ function initVisualization() {
         tempMin: 0,
         tempMax: 5,
         tempStep: 0.1,
-        wueImpactRate: 0.04, // 4% increase per degree Celsius
+        wueImpactRate: 0.04,
         transitionDuration: 200
     };
 
-    // Global state
     let currentTemperature = 0;
     let colorScale = null;
     let geoDataEnriched = null;
+    let totalCurrentWUE = 0;
 
-    // ============================================
-    // PROJECTION SETUP
-    // ============================================
+    /* Projection Setup */
     const projection = d3.geoMercator()
         .center([20, 5])
         .scale(400)
@@ -43,17 +33,14 @@ function initVisualization() {
 
     const path = d3.geoPath().projection(projection);
 
-    // ============================================
-    // DOM ELEMENTS
-    // ============================================
+    /* DOM Elements */
     const canvas = d3.select('#canvas');
 
-    // Left map section
     const leftSection = canvas.append('div')
         .attr('class', 'map-section');
 
     leftSection.append('h3')
-        .text('Current State (2024)');
+        .text('Current State (Average)');
 
     const svgLeft = leftSection.append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
@@ -62,7 +49,6 @@ function initVisualization() {
 
     const mapGroupLeft = svgLeft.append('g');
 
-    // Right map section
     const rightSection = canvas.append('div')
         .attr('class', 'map-section');
 
@@ -76,50 +62,31 @@ function initVisualization() {
 
     const mapGroupRight = svgRight.append('g');
 
-    // Tooltip
     const tooltip = d3.select('body')
         .append('div')
         .attr('class', 'tooltip predictive-tooltip')
         .style('opacity', 0);
 
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
-
-    /**
-     * Parse float value, handling comma decimal separators
-     */
+    /* Helper Functions */
     function parseFloatValue(value) {
         if (!value || value === "") return NaN;
         return +String(value).replace(",", ".");
     }
 
-    /**
-     * Calculate projected WUE based on temperature increase
-     */
     function calculateProjectedWUE(currentWUE, tempIncrease) {
-        return currentWUE * (1 + tempIncrease * config.wueImpactRate);
+        return currentWUE * Math.pow(1 + config.wueImpactRate, tempIncrease);
     }
 
-    /**
-     * Format WUE value for display
-     */
     function formatWUE(value) {
         return value != null && !isNaN(value) ? value.toFixed(2) : 'N/A';
     }
 
-    /**
-     * Calculate percentage change
-     */
     function calculatePercentChange(current, projected) {
         if (!current || current === 0) return 0;
         return ((projected - current) / current * 100).toFixed(1);
     }
 
-    // ============================================
-    // TOOLTIP FUNCTIONS
-    // ============================================
-
+    /* Tooltip Functions */
     function showTooltipLeft(event, d) {
         const data = d.properties.data;
 
@@ -185,19 +152,24 @@ function initVisualization() {
         tooltip.transition().duration(200).style('opacity', 0);
     }
 
-    // ============================================
-    // MAP UPDATE FUNCTION
-    // ============================================
-
+    /* Map Update Function */
     function updateProjectedMap(tempIncrease) {
         currentTemperature = tempIncrease;
 
-        // Update temperature display
         d3.select('#temp-value').text(`+${tempIncrease.toFixed(1)}°C`);
 
-        // Update right map colors
+        const totalProjectedWUE = calculateProjectedWUE(totalCurrentWUE, tempIncrease);
+        const totalIncrease = totalProjectedWUE - totalCurrentWUE;
+        const percentIncrease = totalCurrentWUE > 0
+            ? ((totalIncrease / totalCurrentWUE) * 100).toFixed(1)
+            : 0;
+
+        d3.select('#total-wue-increase').text(
+            `+${percentIncrease}% (${totalIncrease.toFixed(2)} L/kWh)`
+        );
+
         mapGroupRight.selectAll('path.country')
-            .interrupt() // Stop any ongoing transitions
+            .interrupt()
             .transition()
             .duration(config.transitionDuration)
             .attr('fill', d => {
@@ -209,10 +181,7 @@ function initVisualization() {
             });
     }
 
-    // ============================================
-    // DATA LOADING AND PROCESSING
-    // ============================================
-
+    /* Data Loading and Processing */
     Promise.all([
         d3.csv('../../data/exported/country_year_cleaned.csv'),
         d3.json('../shared/custom.geo.json')
@@ -223,12 +192,9 @@ function initVisualization() {
             geoFeatures: geoData.features.length
         });
 
-        // Filter for 2024 baseline data
-        const data2024 = csvData.filter(d => String(d.year) === "2024");
-        console.log('2024 data rows:', data2024.length);
+        console.log('Total data rows:', csvData.length);
 
-        // Calculate Total WUE for each country
-        const processedData = data2024.map(row => {
+        const processedData = csvData.map(row => {
             const wueIndirect = parseFloatValue(row['WUE_Indirect(L/KWh)']);
             const wueDirect = parseFloatValue(row['WUE_FixedApproachDirect(L/KWh)']);
 
@@ -239,23 +205,41 @@ function initVisualization() {
 
             return {
                 country: row.country,
+                year: row.year,
                 wueIndirect: wueIndirect,
                 wueDirect: wueDirect,
                 totalWUE: totalWUE
             };
         });
 
-        // Group by country (take first entry if multiple)
-        const dataByCountry = d3.group(processedData, d => d.country);
+        const dataByCountry = new Map();
+        const grouped = d3.group(processedData, d => d.country);
 
-        // Enrich GeoJSON features with WUE data
+        grouped.forEach((values, country) => {
+            const validIndirect = values.filter(v => !isNaN(v.wueIndirect) && v.wueIndirect > 0).map(v => v.wueIndirect);
+            const validDirect = values.filter(v => !isNaN(v.wueDirect) && v.wueDirect > 0).map(v => v.wueDirect);
+            const validTotal = values.filter(v => !isNaN(v.totalWUE) && v.totalWUE > 0).map(v => v.totalWUE);
+
+            const avgIndirect = validIndirect.length > 0 ? d3.mean(validIndirect) : NaN;
+            const avgDirect = validDirect.length > 0 ? d3.mean(validDirect) : NaN;
+            const avgTotal = validTotal.length > 0 ? d3.mean(validTotal) : NaN;
+
+            dataByCountry.set(country, {
+                country: country,
+                wueIndirect: avgIndirect,
+                wueDirect: avgDirect,
+                totalWUE: avgTotal,
+                dataPointsCount: values.length
+            });
+        });
+
         let matchedCount = 0;
         geoData.features.forEach(feature => {
             const countryName = feature.properties.name_long;
             const countryData = dataByCountry.get(countryName);
 
-            if (countryData && countryData.length > 0) {
-                feature.properties.data = countryData[0];
+            if (countryData && !isNaN(countryData.totalWUE)) {
+                feature.properties.data = countryData;
                 matchedCount++;
             } else {
                 feature.properties.data = null;
@@ -265,10 +249,8 @@ function initVisualization() {
 
         console.log('Country matches:', matchedCount, '/', geoData.features.length);
 
-        // Store enriched data globally
         geoDataEnriched = geoData;
 
-        // Extract valid WUE values for color scale
         const validWUE = geoData.features
             .map(f => f.properties.data?.totalWUE)
             .filter(v => v != null && !isNaN(v) && v > 0);
@@ -285,32 +267,27 @@ function initVisualization() {
             median: d3.median(validWUE)
         });
 
-        // Create color scale
         const minWUE = d3.min(validWUE);
         const maxWUE = d3.max(validWUE);
         const midWUE = d3.median(validWUE);
 
         colorScale = d3.scaleLinear()
             .domain([minWUE, midWUE, maxWUE])
-            .range(['#2ECC71', '#F39C12', '#E74C3C']) // Green → Yellow → Red
+            .range(['#2ECC71', '#F39C12', '#E74C3C'])
             .clamp(true);
 
-        // Draw maps
-        drawMaps(geoData);
+        totalCurrentWUE = validWUE.reduce((sum, wue) => sum + wue, 0);
+        console.log('Total current WUE from all countries:', totalCurrentWUE.toFixed(2), 'L/kWh');
 
-        // Setup slider
+        drawMaps(geoData);
         setupSlider();
 
     }).catch(error => {
         console.error('Error loading data:', error);
     });
 
-    // ============================================
-    // MAP DRAWING
-    // ============================================
-
+    /* Map Drawing */
     function drawMaps(geoData) {
-        // LEFT MAP - Current State
         mapGroupLeft.selectAll('path')
             .data(geoData.features)
             .join('path')
@@ -326,7 +303,6 @@ function initVisualization() {
             .on('mousemove', (event, d) => showTooltipLeft(event, d))
             .on('mouseout', hideTooltip);
 
-        // RIGHT MAP - Projected State (initially at 0°C, same as left)
         mapGroupRight.selectAll('path')
             .data(geoData.features)
             .join('path')
@@ -335,7 +311,7 @@ function initVisualization() {
             .attr('fill', d => {
                 const wue = d.properties.data?.totalWUE;
                 if (!wue || isNaN(wue) || wue <= 0) return '#ccc';
-                return colorScale(wue); // Initially same as left (0°C)
+                return colorScale(wue);
             })
             .attr('stroke', '#ffffff')
             .attr('stroke-width', '1px')
@@ -345,10 +321,7 @@ function initVisualization() {
         console.log('Maps rendered successfully');
     }
 
-    // ============================================
-    // SLIDER SETUP
-    // ============================================
-
+    /* Slider Setup */
     function setupSlider() {
         const slider = d3.select('#temp-slider');
 
@@ -367,10 +340,8 @@ function initVisualization() {
 
 }
 
-// Execute when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initVisualization);
 } else {
-    // DOM already loaded
     initVisualization();
 }
