@@ -3,146 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predictive Maps - African Data Centers</title>
+    <meta http-equiv="refresh" content="0; url=../storytelling/#water-projection-chapter">
+    <title>Redirecting to Storytelling...</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/style.css" />
-    <link rel="stylesheet" href="style.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .redirect-container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .redirect-container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .redirect-container p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .redirect-link {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .redirect-link:hover {
+            background: #e55a2b;
+        }
+
+        .spinner {
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <a href="../../index.html" class="home-button">
-            <span class="home-icon"></span>
-            <span class="home-text">Home</span>
-        </a>
-
-        <header>
-            <div class="header-bar">
-                <div class="header-title">
-                    <h1>Water Efficiency Climate Projection</h1>
-                    <p class="subtitle">
-                        Side-by-side comparison of current vs. projected water usage effectiveness
-                        under temperature increase scenarios for African data centers
-                    </p>
-                </div>
-            </div>
-        </header>
-
-        <div class="tabs-navigation">
-            <button class="tab-button active" data-tab="predictive">Climate Impact Projection</button>
-            <button class="tab-button" data-tab="waterfall">Water Savings Potential</button>
-        </div>
-
-        <div class="tab-content active" id="tab-predictive">
-            <div class="controls-container">
-                <div class="control-panel">
-                    <div class="control-header">
-                        <h3>Climate Projection (Water Usage Efficiency increase)</h3>
-                        <p class="control-description">
-                            WUE measures liters of water consumed per kilowatt-hour of energy.
-                            <strong>Lower values indicate better water efficiency.</strong>
-                        </p>
-                    </div>
-
-                    <div class="slider-container">
-                        <div class="slider-header">
-                            <div class="slider-displays">
-                                <span id="total-wue-increase" class="wue-display">+0.0% (0.00 L/kWh)</span>
-                                <span id="temp-value" class="temp-display">+0.0°C</span>
-                            </div>
-                        </div>
-
-                        <input
-                            type="range"
-                            id="temp-slider"
-                            min="0"
-                            max="5"
-                            step="0.1"
-                            value="0"
-                            class="temperature-slider"
-                        >
-
-                        <div class="slider-markers">
-                            <span>0°C</span>
-                            <span>+1°C</span>
-                            <span>+2°C</span>
-                            <span>+3°C</span>
-                            <span>+4°C</span>
-                            <span>+5°C</span>
-                        </div>
-                    </div>
-                    <div class="legend-note">
-                        <span class="note-icon">ℹ️</span>
-                        <span>Model: Each +1°C increases WUE by 4% (compound growth)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="canvas"></div>
-        </div>
-
-        <div class="tab-content" id="tab-waterfall">
-            <div class="controls-container">
-                <div class="control-panel">
-                    <div class="control-header">
-                        <h3>Cumulative Water Savings Potential</h3>
-                        <p class="control-description">
-                            Shows potential water savings if countries achieved <strong>best-in-climate-region efficiency</strong>.
-                            Each country is compared only to the most efficient country in its own climate zone (Desert, Savanna, Mediterranean, Rainforest, or Steppe).
-                        </p>
-                    </div>
-
-                    <div class="slider-container">
-                        <div class="slider-header">
-                            <div class="slider-displays">
-                                <span id="savings-total" class="wue-display">Total Savings: 0 L/kWh</span>
-                            </div>
-                        </div>
-
-                        <input
-                            type="range"
-                            id="efficiency-slider"
-                            min="0"
-                            max="100"
-                            step="1"
-                            value="100"
-                            class="temperature-slider"
-                        >
-
-                        <div class="slider-markers">
-                            <span>0%</span>
-                            <span>25%</span>
-                            <span>50%</span>
-                            <span>75%</span>
-                            <span>100%</span>
-                        </div>
-                    </div>
-                    <div class="legend-note">
-                        <span class="note-icon">ℹ️</span>
-                        <span>Efficiency Target: Percentage of best-in-region efficiency achieved</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="waterfall-canvas"></div>
-
-            <div class="waterfall-legend">
-                <div class="waterfall-legend-item">
-                    <div class="waterfall-legend-color" style="background-color: #2ECC71;"></div>
-                    <span class="waterfall-legend-text">WUE Improvement Savings (Cooling Efficiency)</span>
-                </div>
-                <div class="waterfall-legend-item">
-                    <div class="waterfall-legend-color" style="background-color: #E67E22;"></div>
-                    <span class="waterfall-legend-text">Leakage Reduction Savings (Infrastructure)</span>
-                </div>
-                <div class="waterfall-legend-item">
-                    <div class="waterfall-legend-color" style="background-color: #3498DB;"></div>
-                    <span class="waterfall-legend-text">Total WUE</span>
-                </div>
-            </div>
-        </div>
+    <div class="redirect-container">
+        <h1>Redirecting...</h1>
+        <p>The Predictive Maps visualization has been integrated into the Storytelling page.</p>
+        <div class="spinner"></div>
+        <p>If you're not redirected automatically, <a href="../storytelling/#water-projection-chapter" class="redirect-link">click here</a>.</p>
     </div>
 
-    <script src="main.js"></script>
+    <script>
+        // Fallback redirect in case meta refresh doesn't work
+        setTimeout(function() {
+            window.location.href = '../storytelling/#water-projection-chapter';
+        }, 100);
+    </script>
 </body>
 </html>
