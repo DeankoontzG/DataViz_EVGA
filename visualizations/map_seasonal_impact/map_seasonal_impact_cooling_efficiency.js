@@ -15,6 +15,8 @@
 
     const svg = d3.select("#map-holder").append("svg").attr("viewBox", `0 0 ${width} ${height}`);
     const g = svg.append("g");
+    const legendGroup = svg.append("g")
+        .attr("transform", `translate(50, ${height - 80})`);
 
     const projection = d3.geoMercator()
         .center([15, 10]) 
@@ -53,11 +55,17 @@
         });
 
         const allMeans = geoJson.features.flatMap(f => Object.values(f.properties.averages)).filter(v => v != null);
-        colorScale.domain([d3.min(allMeans) * 0.95, d3.max(allMeans)]);
+        const minVal = d3.min(allMeans) * 0.95;
+        const maxVal = d3.max(allMeans);
+        colorScale.domain([minVal, maxVal]);
 
         geoDataGlobal = geoJson;
+        
+        // Draw color legend
+        drawColorLegend(minVal, maxVal);
+        
         initControls();
-        updateMap(1); 
+        updateMap(1);
     });
 
     function initControls() {
@@ -124,5 +132,67 @@
                 const val = d.properties.averages[monthNum];
                 return (val != null) ? colorScale(val) : colorNoData;
             });
+    }
+
+    function drawColorLegend(minVal, maxVal) {
+        legendGroup.selectAll("*").remove();
+
+        const legendWidth = 300;
+        const legendHeight = 15;
+        const tickCount = 5;
+
+        // Create gradient
+        const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
+        defs.selectAll("#seasonal-legend-gradient").remove();
+        
+        const gradient = defs.append("linearGradient")
+            .attr("id", "seasonal-legend-gradient")
+            .attr("x1", "0%")
+            .attr("x2", "100%");
+
+        // Add color stops
+        const stops = d3.range(0, 1.01, 0.01);
+        gradient.selectAll("stop")
+            .data(stops)
+            .join("stop")
+            .attr("offset", d => `${d * 100}%`)
+            .attr("stop-color", d => colorScale(minVal + d * (maxVal - minVal)));
+
+        // Draw legend rectangle
+        legendGroup.append("rect")
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            .style("fill", "url(#seasonal-legend-gradient)")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 1);
+
+        // Add scale
+        const legendScale = d3.scaleLinear()
+            .domain([minVal, maxVal])
+            .range([0, legendWidth]);
+
+        const legendAxis = d3.axisBottom(legendScale)
+            .ticks(tickCount)
+            .tickFormat(d => d.toFixed(2));
+
+        legendGroup.append("g")
+            .attr("transform", `translate(0, ${legendHeight})`)
+            .call(legendAxis)
+            .selectAll("text")
+            .attr("fill", "#ccc")
+            .style("font-size", "11px");
+
+        legendGroup.selectAll(".domain, .tick line")
+            .attr("stroke", "#ccc");
+
+        // Add label
+        legendGroup.append("text")
+            .attr("x", legendWidth / 2)
+            .attr("y", -8)
+            .attr("text-anchor", "middle")
+            .attr("fill", "#ccc")
+            .style("font-size", "12px")
+            .style("font-weight", "500")
+            .text("WUE (L/kWh)");
     }
 })();
