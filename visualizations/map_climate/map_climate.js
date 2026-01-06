@@ -91,10 +91,23 @@
             .attr("stroke", "#fff").attr("stroke-width", 0.5)
             .on("mousemove", (e, d) => {
                 const val = countryMeans.get(d.properties.name_long);
-                tooltip.style("opacity", 1) // On utilise l'opacité au lieu de la classe hidden
+                let displayVal = "N/D";
+                let displayUnit = units[currentDim];
+
+                if (val !== undefined && isFinite(val)) {
+                    // Condition spécifique pour les précipitations
+                    if (currentDim === "precipitation") {
+                        displayVal = (val * 12).toFixed(0); // Multiplié par 12 pour l'année
+                        displayUnit = "mm/year";           // Changement d'unité
+                    } else {
+                        displayVal = val.toFixed(1);
+                    }
+                }
+
+                tooltip.style("opacity", 1)
                     .style("left", (e.pageX + 15) + "px")
                     .style("top", (e.pageY - 20) + "px")
-                    .html(`<strong>${d.properties.name_long}</strong><br>${currentDim}: ${val ? val.toFixed(1) : "N/D"} ${units[currentDim]}`);
+                    .html(`<strong>${d.properties.name_long}</strong><br>${currentDim.replace("_", " ")}: ${displayVal} ${displayUnit}`);
             })
             .on("mouseout", () => {
                 tooltip.style("opacity", 0); // On cache par l'opacité
