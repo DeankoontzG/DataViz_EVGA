@@ -61,7 +61,7 @@
 
         geoDataGlobal = geoJson;
         
-        // Draw color legend
+        // Legende de couleurt
         drawColorLegend(minVal, maxVal);
         
         initControls();
@@ -141,7 +141,7 @@
         const legendHeight = 15;
         const tickCount = 5;
 
-        // Create gradient
+        // Créé le gradient
         const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
         defs.selectAll("#seasonal-legend-gradient").remove();
         
@@ -150,7 +150,7 @@
             .attr("x1", "0%")
             .attr("x2", "100%");
 
-        // Add color stops
+        // Stop de couleurs
         const stops = d3.range(0, 1.01, 0.01);
         gradient.selectAll("stop")
             .data(stops)
@@ -158,7 +158,7 @@
             .attr("offset", d => `${d * 100}%`)
             .attr("stop-color", d => colorScale(minVal + d * (maxVal - minVal)));
 
-        // Draw legend rectangle
+        // Rectangle de légende
         legendGroup.append("rect")
             .attr("width", legendWidth)
             .attr("height", legendHeight)
@@ -166,7 +166,7 @@
             .attr("stroke", "#fff")
             .attr("stroke-width", 1);
 
-        // Add scale
+        // Echelle
         const legendScale = d3.scaleLinear()
             .domain([minVal, maxVal])
             .range([0, legendWidth]);
@@ -185,7 +185,7 @@
         legendGroup.selectAll(".domain, .tick line")
             .attr("stroke", "#ccc");
 
-        // Add label
+        // Labels
         legendGroup.append("text")
             .attr("x", legendWidth / 2)
             .attr("y", -8)

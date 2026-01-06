@@ -25,7 +25,7 @@
         humidity: d3.scaleSequential(d3.interpolateGnBu),
         precipitation: d3.scaleSequential(d3.interpolateBlues),
         wind_speed: d3.scaleSequential(d3.interpolateGreens),
-        // 1) Inversion des couleurs pour wetbulb_temperature
+        // Inversion des couleurs pour wetbulb_temperature
         wetbulb_temperature: d3.scaleSequential(t => d3.interpolateWarm(1 - t))
     };
 
@@ -81,7 +81,7 @@
         const maxVal = d3.max(values);
         const scale = colorScales[currentDim].domain([minVal, maxVal]);
 
-        // Update color legend
+        // MAJ de la légende de couleurs
         updateColorLegend(scale, minVal, maxVal, currentDim);
 
         mapGroup.selectAll("path")
@@ -97,7 +97,7 @@
                 if (val !== undefined && isFinite(val)) {
                     // Condition spécifique pour les précipitations
                     if (currentDim === "precipitation") {
-                        displayVal = (val * 12).toFixed(0); // Multiplié par 12 pour l'année
+                        displayVal = (val * 12).toFixed(0); // Multiplié par 12 pour moyenne annuelle plus parlante que mensuelle
                         displayUnit = "mm/year";           // Changement d'unité
                     } else {
                         displayVal = val.toFixed(1);
@@ -148,7 +148,7 @@
                 d3.max([...countryData, ...africaAverages], d => d.val) * 1.1
             ]).nice().range([chartH, 0]);
 
-        // 2) Axes avec unités et mois en texte
+        // Axes avec unités et mois en texte
         chartGroup.append("g")
             .attr("transform", `translate(0,${chartH})`)
             .call(d3.axisBottom(x).ticks(12).tickFormat(d => monthNamesShort[d-1]))
@@ -184,7 +184,7 @@
             .attr("fill", "none").attr("stroke", "#08306b").attr("stroke-width", 3)
             .attr("d", lineGenerator);
 
-        // 3) Ajout des points et hover
+        // Ajout des points et hover
         chartGroup.selectAll(".dot")
             .data(countryData.filter(d => isFinite(d.val)))
             .join("circle")
@@ -268,7 +268,7 @@
         const legendHeight = 15;
         const tickCount = 5;
 
-        // Create gradient
+        // Créé le gradient
         const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
         defs.selectAll("linearGradient").remove();
         
@@ -277,7 +277,7 @@
             .attr("x1", "0%")
             .attr("x2", "100%");
 
-        // Add color stops
+        // Couleur arrêts
         const stops = d3.range(0, 1.01, 0.01);
         gradient.selectAll("stop")
             .data(stops)
@@ -285,7 +285,7 @@
             .attr("offset", d => `${d * 100}%`)
             .attr("stop-color", d => scale(minVal + d * (maxVal - minVal)));
 
-        // Draw legend rectangle
+        // Rectangle de légende
         legendGroup.append("rect")
             .attr("width", legendWidth)
             .attr("height", legendHeight)
@@ -293,7 +293,7 @@
             .attr("stroke", "#fff")
             .attr("stroke-width", 1);
 
-        // Add scale
+        // Echelle
         const legendScale = d3.scaleLinear()
             .domain([minVal, maxVal])
             .range([0, legendWidth]);
@@ -312,7 +312,7 @@
         legendGroup.selectAll(".domain, .tick line")
             .attr("stroke", "#ccc");
 
-        // Add label
+        // Labels
         legendGroup.append("text")
             .attr("x", legendWidth / 2)
             .attr("y", -8)

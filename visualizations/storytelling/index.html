@@ -79,21 +79,25 @@
     <section class="chapter climate" id="climate-context">
         <div class="container"> 
             <div class="full-content">
-                <h1>Climate Context</h1>
-                <p style="margin-top: 30px; margin-bottom: 20px;">
-                    Before analyzing the energy impact, it is essential to understand the climatic constraints 
-                    to which infrastructures are subjected (temperature, humidity, water scarcity).
-                </p>
+                <h1 style="text-align: center">Climate Context</h1>
 
-                <p style="margin-bottom: 30px;"> 
+                <p style="margin-top: 20px; margin-bottom: 20px;"> 
                     <a href="https://arxiv.org/abs/2412.03716" 
                         target="_blank" 
                         style="color: #ffcc00; font-weight: bold; text-decoration: underline;">
                         The study 
                     </a>
-                    performed by the authors of the Dataset (N. Shumba, O. Tshekiso, P. Li, G. Fanti, S. Ren) has proven,
+                    performed by the authors of the Dataset (N. Shumba, O. Tshekiso, P. Li, G. Fanti, S. Ren) has proven that
                     there are many correlations between climate and energy and water consumptions.
                 </p>
+
+                <p style="margin-bottom: 30px;">
+                    Before analyzing the energy impact, it is therefore essential to understand the climatic constraints 
+                    to which infrastructures are subjected (temperature, humidity, water scarcity). 
+                    As you might realize while exploring the data, Africa's geography is defined by its vast diversity of climates, 
+                    many of which are extreme.
+                </p>
+
                 <div class="control-group dashboard-card"> 
                     <label for="climate-select">Visualize data: </label>
                     <select id="climate-select">
@@ -114,23 +118,123 @@
     <script src="../map_climate/map_climate.js"></script>
 
 <!-- -------------------------------------------------- -->
-<!-- DEUXIEME VUE : CONSOMMATION EAU VS MOIS DE L'ANNEE -->
+<!-- Deuxième vue : TOTAL ENERGY CONSUMPTION BAR CHART  -->
+<!-- -------------------------------------------------- -->
+
+    <section class="chapter full-view" id="energy-volume-chapter">
+        <div class="container">
+            <div class="full-content">
+                <h1 style="text-align: center">Energy Consumption of Data Centers</h1>
+                <p style="margin-bottom: 30px;"></p>
+
+                <h2>Total energy consumption of data‑center host countries</h2>
+                <p style="margin-top: 20px;">
+                    This chart shows the <strong>top 10 countries</strong> by total energy consumption (TWh) in 2023.
+                    It complements the previous view by focusing only on energy, without converting it into water volume.
+                </p>
+            </div>
+            <div class="full-viz">
+                <div id="energy-volume-bar-holder"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../total_water_volume/chart_energy_volume.js"></script>
+
+<!-- -------------------------------------------------- -->
+<!-- Troisième VUE : ENERGY MIX PAR PAYS ---- -->
+<!-- -------------------------------------------------- -->
+
+    <section class="chapter" id="energy-mix-chapter">
+        <div class="container">
+            <div class="full-content">
+                <h1>Energy mix by country</h1>
+                <p>
+                    Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
+                </p>
+            </div>
+
+            <div id="controls">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="yearSelectBar">Year</label>
+                        <select id="yearSelectBar"></select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="regionSelectBar">Climate region</label>
+                        <select id="regionSelectBar">
+                            <option value="all">All regions</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="sortMetric">Sort by</label>
+                        <select id="sortMetric">
+                            <option value="total">Total energy (TWh)</option>
+                            <option value="coal">Coal share (%)</option>
+                            <option value="oil">Oil share (%)</option>
+                            <option value="gas">Gas share (%)</option>
+                            <option value="lowCarbon">Low‑carbon share (%)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="displayMode">Display</label>
+                        <select id="displayMode">
+                            <option value="all">All countries</option>
+                            <option value="top5">Top 5 (by selected metric)</option>
+                            <option value="top10" selected>Top 10 (by selected metric)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="stats"></div>
+
+            <div id="chart-container">
+                <div id="chart-bar-scroll">
+                    <div id="chart-bar"></div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 Tip:</strong>
+                All bars have the same height (100% of the energy mix).
+                Use <strong>Climate region</strong> to filter the countries,
+                <strong>Sort by</strong> to order by a specific share, and
+                <strong>Display</strong> to focus on Top 5 or Top 10.
+                Hover a bar to see both percentages and absolute TWh.
+            </div>
+        </div>
+    </section>
+
+    <script src="../energy_mix/main.js"></script>
+
+<!-- -------------------------------------------------- -->
+<!-- Quatrième VUE : CONSOMMATION EAU VS MOIS DE L'ANNEE -->
 <!-- -------------------------------------------------- -->
 
     <section class="chapter climate" id="water-consumption-intro">
         <div class="container">
-            <header>
-                <div class="header-bar">
-                    <div class="header-title">
-                        <h1>Water Consumption of Data Centers</h1>
-                        <p>
-                            Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
+             <div class="full-content">
+                <h1 style="text-align: center">Water Consumption of Data Centers</h1>
+
+                <p style="margin-top: 20px; margin-bottom: 20px;"> 
+                    Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
                             <strong>everyday usage</strong> for restrooms, landscaping, staff needs, and especially the
                             <strong>energy production</strong> required for their operation.
-                        </p>
-                    </div>
-                </div>
-            </header>
+                            Often forgotten, it is yet a primary component of their environmental impact.
+                </p>
+
+                <p style="margin-top: 20px; margin-bottom: 20px;"> 
+                    While infrastructure needs are constant, the environment is not.
+                    In Africa, where climate extremes are the norm, these factors combine to create a high-stakes water trade-off. 
+                    To help understand its true impact, we must look beyond annual totals and examine how the environment dictates
+                    the 'thirst' of a Data Center month by month.
+                </p>
+
+            </div>
         </div>
     </section>
 
@@ -139,7 +243,7 @@
             <div class="content-side">
                 <div class="sticky-text">
                     <h2>Understanding Seasonality</h2>
-                    <h3>How climate affects water usage</h3>
+                    <h3>How climate affects water efficiency</h3>
                     <p>
                         The efficiency of water used directly for cooling (WUE "Cold Water") 
                         is not constant. It varies according to local climatic conditions. 
@@ -150,7 +254,7 @@
                         <li><strong>Winter Stability:</strong> Cold periods show optimal efficiency (lower values).</li>
                     </ul>
                     <p class="instruction">
-                        Use the <strong>Play</strong> button to observe the thermal "breath" of infrastructures across the world.
+                        Use the <strong>Play</strong> button to observe the thermal "breath" of infrastructures across Africa.
                     </p>
                 </div>
             </div>
@@ -171,17 +275,23 @@
     <script src="../map_seasonal_impact/map_seasonal_impact_cooling_efficiency.js"></script>
 
 <!-- -------------------------------------------------- -->
-<!-- Troisième VUE : CONSOMMATION EAU TOTALE----------- -->
+<!-- Conquième VUE : CONSOMMATION EAU TOTALE----------- -->
 <!-- -------------------------------------------------- -->
 
     <section class="chapter full-view" id="water-volume-chapter">
         <div class="container">
             <div class="full-content">
                 <h2>Associated water consumption (estimated)</h2>
-                <p>
-                    By aggregating efficiency (WUE) and total energy consumption,,
+                <p style="margin-top: 20px; margin-bottom: 20px;">
+                    By aggregating efficiency (WUE) and total energy consumption,
                     we are able to estimate the annual volume of water used.
-                    Here are the 10 countries consuming the most water.
+                    The following graph displays the total amount of water consumed by
+                    the top 10 consumming countries, related to their Data Center activities only.
+                </p>
+
+                <p style="margin-bottom: 20px;">
+                    To put these figures into perspective, 1000 swimming pools of water represent 
+                    the annual water consumption of a European town of 45,000 inhabitants for domestic use.
                 </p>
             </div>
             <div class="full-viz">
@@ -192,30 +302,9 @@
 
     <script src="../total_water_volume/chart_water_volume.js"></script>
 
-    <!-- -------------------------------------------------- -->
-    <!-- NEW VIEW : TOTAL ENERGY CONSUMPTION BAR CHART  -->
-    <!-- -------------------------------------------------- -->
-
-    <section class="chapter full-view" id="energy-volume-chapter">
-        <div class="container">
-            <div class="full-content">
-                <h2>Total energy consumption of data‑center host countries</h2>
-                <p>
-                    This chart shows the <strong>top 10 countries</strong> by total energy consumption (TWh) in 2023.
-                    It complements the previous view by focusing only on energy, without converting it into water volume.
-                </p>
-            </div>
-            <div class="full-viz">
-                <div id="energy-volume-bar-holder"></div>
-            </div>
-        </div>
-    </section>
-
-    <script src="../total_water_volume/chart_energy_volume.js"></script>
-
 
 <!-- --------------------------------------------------------- -->
-<!-- Quatrième VUE : EVOLUTION CONSO EAU / HAUSSE T°      ---- -->
+<!-- Sixième VUE : EVOLUTION CONSO EAU / HAUSSE T°      ---- -->
 <!-- --------------------------------------------------------- -->
 
     <section class="chapter" id="water-projection-chapter">
@@ -352,76 +441,6 @@
 
     <script src="../predictive_maps/main.js"></script>
     
-
-<!-- -------------------------------------------------- -->
-<!-- Sixième VUE : ENERGY MIX PAR PAYS ---- -->
-<!-- -------------------------------------------------- -->
-
-    <section class="chapter" id="energy-mix-chapter">
-        <div class="container">
-            <div class="full-content">
-                <h1>Energy mix by country</h1>
-                <p>
-                    Each bar shows the percentage share of coal, oil, gas and low‑carbon sources in the energy mix
-                </p>
-            </div>
-
-            <div id="controls">
-                <div class="control-row">
-                    <div class="control-group">
-                        <label for="yearSelectBar">Year</label>
-                        <select id="yearSelectBar"></select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="regionSelectBar">Climate region</label>
-                        <select id="regionSelectBar">
-                            <option value="all">All regions</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="sortMetric">Sort by</label>
-                        <select id="sortMetric">
-                            <option value="total">Total energy (TWh)</option>
-                            <option value="coal">Coal share (%)</option>
-                            <option value="oil">Oil share (%)</option>
-                            <option value="gas">Gas share (%)</option>
-                            <option value="lowCarbon">Low‑carbon share (%)</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="displayMode">Display</label>
-                        <select id="displayMode">
-                            <option value="all">All countries</option>
-                            <option value="top5">Top 5 (by selected metric)</option>
-                            <option value="top10" selected>Top 10 (by selected metric)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div id="stats"></div>
-
-            <div id="chart-container">
-                <div id="chart-bar-scroll">
-                    <div id="chart-bar"></div>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <strong>💡 Tip:</strong>
-                All bars have the same height (100% of the energy mix).
-                Use <strong>Climate region</strong> to filter the countries,
-                <strong>Sort by</strong> to order by a specific share, and
-                <strong>Display</strong> to focus on Top 5 or Top 10.
-                Hover a bar to see both percentages and absolute TWh.
-            </div>
-        </div>
-    </section>
-
-    <script src="../energy_mix/main.js"></script>
 
     <script>
         // Side navigation active state tracking
