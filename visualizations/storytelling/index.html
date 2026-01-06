@@ -17,6 +17,19 @@
         <span class="home-text">Home</span>
     </a>
 
+    <nav class="side-nav">
+        <div class="side-nav-header">Sections</div>
+        <ul class="side-nav-list">
+            <li><a href="#climate-context" class="side-nav-link">Climate Context</a></li>
+            <li><a href="#water-consumption-intro" class="side-nav-link">Water Consumption</a></li>
+            <li><a href="#seasonality-chapter" class="side-nav-link">Seasonality</a></li>
+            <li><a href="#water-volume-chapter" class="side-nav-link">Water Volume</a></li>
+            <li><a href="#water-projection-chapter" class="side-nav-link">Climate Projection</a></li>
+            <li><a href="#energy-chapter" class="side-nav-link">Energy Consumption</a></li>
+            <li><a href="#energy-mix-chapter" class="side-nav-link">Energy Mix</a></li>
+        </ul>
+    </nav>
+
     <div id="tooltip" class="tooltip" style="opacity: 0; position: absolute; z-index: 9999;"></div>
 
     <header class="main-header">
@@ -373,6 +386,35 @@
 
     <script src="../energy_mix/main.js"></script>
 
+    <script>
+        // Side navigation active state tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.chapter');
+            const navLinks = document.querySelectorAll('.side-nav-link');
+            
+            function updateActiveLink() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        });
+    </script>
 
 </body>
 </html>
