@@ -503,6 +503,8 @@ option {
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(247, 111, 83, 0.1);
     transition: all 0.3s ease;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .map-section:hover {
@@ -523,6 +525,9 @@ option {
 .map-section svg {
     display: block;
     margin: 0 auto;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
 }
 
 .country {

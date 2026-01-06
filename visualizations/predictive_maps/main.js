@@ -58,8 +58,9 @@ function initVisualization() {
 
     const svgLeft = leftSection.append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
-        .attr('width', '100%')
-        .attr('height', '100%');
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style('width', '100%')
+        .style('height', 'auto');
 
     const mapGroupLeft = svgLeft.append('g');
 
@@ -71,8 +72,9 @@ function initVisualization() {
 
     const svgRight = rightSection.append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
-        .attr('width', '100%')
-        .attr('height', '100%');
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style('width', '100%')
+        .style('height', 'auto');
 
     const mapGroupRight = svgRight.append('g');
 
@@ -355,8 +357,9 @@ function initWaterfallChart() {
     const svg = d3.select('.waterfall-container')
         .append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
-        .attr('width', '100%')
-        .attr('height', '100%');
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style('width', '100%')
+        .style('height', 'auto');
 
     const chartGroup = svg.append('g')
         .attr('transform', `translate(${config.margin.left},${config.margin.top})`);
