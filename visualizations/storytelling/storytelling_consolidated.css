@@ -172,7 +172,8 @@ h1, h2, h3 {
 #map-holder, 
 #climate-map-holder, 
 #energy-map-holder, 
-#water-volume-bar-holder {
+#water-volume-bar-holder,
+#energy-volume-bar-holder {
     width: 100%;
     min-height: 550px;
     display: block;
