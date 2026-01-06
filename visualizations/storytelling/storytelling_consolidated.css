@@ -5,16 +5,18 @@
 /* SIDE NAVIGATION */
 .side-nav {
     position: fixed;
-    right: 20px;
+    right: 10.5%;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(50%, -50%);
     z-index: 999;
     background: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
     padding: var(--space-16) var(--space-12);
     border: 1px solid rgba(247, 111, 83, 0.2);
     box-shadow: var(--shadow-lg);
-    max-width: 180px;
+    width: 15vw !important;
+    max-width: 180px !important;
+    min-width: 200px;
     transition: all 0.3s ease;
 }
 
@@ -99,13 +101,16 @@
 }
 
 .chapter .container {
-    max-width: 1200px !important;
-    width: 100% !important;
+    width: 80% !important; 
+    max-width: none !important;
     min-height: auto !important;
     justify-content: flex-start !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
+    padding-left: 50px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
 }
 
 /* SPLIT-VIEW (45/55) */
@@ -137,23 +142,30 @@
 }
 
 /* HEADERS */
-header { 
-    margin: 0 0 var(--space-12) 0 !important; 
+header {
+    margin: 0 0 var(--space-12) 0 !important;
+    width: 80% !important;
 }
 
-.header-bar { 
-    justify-content: center; 
+.header-bar {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    display: flex;
+    margin-left: 0 !important;
+    padding-left: 50px !important;
+    box-sizing: border-box !important;
 }
 
 .header-title { 
-    text-align: center; 
-    margin: 0 !important; 
+    text-align: left !important;
+    margin: 0 !important;
 }
 
 h1, h2, h3 { 
     margin-top: 0 !important; 
     margin-bottom: var(--space-8) !important;
     line-height: 1.1 !important; 
+    text-align: left !important; 
 }
 
 /* VISUALIZATION CONTAINERS */
@@ -517,7 +529,7 @@ option {
     color: var(--color-text-primary);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
-    text-align: center;
+    text-align: left;
     padding-bottom: var(--space-12);
     border-bottom: 1px solid rgba(247, 111, 83, 0.1);
 }
