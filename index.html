@@ -1,167 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>African DC Water</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate & Water Impact - African Countries</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Fonts -->
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="style/style.css" />
-  </head>
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
 
-  <body>
-    <div class="container">
-      <!-- Header -->
-      <header>
-        <div class="header-bar">
-          <div class="header-title">
-            <h1>Water efficiency in African data centers</h1>
-            <p class="subtitle">
-              This project explores how energy mix, climate conditions and water usage efficiency interact in African data centers, 
-              using interactive dashboards to reveal environmental trade‑offs and highlight more sustainable infrastructure choices.
-            </p>
-          </div>
-        </div>
-      </header>
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
 
-      <main>
-        <!-- Info / intro -->
-        <section class="info-box">
-          <p>
-            This mini-suite of dashboards lets you move from high-level country
-            summaries to detailed seasonal dynamics and energy mix evolution.
-            Each view reuses the same data backbone for consistent comparisons.
-          </p>
-        </section>
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
 
-        <!-- Dashboards grid -->
-        <section class="dashboard-grid">
-          <article class="dashboard-card" data-target="visualizations/country_year/">
-            <div class="dashboard-card-image">
-              <img
-                src="visualizations/shared/images/placeholder.png"
-                alt="Preview of country year dashboard"
-              />
-            </div>
-            <h2>Country / Year overview</h2>
-            <p>
-              Aggregated metrics per country and year, combining climate,
-              water-efficiency and energy indicators.
-            </p>
-            <a href="visualizations/country_year/" class="primary-link">
-              Open dashboard →
-            </a>
-          </article>
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
-          <article class="dashboard-card" data-target="visualizations/country_month/">
-            <div class="dashboard-card-image">
-              <img
-                src="visualizations/shared/images/placeholder.png"
-                alt="Preview of country month dashboard"
-              />
-            </div>
-            <h2>Monthly time series</h2>
-            <p>
-              Monthly time series per country, tracking seasonal dynamics in
-              weather conditions and energy usage.
-            </p>
-            <a href="visualizations/country_month/" class="primary-link">
-              Open dashboard →
-            </a>
-          </article>
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-          <article class="dashboard-card" data-target="visualizations/storytelling/">
-            <div class="dashboard-card-image">
-              <img
-                src="visualizations/shared/images/placeholder.png"
-                alt="Story telling part, in progress"
-              />
-            </div>
-            <h2>Storytelling</h2>
-            <p>
-              Storytelling dashboarsd illustrating climate of african countries and seasonal impacts on water (in progress)
-            </p>
-            <a href="visualizations/storytelling/" class="primary-link">
-              Open dashboard →
-            </a>
-          </article>
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+        }
 
-          <article class="dashboard-card" data-target="visualizations/predictive_maps/">
-            <div class="dashboard-card-image">
-              <img
-                src="visualizations/shared/images/placeholder.png"
-                alt="in progress"
-              />
-            </div>
-            <h2>Predictive Maps</h2>
-            <p>
-              (in progress)
-            </p>
-            <a href="visualizations/predictive_maps/" class="primary-link">
-              Open dashboard →
-            </a>
-          </article>
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
+        .stick-figure {
+            width: 120px;
+            height: 120px;
+        }
 
-          <article class="dashboard-card" data-target="visualizations/energy_mix/">
-            <div class="dashboard-card-image">
-              <img
-                src="visualizations/energy_mix/images/placeholder.png"
-                alt="Preview of stacked area energy mix dashboard"
-              />
-            </div>
-            <h2>Energy mix (stacked)</h2>
-            <p>
-              Stacked bar chart showing the percentage share of coal, oil, gas and
-              low‑carbon sources by country, with filters by year, climate region, sort
-              metric and Top 10.
-            </p>
-            <a href="visualizations/energy_mix/" class="primary-link">
-              Open dashboard →
-            </a>
-          </article>
-        </section>
-      </main>
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-      <footer class="site-footer">
-        <p>
-          Project contributors:<br />
-          <em>Edgar Demeude, Ghuilhem Dupuy, Vu Anh Duy, Vincent Joulain</em>
-        </p>
-      </footer>
-      
-    </div>
+        .dashboard-description {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+        }
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const cards = document.querySelectorAll(".dashboard-card[data-target]");
+        .status {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
 
-        cards.forEach((card) => {
-          card.addEventListener("click", () => {
-            const target = card.getAttribute("data-target");
-            if (target) {
-              window.location.href = target;
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .open-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ff6b35;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .open-button:hover {
+            background: #e55a2b;
+            transform: scale(1.05);
+        }
+
+        .open-button::after {
+            content: '→';
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
             }
-          });
-        });
-      });
-    </script>
 
-  </body>
+            .dashboard-card {
+                padding: 30px 20px;
+            }
+
+            .dashboard-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Climate & Water Impact Dashboard</h1>
+            <p>Understanding climate patterns and seasonal water impacts across African countries</p>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="icon-container">
+                <svg class="stick-figure" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Head -->
+                    <circle cx="100" cy="50" r="25" fill="none" stroke="#1e3c72" stroke-width="3"/>
+                    <!-- Smile -->
+                    <path d="M 90 50 Q 100 60 110 50" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                    <!-- Eyes -->
+                    <circle cx="92" cy="45" r="2" fill="#1e3c72"/>
+                    <circle cx="108" cy="45" r="2" fill="#1e3c72"/>
+                    <!-- Body -->
+                    <line x1="100" y1="75" x2="100" y2="130" stroke="#1e3c72" stroke-width="3"/>
+                    <!-- Arms -->
+                    <line x1="100" y1="90" x2="70" y2="110" stroke="#1e3c72" stroke-width="3"/>
+                    <line x1="100" y1="90" x2="130" y2="110" stroke="#1e3c72" stroke-width="3"/>
+                    <!-- Legs -->
+                    <line x1="100" y1="130" x2="80" y2="170" stroke="#1e3c72" stroke-width="3"/>
+                    <line x1="100" y1="130" x2="120" y2="170" stroke="#1e3c72" stroke-width="3"/>
+                </svg>
+            </div>
+
+            <div style="text-align: center;">
+                <span class="status">In Progress</span>
+            </div>
+
+            <h2 class="dashboard-title">Storytelling</h2>
+            
+            <p class="dashboard-description">
+                Storytelling dashboard illustrating climate of African countries and seasonal impacts on water (in progress)
+            </p>
+
+            <div class="button-container">
+                <a href="visualizations/storytelling/" class="open-button">Open dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
 
