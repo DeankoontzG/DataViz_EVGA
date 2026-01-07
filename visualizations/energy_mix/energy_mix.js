@@ -197,36 +197,6 @@ function updateStatistics(region, countriesData) {
   });
 
   statsDiv.html("");
-
-  const items = [
-    {
-      label: "Region",
-      value: regionText
-    },
-    {
-      label: "Total countries",
-      value: totalCount
-    },
-    {
-      label: "Multi-source",
-      value: multiCount,
-      cls: "success"
-    },
-    {
-      label: "Mono-source",
-      value: singleCount,
-      cls: "warning"
-    }
-  ];
-
-  items.forEach(item => {
-    const box = statsDiv.append("div").attr("class", "stat-item");
-    box.append("span").attr("class", "stat-label").text(item.label);
-    const val = box
-      .append("span")
-      .attr("class", "stat-value" + (item.cls ? " " + item.cls : ""));
-    val.text(item.value);
-  });
 }
 
 // --- Chart update ---
