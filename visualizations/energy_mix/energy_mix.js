@@ -82,7 +82,7 @@ function barFormatNumber(num) {
 }
 
 // --- Data loading ---
-d3.csv("../../data/exported/country_year_cleaned.csv").then(dataYear => {
+d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
   dataYear.forEach(d => {
     d.year = +d.year;
     barKeys.forEach(k => (d[k] = +d[k] || 0));

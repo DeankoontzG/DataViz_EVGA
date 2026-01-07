@@ -196,8 +196,8 @@ function initVisualization() {
     }
 
     Promise.all([
-        d3.csv('../../data/exported/country_year_cleaned.csv'),
-        d3.json('../shared/custom.geo.json')
+        d3.csv('data/exported/country_year_cleaned.csv'),
+        d3.json('visualizations/shared/custom.geo.json')
     ]).then(([csvData, geoData]) => {
 
         const processedData = csvData.map(row => {

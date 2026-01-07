@@ -3,7 +3,7 @@
           width = 960 - margin.left - margin.right,
           height = 550 - margin.top - margin.bottom;
 
-    const PO_VOLUME = 2500000; // Constante pour une piscine olympique
+    const PO_VOLUME = 2500000; // Volume en L de piscine olympique
 
     const svg = d3.select("#water-volume-bar-holder")
         .append("svg")
@@ -29,10 +29,10 @@
     d3.csv("../../data/exported/country_year_cleaned.csv").then(data => {
         const rawData2023 = data.filter(d => d.year === "2023");
 
-        // 1. CALCUL DES VOLUMES EN PISCINES OLYMPIQUES
+        // Calcul des volumes adaptés en piscines olympiques
         const processedData = rawData2023.map(d => {
             const energyTWh = parseFloat(d["Total energy - TWh"]?.replace(",", ".")) || 0;
-            const energyKWh = energyTWh * 1e3; // expression en kWh
+            const energyKWh = energyTWh * 1e3; // conversion en kWh
             
             const wueInd = parseFloat(d["WUE_Indirect(L/KWh)"]?.replace(",", ".")) || 0;
             const wueCold = parseFloat(d["WUE_FixedColdWaterDirect(L/KWh)"]?.replace(",", ".")) || 0;
@@ -51,11 +51,11 @@
         .sort((a, b) => b.total - a.total)
         .slice(0, 10);
 
-        // 2. MISE À JOUR DES ÉCHELLES
+        // MAJ des échelles
         x.domain(processedData.map(d => d.country));
         y.domain([0, d3.max(processedData, d => d.total)]).nice();
 
-        // 3. AXES
+        // Axes
         const xAxis = svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x));
@@ -78,7 +78,7 @@
             .attr("font-weight", "bold")
             .text("Equivalent Olympic Swimming Pools");
 
-        // 4. DESSIN DES BARRES
+        // Dessin des barres
         const stack = d3.stack().keys(["partIndirect", "partCold", "partApproach"])(processedData);
 
         const layers = svg.selectAll(".layer")
@@ -98,7 +98,6 @@
                 const layerKey = d3.select(this.parentNode).datum().key;
                 const valPools = d[1] - d[0];
                 
-                // On utilise l'opacité et on retire .hidden
                 tooltip.style("opacity", 1)
                     .style("left", e.pageX + 15 + "px")
                     .style("top", e.pageY - 20 + "px")
@@ -110,11 +109,10 @@
                     `);
             })
             .on("mouseout", () => {
-                // On repasse à 0
-                tooltip.style("opacity", 0);
+                tooltip.style("opacity", 0);   // Utilisation de l'opacité pour masquer
             });
 
-        // 5. LÉGENDE
+        // Légende
         const legend = svg.append("g")
             .attr("transform", `translate(${width - 250}, -20)`);
 
@@ -127,10 +125,10 @@
                 .text(labels[key]);
         });
 
-        // 6. NOTE EXPLICATIVE EN BAS
+        // Explications en dessous de l'axe des x
         svg.append("text")
             .attr("x", width / 2)
-            .attr("y", height + 80) // Positionné sous l'axe X
+            .attr("y", height + 80)
             .attr("text-anchor", "middle")
             .style("font-size", "var(--font-size-sm)")
             .style("fill", "var(--color-text-muted)")

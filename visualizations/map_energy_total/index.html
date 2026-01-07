@@ -5,50 +5,6 @@
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
-  <link rel="stylesheet" href="../style/style.css">
-  
-  <style>
-    /* Keep only what is NOT in style.css */
-    svg {
-      display: block;
-      margin: 20px auto;
-      background: var(--color-bg-secondary); /* Use the theme colors */
-      border-radius: var(--radius-md);
-    }
-
-    /* Tooltip styling aligned with global theme */
-    .tooltip {
-      position: absolute;
-      pointer-events: none;
-      background: var(--color-bg-tertiary);
-      color: var(--color-text-primary);
-      padding: 8px 12px;
-      border: 1px solid var(--color-accent);
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-xs);
-      line-height: 1.4;
-      box-shadow: var(--shadow-md);
-      z-index: 1000;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* Map interactions */
-    .country-path {
-      cursor: pointer;
-      transition: opacity 0.25s ease, stroke 0.25s ease;
-      stroke: var(--color-bg);
-      stroke-width: 0.5px;
-    }
-
-    .country-path:hover {
-      opacity: 0.8;
-      stroke: var(--color-accent);
-      stroke-width: 1.5px;
-    }
-  </style>
 </head>
 
 <body>
