@@ -180,7 +180,7 @@
             .call(legendAxis)
             .selectAll("text")
             .attr("fill", "#ccc")
-            .style("font-size", "11px");
+            .style("font-size", "30px");
 
         legendGroup.selectAll(".domain, .tick line")
             .attr("stroke", "#ccc");
@@ -188,10 +188,10 @@
         // Labels
         legendGroup.append("text")
             .attr("x", legendWidth / 2)
-            .attr("y", -8)
+            .attr("y", -20)
             .attr("text-anchor", "middle")
             .attr("fill", "#ccc")
-            .style("font-size", "12px")
+            .style("font-size", "30px")
             .style("font-weight", "500")
             .text("WUE (L/kWh)");
     }
