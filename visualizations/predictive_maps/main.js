@@ -1,3 +1,8 @@
+function parseFloatValue(value) {
+    if (!value || value === "") return NaN;
+    return +String(value).replace(",", ".");
+}
+
 function initTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -24,51 +29,33 @@ function initVisualization() {
     }
 
     const config = {
-        width: 500,
-        height: 500,
-        margin: { top: 10, right: 10, bottom: 10, left: 10 },
-        tempMin: 0,
-        tempMax: 5,
-        tempStep: 0.1,
+        width: 960,
+        height: 750,
         wueImpactRate: 0.04,
         transitionDuration: 200
     };
 
     let currentTemperature = 0;
     let colorScale = null;
-    let geoDataEnriched = null;
     let totalCurrentWUE = 0;
 
     /* Projection Setup */
     const projection = d3.geoMercator()
-        .center([20, 5])
-        .scale(400)
-        .translate([config.width / 2, config.height / 2]);
+        .center([15, 10])
+        .scale(550)
+        .translate([config.width / 2, config.height / 2 - 80]);
 
     const path = d3.geoPath().projection(projection);
 
     /* DOM Elements */
-    const canvas = d3.select('#canvas');
-
-    const leftSection = canvas.append('div')
-        .attr('class', 'map-section');
-
-    leftSection.append('h3')
-        .text('Current State (Average)');
-
-    const svgLeft = leftSection.append('svg')
-        .attr('viewBox', `0 0 ${config.width} ${config.height}`)
-        .attr('preserveAspectRatio', 'xMidYMid meet')
-        .style('width', '100%')
-        .style('height', 'auto');
-
-    const mapGroupLeft = svgLeft.append('g');
+    const canvas = d3.select('#canvas')
+        .style('display', 'flex')
+        .style('justify-content', 'center')
+        .style('margin', '16px 0');
 
     const rightSection = canvas.append('div')
-        .attr('class', 'map-section');
-
-    rightSection.append('h3')
-        .text('Projected State (With Temperature Increase)');
+        .style('max-width', '640px')
+        .style('width', '100%');
 
     const svgRight = rightSection.append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
@@ -77,16 +64,12 @@ function initVisualization() {
         .style('height', 'auto');
 
     const mapGroupRight = svgRight.append('g');
+    const legendGroup = svgRight.append('g');
 
     const tooltip = d3.select('body')
         .append('div')
         .attr('class', 'tooltip predictive-tooltip')
         .style('opacity', 0);
-
-    function parseFloatValue(value) {
-        if (!value || value === "") return NaN;
-        return +String(value).replace(",", ".");
-    }
 
     function calculateProjectedWUE(currentWUE, tempIncrease) {
         return currentWUE * Math.pow(1 + config.wueImpactRate, tempIncrease);
@@ -99,33 +82,6 @@ function initVisualization() {
     function calculatePercentChange(current, projected) {
         if (!current || current === 0) return 0;
         return ((projected - current) / current * 100).toFixed(1);
-    }
-
-    function showTooltipLeft(event, d) {
-        const data = d.properties.data;
-
-        if (!data || !data.totalWUE) {
-            tooltip.transition().duration(100).style('opacity', 0.95);
-            tooltip.html(`
-                <strong>${d.properties.name_long}</strong><br>
-                <span class="tooltip-climate">Data not available</span>
-            `)
-            .style('left', (event.pageX + 15) + 'px')
-            .style('top', (event.pageY - 30) + 'px');
-            return;
-        }
-
-        tooltip.transition().duration(100).style('opacity', 0.95);
-        tooltip.html(`
-            <strong>${d.properties.name_long}</strong><br>
-            <span><strong>Current WUE:</strong> ${formatWUE(data.totalWUE)} L/kWh</span>
-            <span class="tooltip-detail">
-                Indirect: ${formatWUE(data.wueIndirect)} L/kWh<br>
-                Direct: ${formatWUE(data.wueDirect)} L/kWh
-            </span>
-        `)
-        .style('left', (event.pageX + 15) + 'px')
-        .style('top', (event.pageY - 30) + 'px');
     }
 
     function showTooltipRight(event, d) {
@@ -149,7 +105,7 @@ function initVisualization() {
         tooltip.transition().duration(100).style('opacity', 0.95);
         tooltip.html(`
             <strong>${d.properties.name_long}</strong><br>
-            <span><strong>Current:</strong> ${formatWUE(data.totalWUE)} L/kWh</span>
+            <span><strong>Current:</strong> ${formatWUE(data.totalWUE)} L/kWh</span><br>
             <span><strong>Projected:</strong> ${formatWUE(projected)} L/kWh</span><br>
             <span class="${change > 0 ? 'tooltip-leakage' : 'tooltip-wue'}">
                 <strong>Change:</strong> +${percentChange}% (+${formatWUE(change)} L/kWh)
@@ -211,9 +167,6 @@ function initVisualization() {
 
             return {
                 country: row.country,
-                year: row.year,
-                wueIndirect: wueIndirect,
-                wueDirect: wueDirect,
                 totalWUE: totalWUE
             };
         });
@@ -222,37 +175,26 @@ function initVisualization() {
         const grouped = d3.group(processedData, d => d.country);
 
         grouped.forEach((values, country) => {
-            const validIndirect = values.filter(v => !isNaN(v.wueIndirect) && v.wueIndirect > 0).map(v => v.wueIndirect);
-            const validDirect = values.filter(v => !isNaN(v.wueDirect) && v.wueDirect > 0).map(v => v.wueDirect);
             const validTotal = values.filter(v => !isNaN(v.totalWUE) && v.totalWUE > 0).map(v => v.totalWUE);
 
-            const avgIndirect = validIndirect.length > 0 ? d3.mean(validIndirect) : NaN;
-            const avgDirect = validDirect.length > 0 ? d3.mean(validDirect) : NaN;
             const avgTotal = validTotal.length > 0 ? d3.mean(validTotal) : NaN;
 
             dataByCountry.set(country, {
                 country: country,
-                wueIndirect: avgIndirect,
-                wueDirect: avgDirect,
-                totalWUE: avgTotal,
-                dataPointsCount: values.length
+                totalWUE: avgTotal
             });
         });
 
-        let matchedCount = 0;
         geoData.features.forEach(feature => {
             const countryName = feature.properties.name_long;
             const countryData = dataByCountry.get(countryName);
 
             if (countryData && !isNaN(countryData.totalWUE)) {
                 feature.properties.data = countryData;
-                matchedCount++;
             } else {
                 feature.properties.data = null;
             }
         });
-
-        geoDataEnriched = geoData;
 
         const validWUE = geoData.features
             .map(f => f.properties.data?.totalWUE)
@@ -275,6 +217,7 @@ function initVisualization() {
         totalCurrentWUE = validWUE.reduce((sum, wue) => sum + wue, 0);
 
         drawMaps(geoData);
+        drawColorLegend(minWUE, maxWUE);
         setupSlider();
 
     }).catch(error => {
@@ -282,21 +225,6 @@ function initVisualization() {
     });
 
     function drawMaps(geoData) {
-        mapGroupLeft.selectAll('path')
-            .data(geoData.features)
-            .join('path')
-            .attr('d', path)
-            .attr('class', 'country')
-            .attr('fill', d => {
-                const wue = d.properties.data?.totalWUE;
-                if (!wue || isNaN(wue) || wue <= 0) return '#ccc';
-                return colorScale(wue);
-            })
-            .attr('stroke', '#ffffff')
-            .attr('stroke-width', '1px')
-            .on('mousemove', (event, d) => showTooltipLeft(event, d))
-            .on('mouseout', hideTooltip);
-
         mapGroupRight.selectAll('path')
             .data(geoData.features)
             .join('path')
@@ -311,6 +239,66 @@ function initVisualization() {
             .attr('stroke-width', '1px')
             .on('mousemove', (event, d) => showTooltipRight(event, d))
             .on('mouseout', hideTooltip);
+    }
+
+    function drawColorLegend(minVal, maxVal) {
+        legendGroup.selectAll('*').remove();
+
+        const legendWidth = 300;
+        const legendHeight = 15;
+        const tickCount = 5;
+
+        const defs = svgRight.select('defs').empty() ? svgRight.append('defs') : svgRight.select('defs');
+        defs.selectAll('#predictive-legend-gradient').remove();
+
+        const gradient = defs.append('linearGradient')
+            .attr('id', 'predictive-legend-gradient')
+            .attr('x1', '0%')
+            .attr('x2', '100%');
+
+        const stops = d3.range(0, 1.01, 0.01);
+        gradient.selectAll('stop')
+            .data(stops)
+            .join('stop')
+            .attr('offset', d => `${d * 100}%`)
+            .attr('stop-color', d => colorScale(minVal + d * (maxVal - minVal)));
+
+        legendGroup
+            .attr('transform', `translate(50, ${config.height - 80})`);
+
+        legendGroup.append('rect')
+            .attr('width', legendWidth)
+            .attr('height', legendHeight)
+            .style('fill', 'url(#predictive-legend-gradient)')
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 1);
+
+        const legendScale = d3.scaleLinear()
+            .domain([minVal, maxVal])
+            .range([0, legendWidth]);
+
+        const legendAxis = d3.axisBottom(legendScale)
+            .ticks(tickCount)
+            .tickFormat(d => d.toFixed(2));
+
+        legendGroup.append('g')
+            .attr('transform', `translate(0, ${legendHeight})`)
+            .call(legendAxis)
+            .selectAll('text')
+            .attr('fill', '#ccc')
+            .style('font-size', '11px');
+
+        legendGroup.selectAll('.domain, .tick line')
+            .attr('stroke', '#ccc');
+
+        legendGroup.append('text')
+            .attr('x', legendWidth / 2)
+            .attr('y', -8)
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#ccc')
+            .style('font-size', '12px')
+            .style('font-weight', '500')
+            .text('WUE (L/kWh)');
     }
 
     function setupSlider() {
@@ -339,23 +327,20 @@ function initWaterfallChart() {
     const config = {
         width: 800,
         height: 500,
-        margin: { top: 40, right: 40, bottom: 100, left: 80 },
-        transitionDuration: 500
+        margin: { top: 40, right: 40, bottom: 100, left: 80 }
     };
 
     let countrySavingsData = [];
-    let efficiencyTarget = 100;
+    const efficiencyTarget = 100;
 
     const canvas = d3.select('#waterfall-canvas');
 
-    canvas.append('div')
-        .attr('class', 'waterfall-container')
+    const waterfallContainer = canvas.append('div')
         .style('width', '100%')
         .style('display', 'flex')
         .style('justify-content', 'center');
 
-    const svg = d3.select('.waterfall-container')
-        .append('svg')
+    const svg = waterfallContainer.append('svg')
         .attr('viewBox', `0 0 ${config.width} ${config.height}`)
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .style('width', '100%')
@@ -456,16 +441,10 @@ function initWaterfallChart() {
             .slice(0, 10);
 
         drawWaterfallChart(countrySavingsData, efficiencyTarget);
-        setupEfficiencySlider();
 
     }).catch(error => {
         console.error('Error loading waterfall data:', error);
     });
-
-    function parseFloatValue(value) {
-        if (!value || value === "") return NaN;
-        return +String(value).replace(",", ".");
-    }
 
     function calculateWaterfallData(savingsData, targetPercent) {
         const multiplier = targetPercent / 100;
@@ -631,9 +610,9 @@ function initWaterfallChart() {
                         tooltip.transition().duration(100).style('opacity', 0.95);
                         let content = `<strong>${d.label}</strong><br>`;
                         content += `<span class="tooltip-climate">Climate: ${d.country.climateRegion}</span><br>`;
-                        content += `<span class="tooltip-wue"><strong>WUE Savings:</strong> ${d.wueSavings.toFixed(2)} L/kWh</span>`;
+                        content += `<span class="tooltip-wue"><strong>WUE Savings:</strong> ${d.wueSavings.toFixed(2)} L/kWh</span><br>`;
                         content += `<span class="tooltip-detail">Current: ${d.country.currentWUE.toFixed(2)} → Best: ${d.country.bestWUE.toFixed(2)} L/kWh</span><br>`;
-                        content += `<span class="tooltip-leakage"><strong>Leakage Savings:</strong> ${d.leakageSavings.toFixed(2)} L/kWh</span>`;
+                        content += `<span class="tooltip-leakage"><strong>Leakage Savings:</strong> ${d.leakageSavings.toFixed(2)} L/kWh</span><br>`;
                         content += `<span class="tooltip-detail">Current: ${(d.country.leakages * 100).toFixed(1)}% → Best: ${(d.country.bestLeakage * 100).toFixed(1)}%</span><br>`;
                         content += `<span class="tooltip-total"><strong>Total Savings:</strong> ${(d.wueSavings + d.leakageSavings).toFixed(2)} L/kWh</span>`;
                         tooltip.html(content)
@@ -659,19 +638,6 @@ function initWaterfallChart() {
         }
     }
 
-    function setupEfficiencySlider() {
-        const slider = d3.select('#efficiency-slider');
-
-        if (slider.empty()) {
-            console.warn('Efficiency slider not found');
-            return;
-        }
-
-        slider.on('input', function() {
-            efficiencyTarget = +this.value;
-            drawWaterfallChart(countrySavingsData, efficiencyTarget);
-        });
-    }
 }
 
 if (document.readyState === 'loading') {
