@@ -26,7 +26,7 @@
         partApproach: "Surplus Approach"
     };
 
-    d3.csv("../../data/exported/country_year_cleaned.csv").then(data => {
+    d3.csv("data/exported/country_year_cleaned.csv").then(data => {
         const rawData2023 = data.filter(d => d.year === "2023");
 
         // Calcul des volumes adaptés en piscines olympiques

@@ -358,7 +358,7 @@ function initWaterfallChart() {
         .style('opacity', 0);
 
     Promise.all([
-        d3.csv('../../data/exported/country_year_cleaned.csv')
+        d3.csv('data/exported/country_year_cleaned.csv')
     ]).then(([csvData]) => {
 
         const processedData = csvData.map(row => {

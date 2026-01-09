@@ -38,7 +38,7 @@
     const x = d3.scaleBand().range([0, width]).padding(0.4);
     const y = d3.scaleLinear().range([height, 0]);
 
-    d3.csv("../../data/exported/country_year_cleaned.csv").then(data => {
+    d3.csv("data/exported/country_year_cleaned.csv").then(data => {
         const rawData2023 = data.filter(d => d.year === "2023");
 
         const processedData = rawData2023.map(d => {
