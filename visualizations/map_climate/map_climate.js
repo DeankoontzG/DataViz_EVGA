@@ -17,7 +17,7 @@
         wetbulb_temperature: "°C"
     };
 
-    const monthNamesShort = ["Janv.", "Févr.", "Mars", "Avril", "Mai", "Juin", "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."];
+    const monthNamesShort = ["Jan.", "Febr.", "Mars", "Apr.", "May", "June", "July.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
 
     // Échelles de couleurs
     const colorScales = {
@@ -154,19 +154,25 @@
             .call(d3.axisBottom(x).ticks(12).tickFormat(d => monthNamesShort[d-1]))
             .selectAll("text")  
             .style("text-anchor", "end")
+            .style("font-size", "14px")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", "rotate(-45)");
 
         chartGroup.append("g")
             .call(d3.axisLeft(y).ticks(5))
-            .append("text")
+            .selectAll("text")
+            .style("font-size", "14px");
+
+        chartGroup.append("text")
             .attr("x", -10)
             .attr("y", -10)
-            .attr("fill", "#000")
+            .attr("fill", "var(--color-text-primary)")
             .attr("text-anchor", "end")
             .attr("font-weight", "bold")
+            .style("font-size", "14px")
             .text(units[currentDim]);
+            
 
         const lineGenerator = d3.line()
             .x(d => x(d.month))
@@ -181,7 +187,7 @@
 
         chartGroup.append("path")
             .datum(countryData)
-            .attr("fill", "none").attr("stroke", "#08306b").attr("stroke-width", 3)
+            .attr("fill", "none").attr("stroke", "#14086bff").attr("stroke-width", 3)
             .attr("d", lineGenerator);
 
         // Ajout des points et hover
@@ -192,7 +198,7 @@
             .attr("cx", d => x(d.month))
             .attr("cy", d => y(d.val))
             .attr("r", 5)
-            .attr("fill", "#08306b")
+            .attr("fill", "#14086bff")
             .on("mousemove", (e, d) => {
                 tooltip.classed("hidden", false)
                     .style("left", e.pageX + 15 + "px")
@@ -205,13 +211,13 @@
                 d3.select(e.target).attr("r", 5);
             });
 
-        chartGroup.append("text").attr("y", -25).attr("font-weight", "bold").text(`${countryName} vs Afrique`);
+        chartGroup.append("text").attr("y", -25).attr("font-weight", "bold").attr("font-size", "22px").attr("x", 20).text(`${countryName} vs Africa`);
 
         const legend = chartGroup.append("g").attr("transform", `translate(0, ${chartH + 60})`);
-        legend.append("line").attr("x1", 0).attr("x2", 20).attr("stroke", "#08306b").attr("stroke-width", 3);
-        legend.append("text").attr("x", 25).attr("y", 5).attr("font-size", "10px").text(countryName);
-        legend.append("line").attr("x1", 120).attr("x2", 140).attr("stroke", "#aaa").attr("stroke-width", 2).attr("stroke-dasharray", "3,3");
-        legend.append("text").attr("x", 145).attr("y", 5).attr("font-size", "10px").text("Moyenne Afrique");
+        legend.append("line").attr("x1", 0).attr("x2", 20).attr("y1", 10).attr("y2", 10).attr("stroke", "#14086bff").attr("stroke-width", 3);
+        legend.append("text").attr("x", 25).attr("y", 15).attr("font-size", "14px").text(countryName);
+        legend.append("line").attr("x1", 0).attr("x2", 20).attr("y1", 35).attr("y2", 35).attr("stroke", "#aaa").attr("stroke-width", 2).attr("stroke-dasharray", "3,3");
+        legend.append("text").attr("x", 25).attr("y", 40).attr("font-size", "14px").text("Average Africa");
     }
 
     function drawInitialAfricaChart() {
@@ -229,9 +235,26 @@
         chartGroup.append("g")
             .attr("transform", `translate(0,${chartH})`)
             .call(d3.axisBottom(x).ticks(12).tickFormat(d => monthNamesShort[d-1]))
-            .selectAll("text").style("text-anchor", "end").attr("transform", "rotate(-45)");
+            .selectAll("text")  
+            .style("text-anchor", "end")
+            .style("font-size", "14px")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-45)");
 
-        chartGroup.append("g").call(d3.axisLeft(y).ticks(5));
+        chartGroup.append("g")
+            .call(d3.axisLeft(y).ticks(5))
+            .selectAll("text")
+            .style("font-size", "14px");
+
+        chartGroup.append("text")
+            .attr("x", -10)
+            .attr("y", -10)
+            .attr("fill", "var(--color-text-primary)")
+            .attr("text-anchor", "end")
+            .attr("font-weight", "bold")
+            .style("font-size", "14px")
+            .text(units[currentDim]);
 
         // Ligne Afrique seule
         const lineGenerator = d3.line().x(d => x(d.month)).y(d => y(d.val)).curve(d3.curveMonotoneX);
@@ -253,11 +276,14 @@
 
         chartGroup.append("text")
             .attr("y", -25).attr("font-weight", "bold")
-            .text(`Afrique mean (${currentDim})`);
+            .attr("x", 20)
+            .attr("font-size", "22px")
+            .text(`Africa mean (${currentDim})`);
 
         chartGroup.append("text")
-            .attr("x", 0).attr("y", 0)
+            .attr("x", 20).attr("y", 0)
             .attr("font-style", "italic")
+            .attr("font-size", "20px")
             .text("Click on a country to compare");
     }
 
@@ -307,7 +333,7 @@
             .call(legendAxis)
             .selectAll("text")
             .attr("fill", "#ccc")
-            .style("font-size", "11px");
+            .style("font-size", "14px");
 
         legendGroup.selectAll(".domain, .tick line")
             .attr("stroke", "#ccc");
@@ -318,7 +344,7 @@
             .attr("y", -8)
             .attr("text-anchor", "middle")
             .attr("fill", "#ccc")
-            .style("font-size", "12px")
+            .style("font-size", "20px")
             .style("font-weight", "500")
             .text(`${dimension.replace("_", " ")} (${units[dimension]})`);
     }

@@ -67,16 +67,16 @@
             .selectAll("text")
             .attr("transform", "rotate(-35)")
             .style("text-anchor", "end")
-            .style("font-size", "12px")
+            .style("font-size", "14px")
             .style("fill", "var(--color-text-secondary)");
 
         // Axe Y
         const yAxis = svg.append("g")
-            .call(d3.axisLeft(y).ticks(6).tickSize(-width)); // tickSize négatif crée une grille
+            .call(d3.axisLeft(y).ticks(6).tickSize(-width));
             
-        yAxis.selectAll("text").style("fill", "var(--color-text-secondary)").style("font-size", "12px");
-        yAxis.selectAll(".domain").remove(); // On enlève la ligne de l'axe pour un look moderne
-        yAxis.selectAll(".tick line").style("stroke", "#eee"); // Grille légère
+        yAxis.selectAll("text").style("fill", "var(--color-text-secondary)").style("font-size", "14px");
+        yAxis.selectAll(".domain").remove();
+        yAxis.selectAll(".tick line").style("stroke", "#ffffff").style("stroke-opacity", 0.6).style("stroke-dasharray", "2,2")
 
         // Label Y
         svg.append("text")
@@ -84,7 +84,7 @@
             .attr("y", -margin.left + 25)
             .attr("x", -(height / 2))
             .attr("text-anchor", "middle")
-            .attr("font-size", "14px")
+            .attr("font-size", "16px")
             .attr("font-weight", "bold")
             .style("fill", "var(--color-text-primary)")
             .text("Energy Consumption (TWh/year)");
@@ -101,7 +101,7 @@
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.energyTWh))
             .attr("fill", "#4e79a7")
-            .attr("rx", 4) // Arrondi les coins des barres
+            .attr("rx", 4) 
             .on("mousemove", function(e, d) {
                 tooltip.style("opacity", 1)
                     .style("left", e.pageX + 15 + "px")
@@ -122,18 +122,18 @@
 
         bars.append("text")
             .attr("x", d => x(d.country) + x.bandwidth() / 2)
-            .attr("y", d => y(d.energyTWh) - 22)
+            .attr("y", d => y(d.energyTWh) - 28)
             .attr("text-anchor", "middle")
-            .style("font-size", "12px")
+            .style("font-size", "16px")
             .style("font-weight", "bold")
             .style("fill", "var(--color-text-primary)")
             .text(d => `🏠 ≃ ${d3.format(".2s")(d.popEquiv)}`);
 
         bars.append("text")
             .attr("x", d => x(d.country) + x.bandwidth() / 2)
-            .attr("y", d => y(d.energyTWh) - 8)
+            .attr("y", d => y(d.energyTWh) - 12)
             .attr("text-anchor", "middle")
-            .style("font-size", "10px")
+            .style("font-size", "14px")
             .style("fill", "#d5d5d5ff")
             .text(d => d.city);
     });

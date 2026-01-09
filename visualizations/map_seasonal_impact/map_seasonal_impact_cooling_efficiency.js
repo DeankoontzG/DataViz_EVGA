@@ -19,9 +19,10 @@
         .attr("transform", `translate(50, ${height - 80})`);
 
     const projection = d3.geoMercator()
-        .center([15, 10]) 
-        .scale(550)       
+        .center([17, 17]) 
+        .scale(850)       
         .translate([width / 2, height / 2 - 80]);
+
 
     const path = d3.geoPath().projection(projection);
 

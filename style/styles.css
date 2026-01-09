@@ -403,10 +403,12 @@ li {
     background: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
+    /* padding: 0 !important; */
     border: 1px solid rgba(247, 111, 83, 0.1);
     transition: all 0.3s ease;
     min-height: 500px;
 }
+
 
 .viz-block:hover,
 .viz-side:hover,

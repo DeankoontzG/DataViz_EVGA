@@ -38,13 +38,16 @@
             const wueCold = parseFloat(d["WUE_FixedColdWaterDirect(L/KWh)"]?.replace(",", ".")) || 0;
             const wueAppr = parseFloat(d["WUE_FixedApproachDirect(L/KWh)"]?.replace(",", ".")) || 0;
 
+            const popEquiv = ((wueInd + wueAppr) * energyKWh * 45) / PO_VOLUME
+
             // Volume total en Litres puis division par PO_VOLUME
             return {
                 country: d.country,
                 partIndirect: (wueInd * energyKWh) / PO_VOLUME,
                 partCold: (wueCold * energyKWh) / PO_VOLUME,
                 partApproach: ((wueAppr - wueCold) * energyKWh) / PO_VOLUME,
-                total: ((wueInd + wueAppr) * energyKWh) / PO_VOLUME
+                total: ((wueInd + wueAppr) * energyKWh) / PO_VOLUME,
+                popEquiv : Math.round(popEquiv / 100) * 100
             };
         })
         .filter(d => d.total > 0)
@@ -63,12 +66,13 @@
         xAxis.selectAll("text")
             .attr("transform", "rotate(-45)")
             .style("text-anchor", "end")
+            .style("font-size", "14px")
             .style("fill", "var(--color-text-secondary)");
 
         // Axe Y en Nombre de Piscines
         svg.append("g")
             .call(d3.axisLeft(y).tickFormat(d => d3.format(",")(d)))
-            .call(g => g.selectAll("text").style("fill", "var(--color-text-secondary)"))
+            .call(g => g.selectAll("text").style("fill", "var(--color-text-secondary)").style("font-size", "14px"))
             .append("text")
             .attr("x", -height/2)
             .attr("y", -70)
@@ -76,7 +80,8 @@
             .attr("transform", "rotate(-90)")
             .attr("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text("Equivalent Olympic Swimming Pools");
+            .attr("font-size", "16px")
+            .text("Equivalent Olympic Swimming Pools / year");
 
         // Dessin des barres
         const stack = d3.stack().keys(["partIndirect", "partCold", "partApproach"])(processedData);
@@ -120,19 +125,36 @@
             const lg = legend.append("g").attr("transform", `translate(0, ${i * 20})`);
             lg.append("rect").attr("width", 15).attr("height", 15).attr("fill", color(key));
             lg.append("text").attr("x", 22).attr("y", 12)
-                .style("font-size", "12px")
+                .style("font-size", "16px")
                 .style("fill", "var(--color-text-secondary)")
                 .text(labels[key]);
         });
 
+        // Labels équivalent de populatioon (au dessus)
+        const labelsPop = svg.selectAll(".pop-label-group")
+            .data(processedData)
+            .enter()
+            .append("g")
+            .attr("class", "pop-label-group");
+
+        labelsPop.append("text")
+            .attr("x", d => x(d.country) + x.bandwidth() / 2)
+            .attr("y", d => y(d.total) - 18) 
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("font-weight", "bold")
+            .style("fill", "var(--color-text-primary)")
+            .text(d => `🏠 ≃ ${d3.format(".2s")(d.popEquiv).replace('G', 'B')}`);
+
         // Explications en dessous de l'axe des x
         svg.append("text")
             .attr("x", width / 2)
-            .attr("y", height + 80)
+            .attr("y", height + 100)
             .attr("text-anchor", "middle")
             .style("font-size", "var(--font-size-sm)")
             .style("fill", "var(--color-text-muted)")
             .style("font-style", "italic")
+            .style("font-size", "18px")
             .text("1 Olympic Swimming Pool ≈ 2,500,000 Liters (50m x 25m x 2m)");
     });
 })();
