@@ -286,7 +286,7 @@ function initVisualization() {
             .call(legendAxis)
             .selectAll('text')
             .attr('fill', '#ccc')
-            .style('font-size', '11px');
+            .style('font-size', '14px');
 
         legendGroup.selectAll('.domain, .tick line')
             .attr('stroke', '#ccc');
@@ -296,7 +296,7 @@ function initVisualization() {
             .attr('y', -8)
             .attr('text-anchor', 'middle')
             .attr('fill', '#ccc')
-            .style('font-size', '12px')
+            .style('font-size', '20px')
             .style('font-weight', '500')
             .text('WUE (L/kWh)');
     }
@@ -523,13 +523,14 @@ function initWaterfallChart() {
             .selectAll('text')
             .attr('transform', 'rotate(-45)')
             .style('text-anchor', 'end')
-            .style('font-size', '10px')
+            .style('font-size', '14px')
             .style('fill', 'var(--color-text-secondary)');
 
         chartGroup.append('g')
             .attr('class', 'axis y-axis')
             .call(d3.axisLeft(yScale).ticks(6))
-            .style('color', 'var(--color-text-secondary)');
+            .style('color', 'var(--color-text-secondary)')
+            .style('font-size', '14px');
 
         chartGroup.append('text')
             .attr('class', 'axis-label')
@@ -538,7 +539,7 @@ function initWaterfallChart() {
             .attr('x', -chartHeight / 2)
             .attr('text-anchor', 'middle')
             .style('fill', 'var(--color-text-primary)')
-            .style('font-size', '12px')
+            .style('font-size', '18px')
             .text('Total WUE (L/kWh)');
 
         waterfallData.forEach(d => {

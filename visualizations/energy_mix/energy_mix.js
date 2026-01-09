@@ -76,7 +76,7 @@ let currentRegion = "all";
 // format absolute TWh
 function barFormatNumber(num) {
   return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 1,
+    maximumFractionDigits: 2,
     minimumFractionDigits: 0
   }).format(num);
 }
@@ -85,7 +85,7 @@ function barFormatNumber(num) {
 d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
   dataYear.forEach(d => {
     d.year = +d.year;
-    barKeys.forEach(k => (d[k] = +d[k] || 0));
+    barKeys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); // Erreur d'unité corrigée
     d.climate_region = d.climate_region || "Undefined";
   });
 
@@ -288,7 +288,8 @@ function updateStackedBar() {
     .style("fill", themeColors.muted)
     .attr("dx", "-0.6em")
     .attr("dy", "0.15em")
-    .attr("transform", "rotate(-40)");
+    .attr("transform", "rotate(-40)")
+    .attr("font-size", "16px");
 
   barSvg.selectAll(".x-axis path, .x-axis line").style(
     "stroke",
@@ -306,7 +307,8 @@ function updateStackedBar() {
     .attr("class", "axis y-axis")
     .call(yAxis)
     .selectAll("text")
-    .style("fill", themeColors.muted);
+    .style("fill", themeColors.muted)
+    .style("font-size", "14px");
 
   barSvg.selectAll(".y-axis path, .y-axis line").style(
     "stroke",
@@ -321,7 +323,7 @@ function updateStackedBar() {
     .attr("transform", "rotate(-90)")
     .attr("text-anchor", "middle")
     .style("fill", themeColors.primary)
-    .style("font-size", "0.9rem")
+    .style("font-size", "18px")
     .text("Share of energy mix (%)");
 
   // grid
@@ -413,7 +415,7 @@ function updateStackedBar() {
     .attr("x", 22)
     .attr("y", 11)
     .attr("fill", themeColors.primary)
-    .style("font-size", "0.82rem")
+    .style("font-size", "16px")
     .text(d => barLabels[d]);
 
   // title
@@ -425,6 +427,7 @@ function updateStackedBar() {
     .attr("text-anchor", "middle")
     .style("fill", themeColors.primary)
     .style("font-weight", "700")
+    .style("font-size", "22px")
     .text(
       `Energy mix by country – ${currentYear} (${currentRegion === "all" ? "All regions" : currentRegion}, sorted by ${sortMetric}, ${displayMode === "all" ? "all countries" : displayMode})`
     );

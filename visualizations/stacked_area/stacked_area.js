@@ -97,7 +97,7 @@ function countEnergySources(countryDataArray) {
 
 function formatNumber(num) {
   return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 1,
+    maximumFractionDigits: 2,
     minimumFractionDigits: 0
   }).format(num);
 }
@@ -111,7 +111,7 @@ Promise.all([
   // Process monthly data
   dataMonth.forEach(d => {
     d.date = new Date(+d.year, +d.month - 1, 1);
-    keys.forEach(k => (d[k] = +d[k] || 0));
+    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); //Correction de l'erreur d'unité des données
     d.climate_region = d.climate_region || "Undefined";
   });
   dataMonth.sort((a, b) => a.date - b.date);
@@ -120,7 +120,7 @@ Promise.all([
   // Process yearly data
   dataYear.forEach(d => {
     d.year = +d.year;
-    keys.forEach(k => (d[k] = +d[k] || 0));
+    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); //Correction de l'erreur d'unité des données ici aussi
     d.climate_region = d.climate_region || "Undefined";
   });
   yearlyData = dataYear;
