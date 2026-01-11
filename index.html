@@ -1,435 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Storytelling - Water Efficiency</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style/styles.css">
-    
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style/styles.css" />
+
     <script src="https://d3js.org/d3.v7.min.js"></script>
-</head>
-<body>
-    
+  </head>
+  <body>
     <!-- NAVIGATION LATÉRALE -->
     <nav class="side-nav">
-        <div class="side-nav-header">Sections</div>
-        <ul class="side-nav-list">
-            <li><a href="#intro" class="side-nav-link">Introduction</a></li>
-            <li><a href="#climate-context" class="side-nav-link">Climate Context</a></li>
-            <li><a href="#energy-volume-chapter" class="side-nav-link">Energy consumption</a></li>
-            <li><a href="#energy-mix-chapter" class="side-nav-link">Energy mix</a></li>
-            <li><a href="#water-consumption-intro" class="side-nav-link">Water consumption</a></li>
-            <li><a href="#water-volume-chapter" class="side-nav-link">Water volume</a></li>
-            <li><a href="#water-projection-chapter" class="side-nav-link">Climate projection</a></li>
-        </ul>
+      <div class="side-nav-header">Sections</div>
+      <ul class="side-nav-list">
+        <li><a href="#intro" class="side-nav-link">Introduction</a></li>
+        <li>
+          <a href="#climate-context" class="side-nav-link">Climate Context</a>
+        </li>
+        <li>
+          <a href="#energy-volume-chapter" class="side-nav-link"
+            >Energy consumption</a
+          >
+        </li>
+        <li>
+          <a href="#energy-mix-chapter" class="side-nav-link">Energy mix</a>
+        </li>
+        <li>
+          <a href="#water-consumption-intro" class="side-nav-link"
+            >Water consumption</a
+          >
+        </li>
+        <li>
+          <a href="#water-volume-chapter" class="side-nav-link">Water volume</a>
+        </li>
+        <li>
+          <a href="#water-projection-chapter" class="side-nav-link"
+            >Climate projection</a
+          >
+        </li>
+      </ul>
     </nav>
 
     <!-- TOOLTIP GLOBAL -->
-    <div id="tooltip" class="tooltip" style="opacity: 0;"></div>
+    <div id="tooltip" class="tooltip" style="opacity: 0"></div>
 
     <!-- HEADER PRINCIPAL -->
     <header class="main-header">
-        <div class="header-content">
-            <h1>The environmental impact of African Data Centers</h1>
-            <p class="subtitle">An environmental study by Edgar DEMEUDE, Guilhem DUPUY, Vincent JOULAIN, Anh Duy VU.</p>
-        </div>
+      <div class="header-content">
+        <h1>The environmental impact of African Data Centers</h1>
+        <p class="subtitle">
+          An environmental study by Edgar DEMEUDE, Guilhem DUPUY, Vincent
+          JOULAIN, Anh Duy VU.
+        </p>
+      </div>
     </header>
 
     <!-- INTRODUCTION -->
     <section class="chapter" id="intro">
-        <div class="chapter-container"> 
-            <div class="content-block">
-                <h1>Our project: decoding AI's footprint through Data Centers consumption study in Africa</h1>
-                    
-                <p>
-                    As Artificial Intelligence becomes ubiquitous, its environmental footprint is reaching a breaking point. 
-                    While carbon emissions dominate the conversation, <strong>transparency remains a challenge</strong>, 
-                    as real energy data is often locked behind corporate doors.
-                </p>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>
+            Decoding AI's footprint through Data Centers consumption study in
+            Africa
+          </h1>
 
-                <p>
-                    The objective of this page is to give you a proper idea of how much the digital technologies - including AI, 
-                    but also streaming services, and many others - actually impact our planet. To quantify it, we will focus on their
-                    common point: a heavy reliance on Data Centers, that multiply around the world at an alarming speed.
-                </p>
+          <p>
+            As Artificial Intelligence becomes universal, its environmental
+            footprint is reaching a breaking point. While carbon emissions
+            dominate the conversation,
+            <strong>transparency still remains as a challenge</strong>, with key
+            data kept behind corporate walls.
+          </p>
 
-                <p>
-                    Using the 
-                    <a href="https://huggingface.co/datasets/masterlion/WaterEfficientDatasetForAfricanCountries/blob/main/water_efficiency_dataset_card.md" 
-                        target="_blank" 
-                        class="highlight-link">
-                        Water Efficiency Dataset
-                    </a>
-                    (Shumba et al., NeurIPS 2024), our study decodes the energy 
-                    consumption of Data Centers across Africa a continent where digital infrastructure is skyrocketing.
-                </p>
-            </div>
+          <p>
+            The objective of this page is to provide a clear understanding of
+            the environmental impact of digital technologies—including AI,
+            streaming services, and many others—by highlighting their shared
+            dependence on data centers, which are proliferating worldwide at an
+            alarming rate.
+          </p>
+
+          <p>
+            Based on
+            <a
+              href="https://huggingface.co/datasets/masterlion/WaterEfficientDatasetForAfricanCountries/blob/main/water_efficiency_dataset_card.md"
+              target="_blank"
+              class="highlight-link"
+            >
+              Water Efficiency Dataset
+            </a>
+            (Shumba et al., NeurIPS 2024), our study decodes the energy
+            consumption of Data Centers across Africa a continent where digital
+            infrastructure is skyrocketing.
+          </p>
         </div>
+      </div>
     </section>
 
     <!-- SECTION 1 : CLIMATE CONTEXT -->
     <section class="chapter" id="climate-context">
-        <div class="chapter-container"> 
-            <div class="content-block">
-                <h1>1 - Climate Context</h1>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>1 - Climate Context</h1>
 
-                <p> 
-                    <a href="https://arxiv.org/abs/2412.03716" 
-                        target="_blank" 
-                        class="highlight-link">
-                        The study 
-                    </a>
-                    performed by the authors of the Dataset (N. Shumba, O. Tshekiso, P. Li, G. Fanti, S. Ren) has proven that
-                    there are many correlations between climate and energy and water consumptions.
-                </p>
+          <p>
+            <a
+              href="https://arxiv.org/abs/2412.03716"
+              target="_blank"
+              class="highlight-link"
+            >
+              The study
+            </a>
+            performed by the authors of the Dataset (N. Shumba, O. Tshekiso, P.
+            Li, G. Fanti, S. Ren) has proven that there are many correlations
+            between climate and energy and water consumptions.
+          </p>
 
-                <p>
-                    Before analyzing the energy impact, it is therefore essential to understand the climatic constraints 
-                    to which infrastructures are subjected (temperature, humidity, water scarcity). 
-                    As you might realize while exploring the data, Africa's geography is defined by its vast diversity of climates, 
-                    many of which are extreme.
-                </p>
+          <p>
+            Before analyzing the energy impact, it is therefore essential to
+            understand the climatic constraints to which infrastructures are
+            subjected (temperature, humidity, water scarcity). As you might
+            realize while exploring the data, Africa's geography is defined by
+            its vast diversity of climates, many of which are extreme.
+          </p>
 
-                <div class="control-group dashboard-card"> 
-                    <label for="climate-select">Visualize data: </label>
-                    <select id="climate-select">
-                        <option value="temperature">Temperature (°C)</option>
-                        <option value="humidity">Humidity (%)</option>
-                        <option value="precipitation">Precipitation (mm)</option>
-                        <option value="wind_speed">Wind Speed (km/h)</option>
-                        <option value="wetbulb_temperature">Wet-bulb Temperature (°C)</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div id="climate-map-holder"></div>
-
+          <div class="control-group dashboard-card">
+            <label for="climate-select">Visualize data: </label>
+            <select id="climate-select">
+              <option value="temperature">Temperature (°C)</option>
+              <option value="humidity">Humidity (%)</option>
+              <option value="precipitation">Precipitation (mm)</option>
+              <option value="wind_speed">Wind Speed (km/h)</option>
+              <option value="wetbulb_temperature">
+                Wet-bulb Temperature (°C)
+              </option>
+            </select>
+          </div>
         </div>
+
+        <div id="climate-map-holder"></div>
+      </div>
     </section>
 
     <script src="visualizations/map_climate/map_climate.js"></script>
 
     <!-- SECTION 2 : TOTAL ENERGY -->
     <section class="chapter" id="energy-volume-chapter">
-        <div class="chapter-container">
-            <div class="content-block">
-                <h1>2 - Energy Consumption of Data Centers</h1>
-                
-                <h2>Total energy consumption of data‑center host countries</h2>
-                <p>
-                    First, let's get an idea of the amount of energy involved in data center usage. 
-                    It is not equally distributed between countries: a few are heavily invested in Data Centers, 
-                    while others much less so.
-                    This chart shows the <strong>top 8 countries</strong> by total energy consumption (TWh) in 2023.
-                </p>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>2 - Energy Consumption of Data Centers</h1>
 
-                <p>
-                    To put things into perspective, <strong>1.6 TWh</strong> is equivalent to the annual household electricity consumption
-                    of <strong>1 million people</strong> in France.
-                </p>
-            </div>
-            
-            <div id="energy-volume-bar-holder"></div>
+          <h2>Total energy consumption of data‑center host countries</h2>
+          <p>
+            First, let's get an idea of the amount of energy involved in data
+            center usage. It is not equally distributed between countries: a few
+            are heavily invested in Data Centers, while others much less so.
+            This chart shows the <strong>top 8 countries</strong> by total
+            energy consumption (TWh) in 2023.
+          </p>
 
+          <p>
+            To put things into perspective, <strong>1.6 TWh</strong> is
+            equivalent to the annual household electricity consumption of
+            <strong>1 million people</strong> in France.
+          </p>
         </div>
+
+        <div id="energy-volume-bar-holder"></div>
+      </div>
     </section>
 
     <script src="visualizations/total_energy_volume/chart_energy_volume.js"></script>
 
     <!-- SECTION 3 : ENERGY MIX -->
     <section class="chapter" id="energy-mix-chapter">
-        <div class="chapter-container">
-            <div class="content-block">
-                <h1>3 - Energy mix by country</h1>
-                <p>
-                    Let’s dive a little deeper into the energy consumption. 
-                    Not all energy sources are equal; their environmental impact varies significantly depending on their carbon
-                    footprint and on whether they are renewable.
-                </p>
-                <p>
-                    The following visualization allows you to explore the energy mix fueling data centers across different
-                    countries, highlighting the percentage shares of coal, oil, gas, and low-carbon (renewable) sources.
-                </p>
-            </div>
-
-            <div id="controls" class="controls-wrapper">
-                <div class="control-row">
-                    <div class="control-group">
-                        <label for="yearSelectBar">Year</label>
-                        <select id="yearSelectBar"></select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="regionSelectBar">Climate region</label>
-                        <select id="regionSelectBar">
-                            <option value="all">All regions</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="sortMetric">Sort by</label>
-                        <select id="sortMetric">
-                            <option value="total">Total energy (TWh)</option>
-                            <option value="coal">Coal share (%)</option>
-                            <option value="oil">Oil share (%)</option>
-                            <option value="gas">Gas share (%)</option>
-                            <option value="lowCarbon">Low‑carbon share (%)</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="displayMode">Display</label>
-                        <select id="displayMode">
-                            <option value="all">All countries</option>
-                            <option value="top5">Top 5 (by selected metric)</option>
-                            <option value="top10" selected>Top 10 (by selected metric)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div id="stats"></div>
-
-            <div id="chart-container">
-                <div id="chart-bar-scroll">
-                    <div id="chart-bar"></div>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <strong>💡 Tip:</strong>
-                All bars have the same height (100% of the energy mix).
-                Use <strong>Climate region</strong> to filter the countries,
-                <strong>Sort by</strong> to order by a specific share, and
-                <strong>Display</strong> to focus on Top 5 or Top 10.
-                Hover a bar to see both percentages and absolute TWh.
-            </div>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>3 - Energy mix by country</h1>
+          <p>
+            Let’s dive a little deeper into the energy consumption. Not all
+            energy sources are equal; their environmental impact varies
+            significantly depending on their carbon footprint and on whether
+            they are renewable.
+          </p>
+          <p>
+            The following visualization allows you to explore the energy mix
+            fueling data centers across different countries, highlighting the
+            percentage shares of coal, oil, gas, and low-carbon (renewable)
+            sources.
+          </p>
         </div>
+
+        <div id="controls" class="controls-wrapper">
+          <div class="control-row">
+            <div class="control-group">
+              <label for="yearSelectBar">Year</label>
+              <select id="yearSelectBar"></select>
+            </div>
+
+            <div class="control-group">
+              <label for="regionSelectBar">Climate region</label>
+              <select id="regionSelectBar">
+                <option value="all">All regions</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="sortMetric">Sort by</label>
+              <select id="sortMetric">
+                <option value="total">Total energy (TWh)</option>
+                <option value="coal">Coal share (%)</option>
+                <option value="oil">Oil share (%)</option>
+                <option value="gas">Gas share (%)</option>
+                <option value="lowCarbon">Low‑carbon share (%)</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="displayMode">Display</label>
+              <select id="displayMode">
+                <option value="all">All countries</option>
+                <option value="top5">Top 5 (by selected metric)</option>
+                <option value="top10" selected>
+                  Top 10 (by selected metric)
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="stats"></div>
+
+        <div id="chart-container">
+          <div id="chart-bar-scroll">
+            <div id="chart-bar"></div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <strong>💡 Tip:</strong>
+          All bars have the same height (100% of the energy mix). Use
+          <strong>Climate region</strong> to filter the countries,
+          <strong>Sort by</strong> to order by a specific share, and
+          <strong>Display</strong> to focus on Top 5 or Top 10. Hover a bar to
+          see both percentages and absolute TWh.
+        </div>
+      </div>
     </section>
 
     <script src="visualizations/energy_mix/energy_mix.js"></script>
 
     <!-- SECTION 4 : SEASONALITY (SPLIT VIEW) -->
     <section class="chapter split-layout" id="water-consumption-intro">
-        <div class="chapter-container">
-            <div class="content-block">
-                <h1>4 - Water Consumption of Data Centers</h1>
-                <p>
-                    Water usage in Data Centers is multifaceted: for <strong>cooling</strong> systems,
-                    <strong>everyday usage</strong> for restrooms, landscaping, staff needs, and especially the
-                    <strong>energy production</strong> required for their operation.
-                    Often forgotten, it is yet a primary component of their environmental impact.
-                </p>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>4 - Water Consumption of Data Centers</h1>
+          <p>
+            Water usage in Data Centers is multifaceted: for
+            <strong>cooling</strong> systems,
+            <strong>everyday usage</strong> for restrooms, landscaping, staff
+            needs, and especially the
+            <strong>energy production</strong> required for their operation.
+            Often forgotten, it is yet a primary component of their
+            environmental impact.
+          </p>
 
-                <p style="margin-bottom: 40px;"> 
-                    While infrastructure needs are constant, the environment is not.
-                    In Africa, where climate extremes are the norm, these factors combine to create a high-stakes water trade-off. 
-                    To help understand its true impact, we must look beyond annual totals and examine how the environment dictates
-                    the 'thirst' of a Data Center month by month.
-                </p>
-            </div>
+          <p style="margin-bottom: 40px">
+            While infrastructure needs are constant, the environment is not. In
+            Africa, where climate extremes are the norm, these factors combine
+            to create a high-stakes water trade-off. To help understand its true
+            impact, we must look beyond annual totals and examine how the
+            environment dictates the 'thirst' of a Data Center month by month.
+          </p>
+        </div>
+      </div>
+
+      <div class="chapter-container split-container">
+        <div class="content-side">
+          <div class="sticky-text">
+            <h2>Understanding Seasonality</h2>
+            <h3>How climate affects water efficiency</h3>
+            <p>
+              The efficiency of water used directly for cooling (WUE "Cold
+              Water") is not constant. It varies according to local climatic
+              conditions. By observing monthly averages, clear trends emerge:
+            </p>
+            <ul class="key-points">
+              <li>
+                <strong>Summer Peaks:</strong> An increase in cooling WUE during
+                hot and humid seasons.
+              </li>
+              <li>
+                <strong>Winter Stability:</strong> Cold periods show optimal
+                efficiency (lower values).
+              </li>
+            </ul>
+            <p class="instruction">
+              Use the <strong>Play</strong> button to observe the thermal
+              "breath" of infrastructures across Africa.
+            </p>
+          </div>
         </div>
 
-        <div class="chapter-container split-container"> 
-            <div class="content-side">
-                <div class="sticky-text">
-                    <h2>Understanding Seasonality</h2>
-                    <h3>How climate affects water efficiency</h3>
-                    <p>
-                        The efficiency of water used directly for cooling (WUE "Cold Water") 
-                        is not constant. It varies according to local climatic conditions. 
-                        By observing monthly averages, clear trends emerge:
-                    </p>
-                    <ul class="key-points">
-                        <li><strong>Summer Peaks:</strong> An increase in cooling WUE during hot and humid seasons.</li>
-                        <li><strong>Winter Stability:</strong> Cold periods show optimal efficiency (lower values).</li>
-                    </ul>
-                    <p class="instruction">
-                        Use the <strong>Play</strong> button to observe the thermal "breath" of infrastructures across Africa.
-                    </p>
-                </div>
+        <div class="viz-side">
+          <div id="toolbar">
+            <button id="play-button">Play</button>
+            <div class="slider-wrapper">
+              <input
+                type="range"
+                id="time-slider"
+                min="1"
+                max="12"
+                value="1"
+                step="1"
+              />
+              <span id="time-label">January</span>
             </div>
-
-            <div class="viz-side">
-                <div id="toolbar">
-                    <button id="play-button">Play</button>
-                    <div class="slider-wrapper">
-                        <input type="range" id="time-slider" min="1" max="12" value="1" step="1">
-                        <span id="time-label">January</span>
-                    </div>
-                </div>
-                <div id="map-holder"></div>
-            </div>
-        </div> 
+          </div>
+          <div id="map-holder"></div>
+        </div>
+      </div>
     </section>
 
     <script src="visualizations/map_seasonal_impact/map_seasonal_impact_cooling_efficiency.js"></script>
 
     <!-- SECTION 5 : WATER VOLUME -->
     <section class="chapter" id="water-volume-chapter">
-        <div class="chapter-container">
-            <div class="content-block">
-                <h1>5 - Associated water consumption (estimated)</h1>
-                <p>
-                    By aggregating efficiency (WUE) and total energy consumption,
-                    we are able to estimate the annual volume of water used.
-                    The following graph displays the total amount of water consumed by
-                    the top 10 consumming countries, related to their Data Center activities only.
-                </p>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>5 - Associated water consumption (estimated)</h1>
+          <p>
+            By aggregating efficiency (WUE) and total energy consumption, we are
+            able to estimate the annual volume of water used. The following
+            graph displays the total amount of water consumed by the top 10
+            consumming countries, related to their Data Center activities only.
+          </p>
 
-                <p>
-                    To put these figures into perspective, 1000 swimming pools of water represent 
-                    the annual water consumption of a European town of 45,000 inhabitants for domestic use.
-                </p>
-            </div>
-            
-            <div id="water-volume-bar-holder"></div>
+          <p>
+            To put these figures into perspective, 1000 swimming pools of water
+            represent the annual water consumption of a European town of 45,000
+            inhabitants for domestic use.
+          </p>
         </div>
+
+        <div id="water-volume-bar-holder"></div>
+      </div>
     </section>
 
     <script src="visualizations/total_water_volume/chart_water_volume.js"></script>
 
     <!-- SECTION 6 : CLIMATE PROJECTION -->
     <section class="chapter" id="water-projection-chapter">
-        <div class="chapter-container">
-            <div class="content-block">
-                <h1>6 - Climate / Water Efficiency Projection</h1>
-                <p class="subtitle">
-                    What might change in the future in terms of efficiency ?
-                </p>
-                <p>
-                    Well, on the one hand, <strong>climate challenges</strong> are rising. The increase in global
-                     temperatures will worsen already difficult cooling conditions, leading to a decline in efficiency
-                      if no adaptation measures are taken.
-                </p>
-                <p>
-                    On the other hand, <strong>there is significant room for optimism</strong>. 
-                    Our study reveals a major opportunity for improving water efficiency. 
-                    Some countries are heavily outperforming others despite having nearly identical weather conditions.
-                </p>
-                <p>
-                    The following visualizations allow you to explore both of these aspects based on our projections.
-                </p>
-            </div>
-
-            <div class="tabs-navigation">
-                <button class="tab-button active" data-tab="predictive">Climate Impact Projection</button>
-                <button class="tab-button" data-tab="waterfall">Water Savings Potential</button>
-            </div>
-
-            <!-- TAB 1 CONTENT -->
-            <div class="tab-content active" id="tab-predictive">
-                <div class="controls-container">
-                    <div class="control-panel">
-                        <div class="control-header">
-                            <h3>Climate Projection (Water Usage Efficiency increase)</h3>
-                            <p class="control-description">
-                                WUE measures liters of water consumed per kilowatt-hour of energy.
-                                <strong>Lower values indicate better water efficiency.</strong>
-                            </p>
-                        </div>
-
-                        <div class="slider-container">
-                            <div class="slider-header">
-                                <div class="slider-displays">
-                                    <span id="total-wue-increase" class="wue-display">+0.0% (0.00 L/kWh)</span>
-                                    <span id="temp-value" class="temp-display">+0.0°C</span>
-                                </div>
-                            </div>
-
-                            <input type="range" id="temp-slider" min="0" max="5" step="0.1" value="0" class="temperature-slider">
-
-                            <div class="slider-markers">
-                                <span>0°C</span>
-                                <span>+1°C</span>
-                                <span>+2°C</span>
-                                <span>+3°C</span>
-                                <span>+4°C</span>
-                                <span>+5°C</span>
-                            </div>
-                        </div>
-                        <div class="legend-note">
-                            <span class="note-icon">ℹ️</span>
-                            <span>Model: Each +1°C increases WUE by 4% (compound growth)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="canvas"></div>
-            </div>
-
-            <!-- TAB 2 CONTENT -->
-            <div class="tab-content" id="tab-waterfall">
-                <div class="controls-container">
-                    <div class="control-panel">
-                        <div class="control-header">
-                            <h3>Cumulative Water Savings Potential</h3>
-                            <p class="control-description">
-                                Shows potential water savings if countries achieved <strong>best-in-climate-region efficiency</strong>.
-                                Each country is compared only to the most efficient country in its own climate zone.
-                            </p>
-                        </div>
-                        <div class="slider-header">
-                            <div class="slider-displays">
-                                <span id="savings-total" class="wue-display">Total Savings: 0 L/kWh</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="waterfall-canvas"></div>
-
-                <div class="waterfall-legend">
-                    <div class="waterfall-legend-item">
-                        <div class="waterfall-legend-color" style="background-color: #2ECC71;"></div>
-                        <span class="waterfall-legend-text">WUE Improvement</span>
-                    </div>
-                    <div class="waterfall-legend-item">
-                        <div class="waterfall-legend-color" style="background-color: #E67E22;"></div>
-                        <span class="waterfall-legend-text">Leakage Reduction</span>
-                    </div>
-                    <div class="waterfall-legend-item">
-                        <div class="waterfall-legend-color" style="background-color: #3498DB;"></div>
-                        <span class="waterfall-legend-text">Total WUE</span>
-                    </div>
-                </div>
-            </div>
+      <div class="chapter-container">
+        <div class="content-block">
+          <h1>6 - Climate / Water Efficiency Projection</h1>
+          <p class="subtitle">
+            What might change in the future in terms of efficiency ?
+          </p>
+          <p>
+            Well, on the one hand, <strong>climate challenges</strong> are
+            rising. The increase in global temperatures will worsen already
+            difficult cooling conditions, leading to a decline in efficiency if
+            no adaptation measures are taken.
+          </p>
+          <p>
+            On the other hand,
+            <strong>there is significant room for optimism</strong>. Our study
+            reveals a major opportunity for improving water efficiency. Some
+            countries are heavily outperforming others despite having nearly
+            identical weather conditions.
+          </p>
+          <p>
+            The following visualizations allow you to explore both of these
+            aspects based on our projections.
+          </p>
         </div>
+
+        <div class="tabs-navigation">
+          <button class="tab-button active" data-tab="predictive">
+            Climate Impact Projection
+          </button>
+          <button class="tab-button" data-tab="waterfall">
+            Water Savings Potential
+          </button>
+        </div>
+
+        <!-- TAB 1 CONTENT -->
+        <div class="tab-content active" id="tab-predictive">
+          <div class="controls-container">
+            <div class="control-panel">
+              <div class="control-header">
+                <h3>Climate Projection (Water Usage Efficiency increase)</h3>
+                <p class="control-description">
+                  WUE measures liters of water consumed per kilowatt-hour of
+                  energy.
+                  <strong
+                    >Lower values indicate better water efficiency.</strong
+                  >
+                </p>
+              </div>
+
+              <div class="slider-container">
+                <div class="slider-header">
+                  <div class="slider-displays">
+                    <span id="total-wue-increase" class="wue-display"
+                      >+0.0% (0.00 L/kWh)</span
+                    >
+                    <span id="temp-value" class="temp-display">+0.0°C</span>
+                  </div>
+                </div>
+
+                <input
+                  type="range"
+                  id="temp-slider"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value="0"
+                  class="temperature-slider"
+                />
+
+                <div class="slider-markers">
+                  <span>0°C</span>
+                  <span>+1°C</span>
+                  <span>+2°C</span>
+                  <span>+3°C</span>
+                  <span>+4°C</span>
+                  <span>+5°C</span>
+                </div>
+              </div>
+              <div class="legend-note">
+                <span class="note-icon">ℹ️</span>
+                <span
+                  >Model: Each +1°C increases WUE by 4% (compound growth)</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div id="canvas"></div>
+        </div>
+
+        <!-- TAB 2 CONTENT -->
+        <div class="tab-content" id="tab-waterfall">
+          <div class="controls-container">
+            <div class="control-panel">
+              <div class="control-header">
+                <h3>Cumulative Water Savings Potential</h3>
+                <p class="control-description">
+                  Shows potential water savings if countries achieved
+                  <strong>best-in-climate-region efficiency</strong>. Each
+                  country is compared only to the most efficient country in its
+                  own climate zone.
+                </p>
+              </div>
+              <div class="slider-header">
+                <div class="slider-displays">
+                  <span id="savings-total" class="wue-display"
+                    >Total Savings: 0 L/kWh</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="waterfall-canvas"></div>
+
+          <div class="waterfall-legend">
+            <div class="waterfall-legend-item">
+              <div
+                class="waterfall-legend-color"
+                style="background-color: #2ecc71"
+              ></div>
+              <span class="waterfall-legend-text">WUE Improvement</span>
+            </div>
+            <div class="waterfall-legend-item">
+              <div
+                class="waterfall-legend-color"
+                style="background-color: #e67e22"
+              ></div>
+              <span class="waterfall-legend-text">Leakage Reduction</span>
+            </div>
+            <div class="waterfall-legend-item">
+              <div
+                class="waterfall-legend-color"
+                style="background-color: #3498db"
+              ></div>
+              <span class="waterfall-legend-text">Total WUE</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <script src="visualizations/predictive_maps/main.js"></script>    
+    <script src="visualizations/predictive_maps/main.js"></script>
 
     <script>
-        // Side navigation active state tracking
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.chapter');
-            const navLinks = document.querySelectorAll('.side-nav-link');
-            
-            function updateActiveLink() {
-                let current = '';
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if (pageYOffset >= sectionTop - 200) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-            
-            window.addEventListener('scroll', updateActiveLink);
-            updateActiveLink();
-        });
-    </script>
+      // Side navigation active state tracking
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".chapter");
+        const navLinks = document.querySelectorAll(".side-nav-link");
 
-</body>
+        function updateActiveLink() {
+          let current = "";
+
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - 200) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === "#" + current) {
+              link.classList.add("active");
+            }
+          });
+        }
+
+        window.addEventListener("scroll", updateActiveLink);
+        updateActiveLink();
+      });
+    </script>
+  </body>
 </html>
