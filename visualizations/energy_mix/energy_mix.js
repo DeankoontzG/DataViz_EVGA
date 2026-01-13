@@ -101,31 +101,31 @@ d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
     new Set(barDataCountries.map(d => d.climate_region))
   ).sort();
 
-  createYearSelect(years, defaultYear);
+  // createYearSelect(years, defaultYear);
   createRegionSelect(regions);
   setupControls();
   updateStackedBar();
 });
 
 // --- Controls setup ---
-function createYearSelect(years, defaultYear) {
-  const yearSelect = d3.select("#yearSelectBar");
-  if (!yearSelect.empty()) {
-    yearSelect.html("");
-    years.forEach(y => {
-      yearSelect
-        .append("option")
-        .text(y)
-        .attr("value", y)
-        .property("selected", y === defaultYear);
-    });
+// function createYearSelect(years, defaultYear) {
+//   const yearSelect = d3.select("#yearSelectBar");
+//   if (!yearSelect.empty()) {
+//     yearSelect.html("");
+//     years.forEach(y => {
+//       yearSelect
+//         .append("option")
+//         .text(y)
+//         .attr("value", y)
+//         .property("selected", y === defaultYear);
+//     });
 
-    yearSelect.on("change", function () {
-      currentYear = +this.value;
-      updateStackedBar();
-    });
-  }
-}
+//     yearSelect.on("change", function () {
+//       currentYear = +this.value;
+//       updateStackedBar();
+//     });
+//   }
+// }
 
 function createRegionSelect(regions) {
   const regionSelect = d3.select("#regionSelectBar");

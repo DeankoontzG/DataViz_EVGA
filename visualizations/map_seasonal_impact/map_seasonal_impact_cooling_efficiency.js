@@ -3,7 +3,8 @@
      * CONFIGURATION & ÉCHELLE
      ********************************************/
     const width = 960;
-    const height = 750;
+    const height = 600;
+    
     const currentDimension = "WUE_FixedColdWaterDirect(L/KWh)";
 
     const months = ["January", "Februrary", "Mars", "April", "May", "June", 
@@ -20,7 +21,7 @@
 
     const projection = d3.geoMercator()
         .center([17, 17]) 
-        .scale(850)       
+        .scale(600)       
         .translate([width / 2, height / 2 - 80]);
 
 

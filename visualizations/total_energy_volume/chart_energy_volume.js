@@ -95,6 +95,14 @@
             .enter()
             .append("g");
 
+        svg.append("text")
+            .attr("x", width)
+            .attr("y", height + margin.bottom - 10)
+            .attr("text-anchor", "end")
+            .attr("font-size", "12px")
+            .style("fill", "var(--color-text-muted)")
+            .text("🏠 = household equivalent (number of people)");
+
         bars.append("rect")
             .attr("x", d => x(d.country))
             .attr("y", d => y(d.energyTWh))

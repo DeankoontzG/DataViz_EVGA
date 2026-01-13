@@ -130,6 +130,18 @@
                 .text(labels[key]);
         });
 
+        // Ligne de légende supplémentaire pour l'icône de la maison
+        const houseLegend = legend.append("g")
+            .attr("transform", `translate(0, ${3 * 20})`);
+
+        houseLegend.append("text")
+            .attr("x", 0)
+            .attr("y", 12)
+            .style("font-size", "14px")
+            .style("fill", "var(--color-text-primary)")
+            .text("🏠 Household equivalent (number of people)");
+
+
         // Labels équivalent de populatioon (au dessus)
         const labelsPop = svg.selectAll(".pop-label-group")
             .data(processedData)
