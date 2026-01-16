@@ -72,6 +72,8 @@ const barTooltip = d3.select("#tooltip");
 let barDataCountries = [];
 let currentYear = null;
 let currentRegion = "all";
+let currentDisplayMode = "top10";
+let currentSortMetric = "total";
 
 // format absolute TWh
 function barFormatNumber(num) {
@@ -128,28 +130,68 @@ d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
 // }
 
 function createRegionSelect(regions) {
-  const regionSelect = d3.select("#regionSelectBar");
-  if (!regionSelect.empty()) {
-    regions.forEach(r => {
-      regionSelect.append("option").text(r).attr("value", r);
-    });
+  const container = d3.select("#regionToggle");
+  if (container.empty()) return;
 
-    regionSelect.on("change", function () {
-      currentRegion = this.value;
-      updateStackedBar();
-    });
-  }
+  container.html("");
+
+  // "All regions" button
+  container
+    .append("button")
+    .attr("type", "button")
+    .attr("class", "pill-toggle-button active")
+    .attr("data-region", "all")
+    .text("All regions");
+
+  // One button per climate region
+  regions.forEach(r => {
+    container
+      .append("button")
+      .attr("type", "button")
+      .attr("class", "pill-toggle-button")
+      .attr("data-region", r)
+      .text(r);
+  });
+
+  const buttons = container.selectAll("button");
+
+  buttons.on("click", function () {
+    const region = this.getAttribute("data-region");
+    if (!region || region === currentRegion) return;
+
+    currentRegion = region;
+    buttons.classed("active", false);
+    d3.select(this).classed("active", true);
+    updateStackedBar();
+  });
 }
 
 function setupControls() {
-  const displaySelect = d3.select("#displayMode");
-  const sortSelect = d3.select("#sortMetric");
+  const displayButtons = d3.selectAll("#displayToggle .pill-toggle-button");
+  const sortButtons = d3.selectAll("#sortToggle .pill-toggle-button");
 
-  if (!displaySelect.empty()) {
-    displaySelect.on("change", () => updateStackedBar());
+  if (!displayButtons.empty()) {
+    displayButtons.on("click", function () {
+      const mode = this.getAttribute("data-display");
+      if (!mode || mode === currentDisplayMode) return;
+
+      currentDisplayMode = mode;
+      displayButtons.classed("active", false);
+      d3.select(this).classed("active", true);
+      updateStackedBar();
+    });
   }
-  if (!sortSelect.empty()) {
-    sortSelect.on("change", () => updateStackedBar());
+
+  if (!sortButtons.empty()) {
+    sortButtons.on("click", function () {
+      const metric = this.getAttribute("data-sort");
+      if (!metric || metric === currentSortMetric) return;
+
+      currentSortMetric = metric;
+      sortButtons.classed("active", false);
+      d3.select(this).classed("active", true);
+      updateStackedBar();
+    });
   }
 }
 
@@ -203,8 +245,8 @@ function updateStatistics(region, countriesData) {
 function updateStackedBar() {
   if (currentYear == null) return;
 
-  const displayMode = d3.select("#displayMode").property("value") || "all";
-  const sortMetric = d3.select("#sortMetric").property("value") || "total";
+  const displayMode = currentDisplayMode || "all";
+  const sortMetric = currentSortMetric || "total";
 
   // filter by year and region
   let data = barDataCountries.filter(d => d.year === currentYear);

@@ -58,8 +58,20 @@
     });
 
     function initInteractions() {
-        d3.select("#climate-select").on("change", function() {
-            currentDim = this.value;
+        const buttons = d3.selectAll("#climate-toggle button");
+
+        if (buttons.empty()) return;
+
+        buttons.on("click", function() {
+            const dim = this.getAttribute("data-dim");
+            if (!dim || dim === currentDim) return;
+
+            currentDim = dim;
+
+            buttons.classed("active", false);
+            d3.select(this).classed("active", true);
+
+            selectedCountry = null;
             updateDisplay();
         });
     }
