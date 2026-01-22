@@ -84,38 +84,50 @@ http://localhost:8080
 ```
 DataViz_EVGA/
 │
-├── index.html # Interface principale
-├── main.py # Serveur HTTP + API REST
-├── README.md # Documentation
-├── avancement.txt # Cahier de bord
+├── index.html              # Interface pricipale
+├── site.png                
+├── README.md               # Project documentation
+├── requirements.txt        # Python Requirements 
+├── .gitignore              # To avoid importing whole dataset, .DS files, etc
 │
-├── data/ # Cache JSON (gitignored)
-│ └── \*.json
+├── data/                      # Contains data extracted from initial dataset
+│ └── exported
+│   └── climate_summary.csv          # Overall climate data
+│   └── country_month_cleaned.csv    # Data aggregated by month
+│   └── country_year_cleaned.csv     # Data aggregated by year
 │
-├── scraper/
-│ ├── whoscored_scraper.py # Module de scraping WhoScored
-│ ├── image_scraper.py # Récupération photos joueurs
-│ ├── requirements.txt # Dépendances Python
-│ └── **init**.py
+├── notebooks/
+│ ├── 2_data_exploration_improved_V2.ipynb # Data exploration, cleaning and aggregation notebook
 │
-└── src/
-├── css/
-│ └── style.css # Styles modernes (Glassmorphism)
+└── style/
+│ └── styles.css                # Centralized styles file for coherence between visulaizations
 │
-└── js/
-├── main.js # Orchestrateur principal
-├── dataManager.js # Gestion des données + traduction FR
-├── pitch.js # Moteur géométrique SVG
-├── dashboard.js # Vue d'ensemble multi-métriques
-├── passmap.js # Réseau de passes interactif
-├── shotmap.js # Carte des tirs + xG
-├── heatmap.js # Densité de présence
-├── radarChart.js # Profil radar performance
-├── progressivePasses.js # Analyse passes progressives
-├── timeline.js # Timeline temporelle
-├── zoneAnalysis.js # Statistiques par zone
-├── actions.js # Gestion des événements
-└── defensiveActions.js # Module défensif (en développement)
+└── visualizations/             
+│ └── energy_mix/               # energy mix 100% stacked bar chart
+│   └── energy_mix.js
+│   └── index.html
+│ └── map_climate/              # Choroplet map of climate data, per country and over time
+│   └── map_climate.js
+│   └── index.html
+│ └── map_energy_total/         # Choroplet map of energy consumption. Not retained for final storytelling
+│   └── map_energy_total.js
+│   └── index.html
+│ └── map_seasonal_impact/      # Animated choroplet map of water efficiency per country
+│   └── map_seasonal_impact.js
+│   └── index.html
+│ └── predictive_maps/          # Animated waterfall chart and choroplet map, projection of evolution according to rise in temperature
+│   └── map_seasonal_impact.js
+│   └── index.html
+│ └── shared/          
+│ └── stacked_area/             # Stacked area of energy consumption. Not retained for final storytelling
+│   └── stacked_area.js
+│   └── index.html
+│ └── total_energy_volume/      # Bar chart of total energy consumption per country associated to Data Centers
+│   └── total_energy_volume.js
+│   └── index.html
+│ └── total_water_volume/       # Stacked bar chart of water volume consumed per country associated to Data Centers
+│   └── total_water_volume.js
+│   └── index.html  
 
 ```
 
