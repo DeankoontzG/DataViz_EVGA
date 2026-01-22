@@ -1,12 +1,11 @@
 (function() {
-    // Configuration spécifique au Fichier 1
     const width = 960;
     const height = 750;
     const sidePanelWidth = 350;
     const currentYear = "2023";
     const mainDimension = "Total energy - TWh";
 
-    // Sélection du conteneur HTML spécifique
+    // Selecting the specific HTML container
     const svg = d3.select("#energy-map-holder")
       .append("svg")
       .attr("viewBox", `0 0 ${width + sidePanelWidth} ${height}`);
@@ -32,7 +31,7 @@
       return +String(row[col]).replace(",", ".");
     }
 
-    // Chargement des données
+    // Loading data
     Promise.all([
       d3.csv("../../data/exported/country_year_cleaned.csv"),
       d3.json("../shared/custom.geo.json")
@@ -68,7 +67,7 @@
         })
         .on("mousemove", (e, d) => {
           const v = getVal(d.properties.data, mainDimension);
-          tooltip.style("opacity", 1) // On affiche
+          tooltip.style("opacity", 1)
             .style("left", e.pageX + 15 + "px")
             .style("top", e.pageY - 30 + "px")
             .html(`<strong>${d.properties.name_long}</strong><br>${Number.isFinite(v) ? Math.round(v) + " TWh" : "N/D"}`);
@@ -78,7 +77,7 @@
     }
 
     // ===============================
-    // PANEL DROIT – STACKED BAR (MIX ÉNERGÉTIQUE)
+    // STRAIGHT PANEL – STACKED BAR (ENERGY MIX)
     // ===============================
     function updatePanel(feature) {
 
@@ -187,7 +186,7 @@
     }
 
     // ===============================
-    // Initialisation du pannel
+    // Initializing the panel
     // ===============================
 
     function drawEmptyPanel() {
@@ -196,7 +195,7 @@
       const panelHeight = 300;
       const panelWidth = sidePanelWidth - 40;
 
-      // 1. Rectangle de fond
+      // 1. Background rectangle
       panelGroup.append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -206,7 +205,7 @@
         .attr("fill", "#f2f2f2")
         .attr("stroke", "#ccc");
 
-      // 2. Texte d'instruction
+      // 2. Instruction text
       panelGroup.append("text")
         .attr("x", panelWidth / 2)
         .attr("y", panelHeight / 2)
@@ -214,7 +213,7 @@
         .attr("font-size", "14px")
         .attr("fill", "#555")
         .attr("font-style", "italic")
-        // IMPORTANT : On définit le texte d'abord, puis on appelle wrap
+        // IMPORTANT: First define the text, then call wrap.
         .append("tspan")
           .attr("x", panelWidth / 2) 
           .text("Click on a country for more information")

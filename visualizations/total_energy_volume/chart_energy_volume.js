@@ -2,9 +2,9 @@
     const holder = d3.select("#energy-volume-bar-holder");
     holder.selectAll("*").remove();
 
-    // 1. On récupère la largeur réelle de la div parente
+    // We retrieve the actual width of the parent div.
     const containerWidth = holder.node().getBoundingClientRect().width || 960;
-    const containerHeight = 600; // Tu peux l'augmenter si besoin
+    const containerHeight = 600;
 
     const margin = { top: 80, right: 30, bottom: 120, left: 80 },
           width = containerWidth - margin.left - margin.right,
@@ -24,7 +24,7 @@
         "default": "City"
     };
 
-    // 2. On utilise viewBox pour que le graph s'étire proprement
+    // We use viewBox so that the graph stretches properly.
     const svg = holder.append("svg")
         .attr("viewBox", `0 0 ${containerWidth} ${containerHeight}`)
         .attr("preserveAspectRatio", "xMidYMid meet")
@@ -42,7 +42,6 @@
         const rawData2023 = data.filter(d => d.year === "2023");
 
         const processedData = rawData2023.map(d => {
-            // Note: J'ai gardé ta division par 1 000 000 pour corriger l'unité de ton dataset
             const energyTWh = (parseFloat(d["Total energy - TWh"]?.replace(",", ".")) || 0) / 1000000;
             const popEquiv = (energyTWh / TWH_PER_MILLION) * 1000000;
             
@@ -60,7 +59,7 @@
         x.domain(processedData.map(d => d.country));
         y.domain([0, d3.max(processedData, d => d.energyTWh)]).nice();
 
-        // Axe X
+        // X Axis
         svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x))
@@ -70,7 +69,7 @@
             .style("font-size", "14px")
             .style("fill", "var(--color-text-secondary)");
 
-        // Axe Y
+        // Y Axis
         const yAxis = svg.append("g")
             .call(d3.axisLeft(y).ticks(6).tickSize(-width));
             
@@ -89,7 +88,7 @@
             .style("fill", "var(--color-text-primary)")
             .text("Energy Consumption (TWh/year)");
 
-        // Barres
+        // Bars
         const bars = svg.selectAll(".bar-group")
             .data(processedData)
             .enter()
@@ -126,8 +125,7 @@
             })
             .on("mouseout", () => tooltip.style("opacity", 0));
 
-        // Labels au-dessus
-
+        // Labels
         bars.append("text")
             .attr("x", d => x(d.country) + x.bandwidth() / 2)
             .attr("y", d => y(d.energyTWh) - 28)

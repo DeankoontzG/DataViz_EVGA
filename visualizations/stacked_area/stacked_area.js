@@ -111,7 +111,7 @@ Promise.all([
   // Process monthly data
   dataMonth.forEach(d => {
     d.date = new Date(+d.year, +d.month - 1, 1);
-    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); //Correction de l'erreur d'unité des données
+    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); // Correction of data unit error
     d.climate_region = d.climate_region || "Undefined";
   });
   dataMonth.sort((a, b) => a.date - b.date);
@@ -120,7 +120,7 @@ Promise.all([
   // Process yearly data
   dataYear.forEach(d => {
     d.year = +d.year;
-    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); //Correction de l'erreur d'unité des données ici aussi
+    keys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); // Correction of data unit error here too
     d.climate_region = d.climate_region || "Undefined";
   });
   yearlyData = dataYear;

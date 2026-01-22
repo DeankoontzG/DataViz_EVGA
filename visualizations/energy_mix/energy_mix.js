@@ -87,7 +87,7 @@ function barFormatNumber(num) {
 d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
   dataYear.forEach(d => {
     d.year = +d.year;
-    barKeys.forEach(k => (d[k] = (+d[k] || 0) / 1000000)); // Erreur d'unité corrigée
+    barKeys.forEach(k => (d[k] = (+d[k] || 0) / 1000000));
     d.climate_region = d.climate_region || "Undefined";
   });
 
@@ -108,26 +108,6 @@ d3.csv("data/exported/country_year_cleaned.csv").then(dataYear => {
   setupControls();
   updateStackedBar();
 });
-
-// --- Controls setup ---
-// function createYearSelect(years, defaultYear) {
-//   const yearSelect = d3.select("#yearSelectBar");
-//   if (!yearSelect.empty()) {
-//     yearSelect.html("");
-//     years.forEach(y => {
-//       yearSelect
-//         .append("option")
-//         .text(y)
-//         .attr("value", y)
-//         .property("selected", y === defaultYear);
-//     });
-
-//     yearSelect.on("change", function () {
-//       currentYear = +this.value;
-//       updateStackedBar();
-//     });
-//   }
-// }
 
 function createRegionSelect(regions) {
   const container = d3.select("#regionToggle");

@@ -72,6 +72,8 @@ If Node.js is installed (included in the environment):
 npx http-server .
 ```
 
+*Note: Requires npx version 10.5.0 or later.*
+
 Then open:
 
 ```bash

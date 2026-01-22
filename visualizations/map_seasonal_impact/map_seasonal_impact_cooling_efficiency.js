@@ -1,6 +1,6 @@
 (function() {
     /********************************************
-     * CONFIGURATION & ÉCHELLE
+     * CONFIGURATION & SCALE
      ********************************************/
     const width = 960;
     const height = 600;
@@ -33,7 +33,7 @@
     const tooltip = d3.select("#tooltip");
 
     /********************************************
-     * CHARGEMENT ET CALCUL
+     * LOADING AND CALCULATION
      ********************************************/
     Promise.all([
         d3.csv("data/exported/country_month_cleaned.csv"),
@@ -63,7 +63,7 @@
 
         geoDataGlobal = geoJson;
         
-        // Legende de couleurt
+        // Color legend
         drawColorLegend(minVal, maxVal);
         
         initControls();
@@ -143,7 +143,7 @@
         const legendHeight = 15;
         const tickCount = 5;
 
-        // Créé le gradient
+        // Create the gradient
         const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
         defs.selectAll("#seasonal-legend-gradient").remove();
         
@@ -152,7 +152,7 @@
             .attr("x1", "0%")
             .attr("x2", "100%");
 
-        // Stop de couleurs
+        // Color stop
         const stops = d3.range(0, 1.01, 0.01);
         gradient.selectAll("stop")
             .data(stops)
@@ -160,7 +160,7 @@
             .attr("offset", d => `${d * 100}%`)
             .attr("stop-color", d => colorScale(minVal + d * (maxVal - minVal)));
 
-        // Rectangle de légende
+        // Legend rectangle
         legendGroup.append("rect")
             .attr("width", legendWidth)
             .attr("height", legendHeight)
@@ -168,7 +168,7 @@
             .attr("stroke", "#fff")
             .attr("stroke-width", 1);
 
-        // Echelle
+        // Scale
         const legendScale = d3.scaleLinear()
             .domain([minVal, maxVal])
             .range([0, legendWidth]);

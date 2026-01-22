@@ -1,9 +1,9 @@
 (function() {
-    const margin = {top: 50, right: 30, bottom: 120, left: 100}, // Augmentation du bottom pour la note
+    const margin = {top: 50, right: 30, bottom: 120, left: 100}, // Increase in the bottom line for the note
           width = 960 - margin.left - margin.right,
           height = 550 - margin.top - margin.bottom;
 
-    const PO_VOLUME = 2500000; // Volume en L de piscine olympique
+    const PO_VOLUME = 2500000; // Volume in liters of an Olympic swimming pool
 
     const svg = d3.select("#water-volume-bar-holder")
         .append("svg")
@@ -13,7 +13,7 @@
 
     const tooltip = d3.select("#tooltip");
 
-    // Échelles
+    // Scales
     const x = d3.scaleBand().range([0, width]).padding(0.3);
     const y = d3.scaleLinear().range([height, 0]);
     const color = d3.scaleOrdinal()
@@ -29,10 +29,10 @@
     d3.csv("data/exported/country_year_cleaned.csv").then(data => {
         const rawData2023 = data.filter(d => d.year === "2023");
 
-        // Calcul des volumes adaptés en piscines olympiques
+        // Calculation of appropriate volumes in Olympic swimming pools
         const processedData = rawData2023.map(d => {
             const energyTWh = parseFloat(d["Total energy - TWh"]?.replace(",", ".")) || 0;
-            const energyKWh = energyTWh * 1e3; // conversion en kWh
+            const energyKWh = energyTWh * 1e3; // conversion to kWh
             
             const wueInd = parseFloat(d["WUE_Indirect(L/KWh)"]?.replace(",", ".")) || 0;
             const wueCold = parseFloat(d["WUE_FixedColdWaterDirect(L/KWh)"]?.replace(",", ".")) || 0;
@@ -40,7 +40,7 @@
 
             const popEquiv = ((wueInd + wueAppr) * energyKWh * 45) / PO_VOLUME
 
-            // Volume total en Litres puis division par PO_VOLUME
+            // Total volume in liters then divided by PO_VOLUME
             return {
                 country: d.country,
                 partIndirect: (wueInd * energyKWh) / PO_VOLUME,
@@ -54,11 +54,11 @@
         .sort((a, b) => b.total - a.total)
         .slice(0, 10);
 
-        // MAJ des échelles
+        // Update of scales
         x.domain(processedData.map(d => d.country));
         y.domain([0, d3.max(processedData, d => d.total)]).nice();
 
-        // Axes
+        // Axis X
         const xAxis = svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x));
@@ -69,7 +69,7 @@
             .style("font-size", "14px")
             .style("fill", "var(--color-text-secondary)");
 
-        // Axe Y en Nombre de Piscines
+        // Y Axis in Number of Pools
         svg.append("g")
             .call(d3.axisLeft(y).tickFormat(d => d3.format(",")(d)))
             .call(g => g.selectAll("text").style("fill", "var(--color-text-secondary)").style("font-size", "14px"))
@@ -83,7 +83,7 @@
             .attr("font-size", "16px")
             .text("Equivalent Olympic Swimming Pools / year");
 
-        // Dessin des barres
+        // Drawing the bars
         const stack = d3.stack().keys(["partIndirect", "partCold", "partApproach"])(processedData);
 
         const layers = svg.selectAll(".layer")
@@ -114,10 +114,10 @@
                     `);
             })
             .on("mouseout", () => {
-                tooltip.style("opacity", 0);   // Utilisation de l'opacité pour masquer
+                tooltip.style("opacity", 0);   // Using opacity to hide
             });
 
-        // Légende
+        // Legend
         const legend = svg.append("g")
             .attr("transform", `translate(${width - 250}, -20)`);
 
@@ -130,7 +130,7 @@
                 .text(labels[key]);
         });
 
-        // Ligne de légende supplémentaire pour l'icône de la maison
+        // Additional caption line for the house icon
         const houseLegend = legend.append("g")
             .attr("transform", `translate(0, ${3 * 20})`);
 
@@ -142,7 +142,7 @@
             .text("🏠 Household equivalent (number of people)");
 
 
-        // Labels équivalent de populatioon (au dessus)
+        // Population equivalent labels (above)
         const labelsPop = svg.selectAll(".pop-label-group")
             .data(processedData)
             .enter()
@@ -158,7 +158,7 @@
             .style("fill", "var(--color-text-primary)")
             .text(d => `🏠 ≃ ${d3.format(".2s")(d.popEquiv).replace('G', 'B')}`);
 
-        // Explications en dessous de l'axe des x
+        // Explanations below the x-axis
         svg.append("text")
             .attr("x", width / 2)
             .attr("y", height + 100)

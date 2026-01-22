@@ -8,7 +8,7 @@
     let geoData, csvData, africaAverages;
     let selectedCountry = null;
 
-    // Définition des unités
+    // Definition of units
     const units = {
         temperature: "°C",
         humidity: "%",
@@ -19,13 +19,13 @@
 
     const monthNamesShort = ["Jan.", "Febr.", "Mars", "Apr.", "May", "June", "July.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
 
-    // Échelles de couleurs
+    // Color scales
     const colorScales = {
         temperature: d3.scaleSequential(d3.interpolateYlOrRd),
         humidity: d3.scaleSequential(d3.interpolateGnBu),
         precipitation: d3.scaleSequential(d3.interpolateBlues),
         wind_speed: d3.scaleSequential(d3.interpolateGreens),
-        // Inversion des couleurs pour wetbulb_temperature
+        // Color inversion for wetbulb_temperature
         wetbulb_temperature: d3.scaleSequential(t => d3.interpolateWarm(1 - t))
     };
 
@@ -93,7 +93,7 @@
         const maxVal = d3.max(values);
         const scale = colorScales[currentDim].domain([minVal, maxVal]);
 
-        // MAJ de la légende de couleurs
+        // Color legend update
         updateColorLegend(scale, minVal, maxVal, currentDim);
 
         mapGroup.selectAll("path")
@@ -107,10 +107,10 @@
                 let displayUnit = units[currentDim];
 
                 if (val !== undefined && isFinite(val)) {
-                    // Condition spécifique pour les précipitations
+                    // Specific condition for precipitation
                     if (currentDim === "precipitation") {
-                        displayVal = (val * 12).toFixed(0); // Multiplié par 12 pour moyenne annuelle plus parlante que mensuelle
-                        displayUnit = "mm/year";           // Changement d'unité
+                        displayVal = (val * 12).toFixed(0); // Multiplied by 12 for a more meaningful annual average than a monthly one
+                        displayUnit = "mm/year";           // Change of unit
                     } else {
                         displayVal = val.toFixed(1);
                     }
@@ -122,7 +122,7 @@
                     .html(`<strong>${d.properties.name_long}</strong><br>${currentDim.replace("_", " ")}: ${displayVal} ${displayUnit}`);
             })
             .on("mouseout", () => {
-                tooltip.style("opacity", 0); // On cache par l'opacité
+                tooltip.style("opacity", 0); // We hide through opacity
             })
             .on("click", (e, d) => {
                 selectedCountry = d.properties.name_long;
@@ -160,7 +160,7 @@
                 d3.max([...countryData, ...africaAverages], d => d.val) * 1.1
             ]).nice().range([chartH, 0]);
 
-        // Axes avec unités et mois en texte
+        // Axes with units and months in text
         chartGroup.append("g")
             .attr("transform", `translate(0,${chartH})`)
             .call(d3.axisBottom(x).ticks(12).tickFormat(d => monthNamesShort[d-1]))
@@ -202,7 +202,7 @@
             .attr("fill", "none").attr("stroke", "#14086bff").attr("stroke-width", 3)
             .attr("d", lineGenerator);
 
-        // Ajout des points et hover
+        // Adding points and hover tooltips
         chartGroup.selectAll(".dot")
             .data(countryData.filter(d => isFinite(d.val)))
             .join("circle")
@@ -268,7 +268,7 @@
             .style("font-size", "14px")
             .text(units[currentDim]);
 
-        // Ligne Afrique seule
+        // Africa line only
         const lineGenerator = d3.line().x(d => x(d.month)).y(d => y(d.val)).curve(d3.curveMonotoneX);
 
         const yAxis = chartGroup.append("g").call(d3.axisLeft(y).ticks(5));
@@ -306,7 +306,7 @@
         const legendHeight = 15;
         const tickCount = 5;
 
-        // Créé le gradient
+        // Create the gradient
         const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
         defs.selectAll("linearGradient").remove();
         
@@ -315,7 +315,7 @@
             .attr("x1", "0%")
             .attr("x2", "100%");
 
-        // Couleur arrêts
+        // Color stops
         const stops = d3.range(0, 1.01, 0.01);
         gradient.selectAll("stop")
             .data(stops)
@@ -323,7 +323,7 @@
             .attr("offset", d => `${d * 100}%`)
             .attr("stop-color", d => scale(minVal + d * (maxVal - minVal)));
 
-        // Rectangle de légende
+        // Legend rectangle
         legendGroup.append("rect")
             .attr("width", legendWidth)
             .attr("height", legendHeight)
@@ -331,7 +331,7 @@
             .attr("stroke", "#fff")
             .attr("stroke-width", 1);
 
-        // Echelle
+        // Scale
         const legendScale = d3.scaleLinear()
             .domain([minVal, maxVal])
             .range([0, legendWidth]);
