@@ -118,7 +118,8 @@ DataViz_EVGA/
 │ └── predictive_maps/          # Animated waterfall chart and choroplet map, projection of evolution according to rise in temperature
 │   └── map_seasonal_impact.js
 │   └── index.html
-│ └── shared/          
+│ └── shared/
+│   └── custom.geo.json         # Geo file mapping africa and its countries used for all our maps     
 │ └── stacked_area/             # Stacked area of energy consumption. Not retained for final storytelling
 │   └── stacked_area.js
 │   └── index.html
@@ -133,7 +134,7 @@ DataViz_EVGA/
 
 ---
 
-## 👥 Team
+## Team
 - Edgar Demeude
 - Ghuilhem Dupuy
 - Vu Anh Duy
@@ -141,13 +142,13 @@ DataViz_EVGA/
 
 ---
 
-## 📚 Credits & Sources
+## Credits & Sources
 - Dataset: [Water Efficiency Dataset for African Data Centers](https://huggingface.co/datasets/masterlion/WaterEfficientDatasetForAfricanCountries)
 - Visualization framework: [D3.js v7](https://d3js.org/)
 
 ---
 
-## 🏫 Links
+## Links
 - [DataViz Course – Université Lyon 1](https://lyondataviz.github.io/teaching/lyon1-m2/2025/)
 - [Project site (GitHub Pages)](https://deankoontzg.github.io/DataViz_EVGA/)
 
