@@ -1,4 +1,4 @@
-name: water-efficiency-africa
+name: WEA
 channels:
   - conda-forge
   - defaults

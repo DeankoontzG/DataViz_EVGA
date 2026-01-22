@@ -2,7 +2,9 @@
 
 ### DataViz project – Lyon 1 University, Master IA (2025–2026)
 
-![teaser](teaser.png)
+[Project site (GitHub Pages)](https://deankoontzg.github.io/DataViz_EVGA/)
+
+![teaser](site.png)
 
 ---
 
@@ -44,7 +46,7 @@ Through interactive D3.js visualizations, the project highlights:
 
 ```bash
 git clone https://github.com/DeankoontzG/DataViz_EVGA.git
-cd water-efficiency-africa
+cd DataViz_EVGA
 ```
 
 2. Create the Conda environment
@@ -58,7 +60,7 @@ conda env create -f environment.yml
 Then activate it:
 
 ```bash
-conda activate water-efficiency-africa
+conda activate WEA
 ```
 
 3. Run a local development server
@@ -94,14 +96,8 @@ http://localhost:8080
 
 ## 🏫 Links
 - [DataViz Course – Université Lyon 1](https://lyondataviz.github.io/teaching/lyon1-m2/2025/)
-- [Project site (GitHub Pages)](https://DeankoontzG.github.io/DataCenterWaterEfficiencyAfrica/)
+- [Project site (GitHub Pages)](https://deankoontzg.github.io/DataViz_EVGA/)
 
 ---
 
-### 📸 Images
-- `teaser.png` – large preview image  
-- `thumbnail.png` – 500×300 miniature  
-
----
-
-© 2025 – Université Lyon 1 – Data Visualization Project
+© 2025-2026 – Lyon 1 University – Data Visualization Project
